@@ -5,10 +5,10 @@ Full stage correctness is separately established by evaluate.py, never this chec
 import argparse,json,math,sys
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
-from evaluate import run,write_json,tree_hash,sha,parse_stats
+from evaluate import run,write_json,tree_hash,sha,parse_stats,add_resource_args,resources,compare_baseline
 from state_codec import decode_values
-from stage_reference import load_fields
-from toolchain import verify
+from stage_reference import load_fields,verify_reference
+from toolchain import verify,identity
 lib=ROOT/'benchmarks/sph-exa/vine';ref=ROOT/'reports/physics/first-stages/reference'
 policy=json.loads((ROOT/'evaluations/sph-exa/physics-policy.json').read_text())
 
@@ -36,17 +36,14 @@ def source(side,updates):
  }}'''
 
 def main():
- global lib
- ap=argparse.ArgumentParser();ap.add_argument('--side',type=int,choices=policy['sides'],required=True);ap.add_argument('--updates',type=int,choices=[1,3],required=True);ap.add_argument('--mode',choices=['depth','workers2','normal'],required=True);ap.add_argument('--output',required=True);ap.add_argument('--library',type=Path,default=lib);ap.add_argument('--heap-gib',type=int,choices=range(2,17),default=2);a=ap.parse_args();lib=a.library.resolve()
- target=Path(a.output).resolve();target.mkdir(parents=True);report={'passed':False,'physics_accepted':False,'port_complete':False,'side':a.side,'updates':a.updates,'mode':a.mode,'resources':{'heap_limit_bytes':a.heap_gib*1024**3,'heap_gib':a.heap_gib},'policy':policy,'pin':verify(),'library':tree_hash(lib),'script_sha256':sha(Path(__file__))}
+ global lib,ref
+ ap=argparse.ArgumentParser();ap.add_argument('--side',type=int,choices=policy['sides'],required=True);ap.add_argument('--updates',type=int,choices=[1,3],required=True);ap.add_argument('--mode',choices=['depth','workers2','normal'],required=True);ap.add_argument('--output',required=True);ap.add_argument('--library',type=Path,default=lib);ap.add_argument('--reference',type=Path,default=ref);ap.add_argument('--baseline',help='earlier physics_measure result.json to compare against');add_resource_args(ap,600);a=ap.parse_args();lib=a.library.resolve();ref=a.reference.resolve()
+ target=Path(a.output).resolve();target.mkdir(parents=True);report={'passed':False,'physics_accepted':False,'port_complete':False,'side':a.side,'updates':a.updates,'mode':a.mode,'resources':resources(a),'policy':policy,'pin':verify(),'library':tree_hash(lib),'script_sha256':sha(Path(__file__))}
  try:
-  original=json.loads((ref/'result.json').read_text())
-  if not original['reference_verified'] or original['policy']!=policy or original['source_sha256']!=sha(ROOT/'benchmarks/sph-exa/reference/stages.cpp'):raise ValueError('Reference provenance mismatch')
-  for name,digest in original['snapshots'].items():
-   if sha(ref/name)!=digest:raise ValueError('Reference changed')
+  report['toolchain']=identity(report['pin']);verify_reference(ref,policy)
   src=target/'driver.vi';src.write_text(source(a.side,a.updates));argv=[sys.executable,str(ROOT/'tools/vine_exec.py'),'run','--lib','sph='+str(lib),'--heap',f'{a.heap_gib}G']
   argv+=['--depth'] if a.mode=='depth' else (['--workers','2'] if a.mode=='workers2' else [])
-  r=run(argv+[str(src)],ROOT,target/'run',policy['command_timeout_seconds']);report['stats']=parse_stats(Path(r['stderr']).read_text(),require_depth=a.mode=='depth');report['process']=r
+  r=run(argv+[str(src)],ROOT,target/'run',a.timeout);report['stats']=parse_stats(Path(r['stderr']).read_text(),require_depth=a.mode=='depth');report['process']=r
   got=decode_values(Path(r['stdout']).read_text().split(),3);case=ref/f'side{a.side}'
   fields=load_fields(case/f'i{a.updates-1}-energy.tsv',a.side**3);meta=list(map(float,(case/f'i{a.updates-1}-energy.meta').read_text().split()))
   hist=[]
@@ -58,7 +55,7 @@ def main():
    error=abs(x-y);limit=policy['atol']*n+policy['rtol']*abs(y);checks.append({'actual':x,'expected':y,'absolute_error':error,'accumulated_tolerance':limit,'passed':error<=limit})
   report['forcing_checks']=checks
   if not all(c['passed'] for c in checks):raise ValueError('Full state/history forcing mismatch')
-  if report['stats']['heap_bytes']>a.heap_gib*1024**3:raise ValueError('Heap budget exceeded')
+  if a.baseline:report['comparison']=compare_baseline(report,a.baseline,['stats'])
   if tree_hash(lib)!=report['library']:raise ValueError('Library changed during measurement')
   report['passed']=True
  except Exception as exc:report['error']=str(exc)

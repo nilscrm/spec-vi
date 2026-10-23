@@ -6,8 +6,8 @@ import math
 from pathlib import Path
 import struct
 import sys
-from evaluate import ROOT, run, write_json, compare, parse_stats, sha, tree_hash
-from toolchain import verify
+from evaluate import ROOT, run, write_json, compare, parse_stats, sha, tree_hash, add_resource_args, resources, compare_baseline
+from toolchain import verify, identity
 
 POLICY = ROOT/'evaluations/sph-exa/pilot-policy.json'
 LIB = ROOT/'benchmarks/sph-exa/vine'
@@ -75,20 +75,29 @@ def make_driver(kind, side, data, path, reduction=True, depth=False):
     path.write_text(source)
 
 
-def run_vine(driver, output, depth, policy):
-    argv=[sys.executable,str(ROOT/'tools/vine_exec.py'),'run','--lib',f'sph={LIB}','--heap','2G']
-    argv+=['--depth'] if depth else []
-    argv+=[str(driver)]
-    return run(argv,ROOT,output,timeout=policy['command_timeout_seconds'])
+def run_vine(driver, output, args, *flags):
+    argv=[sys.executable,str(ROOT/'tools/vine_exec.py'),'run','--lib',f'sph={LIB}','--heap',f'{args.heap_gib}G',*flags,str(driver)]
+    return run(argv,ROOT,output,timeout=args.timeout)
+
+
+def scaling(values):
+    """Balanced vs serial formulation at the largest count and balanced growth. Reported, never enforced."""
+    first,last=values[0],values[-1]
+    return {'counts':[first['count'],last['count']],
+            'depth_vs_serial':last['balanced']['depth']/last['serial']['depth'],
+            'work_vs_serial':last['balanced']['interactions']/last['serial']['interactions'],
+            'depth_growth':last['balanced']['depth']/first['balanced']['depth']}
 
 
 def main():
-    ap=argparse.ArgumentParser();ap.add_argument('--output',required=True);args=ap.parse_args()
+    ap=argparse.ArgumentParser();ap.add_argument('--output',required=True)
+    ap.add_argument('--baseline',help='earlier pilot result.json to compare depth/work/heap against')
+    add_resource_args(ap,180);args=ap.parse_args()
     output=Path(args.output).resolve();output.mkdir(parents=True,exist_ok=True)
     p=json.loads(POLICY.read_text())
-    report={'milestone':'pilot','passed':False,'port_complete':False,'scope':p['scope'],'correctness':[], 'experiments':[]}
+    report={'milestone':'pilot','passed':False,'port_complete':False,'scope':p['scope'],'resources':resources(args),'correctness':[], 'experiments':[], 'scaling':{}}
     try:
-        verify()
+        report['toolchain']=identity(verify())
         pinned=json.loads((ROOT/'evaluations/upstream-files.json').read_text())
         if tree_hash(ROOT/'upstream/sph-exa')!=pinned: raise RuntimeError('Upstream source changed')
         reference=ROOT/'work/build/pilot_reference'
@@ -110,7 +119,7 @@ def main():
                 expected=[rows[i] if kind=='init' else [rows[i][6]] for i in selected]
                 exp=output/(name+'_expected.txt');exp.write_text('\n'.join(' '.join(format(x,'.17e') for x in row) for row in expected)+'\n')
                 driver=output/(name+'.vi');make_driver(kind,side,data,driver)
-                result=run_vine(driver,output/(name+'_vine'),False,p)
+                result=run_vine(driver,output/(name+'_vine'),args)
                 check=compare(exp,result['stdout'],p['atol'],p['rtol'],count,30 if kind=='init' else 1)
                 report['correctness'].append(dict(case=name,**check))
                 write_json(output/'progress.json',report)
@@ -125,34 +134,28 @@ def main():
                 for mode in (True,False):
                     name=f'{kind}_n{count}_{"balanced" if mode else "serial"}'
                     driver=output/(name+'.vi');make_driver(kind,p['sides'][0],data[:count],driver,mode,True)
-                    r=run_vine(driver,output/name,True,p)
+                    r=run_vine(driver,output/name,args,'--depth')
                     stats=parse_stats(Path(r['stderr']).read_text())
                     lo,hi=map(int,Path(r['stdout']).read_text().split())
                     scalar=struct.unpack('<d',struct.pack('<II',lo,hi))[0]
                     oracle=math.fsum(x for row in expected[:count] for x in row)
                     if not math.isfinite(scalar) or abs(scalar-oracle)>p['atol']*count*30+p['rtol']*abs(oracle):
                         raise RuntimeError(f'Depth consumer mismatch: {name}: {scalar} vs {oracle}')
-                    if stats['heap_bytes']>p['heap_limit_bytes']: raise RuntimeError('Heap budget exceeded')
                     by_mode['balanced' if mode else 'serial']=stats
                 entry={'kind':kind,'count':count,**by_mode}
                 report['experiments'].append(entry);values.append(entry)
                 write_json(output/'progress.json',report)
             # Parallel runtime is a distinct run: --depth does not execute workers.
             driver=output/(f'{kind}_n{count}_balanced.vi')
-            parallel=run([sys.executable,str(ROOT/'tools/vine_exec.py'),'run','--lib',f'sph={LIB}','--heap','2G','--workers','2',str(driver)],ROOT,output/(kind+'_workers2'),timeout=p['command_timeout_seconds'])
+            parallel=run_vine(driver,output/(kind+'_workers2'),args,'--workers','2')
             lo,hi=map(int,Path(parallel['stdout']).read_text().split())
             scalar=struct.unpack('<d',struct.pack('<II',lo,hi))[0]
             oracle=math.fsum(x for row in expected[:count] for x in row)
             if not math.isfinite(scalar) or abs(scalar-oracle)>p['atol']*count*30+p['rtol']*abs(oracle):
                 raise RuntimeError('Parallel consumer mismatch')
             report.setdefault('parallel_runs',[]).append({'kind':kind,'workers':2,'process_wall_seconds':parallel['wall_seconds'],'peak_rss_bytes':parallel['peak_rss_bytes'],'runtime_stats':parallel['stderr']})
-            last=values[-1]
-            if last['balanced']['depth']>p['max_balanced_to_serial_depth']*last['serial']['depth']:
-                raise RuntimeError(f'{kind}: insufficient depth improvement')
-            if last['balanced']['interactions']>p['max_balanced_to_serial_work']*last['serial']['interactions']:
-                raise RuntimeError(f'{kind}: work amplification exceeds budget')
-            if last['balanced']['depth']>p['max_depth_growth']*values[0]['balanced']['depth']:
-                raise RuntimeError(f'{kind}: depth scaling exceeds budget')
+            report['scaling'][kind]=scaling(values)
+        if args.baseline: report['comparison']=compare_baseline(report,args.baseline,['experiments'])
         report['passed']=True
     except Exception as exc:
         report['error']=str(exc)

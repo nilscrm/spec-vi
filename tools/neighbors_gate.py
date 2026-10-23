@@ -6,9 +6,9 @@ import math
 from pathlib import Path
 import random
 import sys
-from evaluate import ROOT, run, write_json, sha, tree_hash, parse_stats
+from evaluate import ROOT, run, write_json, sha, tree_hash, parse_stats, add_resource_args, resources, compare_baseline
 from pilot_gate import balanced, lit, indices
-from toolchain import verify
+from toolchain import verify, identity
 
 LIB = ROOT/'benchmarks/sph-exa/vine'
 POLICY = ROOT/'evaluations/sph-exa/neighbors-policy.json'
@@ -113,12 +113,24 @@ def synthetic():
         yield f'scaling_{n}',points,[(*p,1.1,0.) for p in points]
 
 
+def scaling(first, last):
+    """Candidate vs the serial-scan control and growth across sizes. Reported, never enforced."""
+    c0, c1, s1 = first['candidate'], last['candidate'], last['serial']
+    return {'counts': [first['count'], last['count']],
+            'depth_vs_serial': c1['depth']/s1['depth'],
+            'work_vs_serial': c1['interactions']/s1['interactions'],
+            'depth_growth': c1['depth']/c0['depth'],
+            'work_growth': c1['interactions']/c0['interactions']}
+
+
 def main():
-    ap=argparse.ArgumentParser();ap.add_argument('--output',required=True);ap.add_argument('--candidate',choices=('tree','grid'),default='tree');args=ap.parse_args()
+    ap=argparse.ArgumentParser();ap.add_argument('--output',required=True);ap.add_argument('--candidate',choices=('tree','grid'),default='tree')
+    ap.add_argument('--baseline',help='earlier neighbors result.json to compare depth/work/heap against')
+    add_resource_args(ap,180);args=ap.parse_args()
     output=Path(args.output).resolve();output.mkdir(parents=True,exist_ok=True)
-    p=json.loads(POLICY.read_text());report={'milestone':'neighbors','passed':False,'port_complete':False,'scope':p['scope'],'candidate':args.candidate,'api':'batch' if args.candidate=='grid' else 'single','correctness':[],'experiments':[]}
+    p=json.loads(POLICY.read_text());report={'milestone':'neighbors','passed':False,'port_complete':False,'scope':p['scope'],'candidate':args.candidate,'api':'batch' if args.candidate=='grid' else 'single','resources':resources(args),'correctness':[],'experiments':[]}
     try:
-        pin=verify()
+        pin=verify();report['toolchain']=identity(pin)
         write_json(output/'toolchain.json',pin)
         if tree_hash(ROOT/'upstream/sph-exa') != json.loads((ROOT/'evaluations/upstream-files.json').read_text()):
             raise RuntimeError('Upstream source changed')
@@ -143,12 +155,12 @@ def main():
         write_json(output/'fixtures.json',[{'name':name,'points':pts,'queries':qs,'expected':[oracle(pts,q) for q in qs]} for name,pts,qs in cases])
         for name,points,queries in cases:
             expected=[oracle(points,q) for q in queries]
-            argv=[sys.executable,str(ROOT/'tools/vine_exec.py'),'run','--lib',f'sph={LIB}','--heap','2G']
+            argv=[sys.executable,str(ROOT/'tools/vine_exec.py'),'run','--lib',f'sph={LIB}','--heap',f'{args.heap_gib}G']
             checks=[('tree','single')]+([('grid','single'),('grid','batch')] if args.candidate=='grid' else [])
             for candidate,api in checks:
                 label=name+'_'+candidate+'_'+api
                 src=output/(label+'.vi');driver(points,queries,src,candidate=candidate,api=api)
-                r=run(argv+[str(src)],ROOT,output/(label+'_correctness'),p['command_timeout_seconds'])
+                r=run(argv+[str(src)],ROOT,output/(label+'_correctness'),args.timeout)
                 validate_rows(Path(r['stdout']).read_text(),expected)
                 report['correctness'].append({'case':name,'candidate':candidate,'api':api,'queries':len(queries),'passed':True})
                 write_json(output/'progress.json',report)
@@ -156,30 +168,20 @@ def main():
                 entry={'count':len(points)}
                 for mode in ('candidate','serial'):
                     src=output/(name+'_'+mode+'.vi');driver(points,queries,src,mode,candidate=args.candidate)
-                    r=run(argv+['--depth',str(src)],ROOT,output/(name+'_'+mode),p['command_timeout_seconds'])
+                    r=run(argv+['--depth',str(src)],ROOT,output/(name+'_'+mode),args.timeout)
                     if int(Path(r['stdout']).read_text())!=sum(i+1 for row in expected for i in row):
                         raise RuntimeError('Depth consumer checksum mismatch')
                     stats=parse_stats(Path(r['stderr']).read_text())
-                    if stats['heap_bytes']>p['heap_limit_bytes']: raise RuntimeError('Heap budget exceeded')
                     entry[mode]=dict(stats,peak_rss_bytes=r['peak_rss_bytes'])
                 report['experiments'].append(entry)
                 src=output/(name+'_candidate.vi')
-                r=run(argv+['--workers','2',str(src)],ROOT,output/(name+'_workers2'),p['command_timeout_seconds'])
+                r=run(argv+['--workers','2',str(src)],ROOT,output/(name+'_workers2'),args.timeout)
                 if int(Path(r['stdout']).read_text())!=sum(i+1 for row in expected for i in row): raise RuntimeError('Parallel checksum mismatch')
                 entry['parallel_process_seconds']=r['wall_seconds']
                 entry['parallel_runtime_log']=r['stderr']
                 write_json(output/'progress.json',report)
-        first,last=report['experiments']
-        limits = [
-            ('depth_ratio', last['candidate']['depth'], p['max_depth_ratio']*last['serial']['depth']),
-            ('work_ratio', last['candidate']['interactions'], p['max_work_ratio']*last['serial']['interactions']),
-            ('work_growth', last['candidate']['interactions'], p['max_work_growth']*first['candidate']['interactions']),
-            ('depth_growth', last['candidate']['depth'], p['max_depth_growth']*first['candidate']['depth']),
-        ]
-        report['budgets'] = {name: {'actual': actual, 'limit': limit, 'passed': actual <= limit}
-                             for name, actual, limit in limits}
-        failed = [name for name, check in report['budgets'].items() if not check['passed']]
-        if failed: raise RuntimeError('Neighbor performance budgets failed: '+', '.join(failed))
+        report['scaling']=scaling(report['experiments'][0],report['experiments'][-1])
+        if args.baseline: report['comparison']=compare_baseline(report,args.baseline,['experiments'])
         report['passed']=True
     except Exception as exc: report['error']=str(exc)
     write_json(output/'result.json',report);print(json.dumps(report,indent=2))

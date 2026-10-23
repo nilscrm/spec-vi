@@ -4,8 +4,8 @@ The separate physics gate retains complete all-field, per-stage validation.
 """
 import argparse,json,math,sys
 from pathlib import Path
-from evaluate import ROOT,run,write_json,tree_hash,sha,compare,parse_stats
-from stage_reference import load_fields,FIELDS
+from evaluate import ROOT,run,write_json,tree_hash,sha,compare,parse_stats,add_resource_args,resources
+from stage_reference import load_fields,FIELDS,verify_reference
 from toolchain import verify
 LIB=ROOT/'benchmarks/sph-exa/vine'
 SOURCE=ROOT/'benchmarks/sph-exa/app/square_patch.vi'
@@ -45,22 +45,18 @@ def validate_case(case,ref,side,last,frequency,policy):
 
 def main():
     global LIB
-    ap=argparse.ArgumentParser();ap.add_argument('--output',required=True);ap.add_argument('--reference',required=True);ap.add_argument('--library',type=Path,default=LIB);ap.add_argument('--heap-gib',type=int,choices=range(2,17),default=2);args=ap.parse_args();LIB=args.library.resolve()
+    ap=argparse.ArgumentParser();ap.add_argument('--output',required=True);ap.add_argument('--reference',required=True);ap.add_argument('--library',type=Path,default=LIB);add_resource_args(ap,600);args=ap.parse_args();LIB=args.library.resolve()
     out=Path(args.output).resolve();out.mkdir(parents=True);ref=Path(args.reference).resolve()
     policy=json.loads((ROOT/'evaluations/sph-exa/physics-policy.json').read_text())
-    report={'passed':False,'port_complete':False,'scope':'Upstream serial CLI and output semantics; native decimal precision, no SPEC equivalence claim','resources':{'heap_limit_bytes':args.heap_gib*1024**3,'heap_gib':args.heap_gib},'policy':policy,'pin':verify(),'library':tree_hash(LIB),'driver_sha256':sha(SOURCE),'cases':[]}
+    report={'passed':False,'port_complete':False,'scope':'Upstream serial CLI and output semantics; native decimal precision, no SPEC equivalence claim','resources':resources(args),'policy':policy,'pin':verify(),'library':tree_hash(LIB),'driver_sha256':sha(SOURCE),'cases':[]}
     try:
-        original=json.loads((ref/'result.json').read_text())
-        if not original['reference_verified'] or original['policy']!=policy or original['source_sha256']!=sha(ROOT/'benchmarks/sph-exa/reference/stages.cpp'):raise ValueError('Reference provenance mismatch')
-        for name,digest in original['snapshots'].items():
-            if sha(ref/name)!=digest:raise ValueError('Oracle changed')
+        verify_reference(ref,policy)
         for side,last,freq in [(12,0,1),(16,2,2),(12,0,-1)]:
             case=out/f'side{side}_s{last}_w{freq}';case.mkdir()
             command=[sys.executable,str(ROOT/'tools/vine_exec.py'),'run','--lib','sph='+str(LIB),'--heap',f'{args.heap_gib}G',str(SOURCE),'--','-n',str(side),'-s',str(last),'-w',str(freq)]
-            r=run(command,case,case/'run',policy['command_timeout_seconds'])
+            r=run(command,case,case/'run',args.timeout)
             checks=validate_case(case,ref,side,last,freq,policy)
             stats=parse_stats(Path(r['stderr']).read_text(),require_depth=False)
-            if stats['heap_bytes']>args.heap_gib*1024**3:raise ValueError('Heap limit exceeded')
             report['cases'].append({'side':side,'last_step':last,'frequency':freq,'checks':checks,'stats':stats,'process':r});write_json(out/'progress.json',report)
         if sha(SOURCE)!=report['driver_sha256'] or tree_hash(LIB)!=report['library']:raise ValueError('Sources changed during validation')
         report['passed']=True

@@ -8,9 +8,9 @@ import math
 from pathlib import Path
 import struct
 import sys
-from evaluate import ROOT, run, write_json, sha, tree_hash, compare, parse_stats
+from evaluate import ROOT, run, write_json, sha, tree_hash, compare, parse_stats, add_resource_args, resources
 from pilot_gate import add_tree, balanced, lit
-from stage_reference import FIELDS, load_fields
+from stage_reference import FIELDS, load_fields, verify_reference
 from toolchain import verify
 LIB=ROOT/'benchmarks/sph-exa/vine'
 HEADER='use #sph::{physics,pilot,tree};\nuse tree::Tree;\n'
@@ -51,23 +51,20 @@ def check_checksum(path, rows, policy):
 
 def main():
     ap=argparse.ArgumentParser();ap.add_argument('--output',required=True);ap.add_argument('--reference',required=True)
-    args=ap.parse_args();out=Path(args.output).resolve();out.mkdir(parents=True,exist_ok=True)
+    add_resource_args(ap,600);args=ap.parse_args();out=Path(args.output).resolve();out.mkdir(parents=True,exist_ok=True)
     ref=Path(args.reference).resolve();policy=json.loads((ROOT/'evaluations/sph-exa/physics-policy.json').read_text())
-    report={'milestone':'initial_physics','passed':False,'full_physics_accepted':False,'port_complete':False,
+    report={'milestone':'initial_physics','passed':False,'full_physics_accepted':False,'port_complete':False,'resources':resources(args),
             'correctness':[],'experiments':[],'scope':'All particles initialization through EOS at iteration zero; isolated EOS from three upstream updates; no IAD or full Vine update validation'}
     try:
-        pin=verify();reference=json.loads((ref/'result.json').read_text())
-        if not reference['reference_verified'] or reference['policy']!=policy or reference['source_sha256']!=sha(ROOT/'benchmarks/sph-exa/reference/stages.cpp'): raise ValueError('Reference provenance mismatch')
-        for name,digest in reference['snapshots'].items():
-            if sha(ref/name)!=digest: raise ValueError('Reference snapshot changed: '+name)
+        pin=verify();verify_reference(ref,policy)
         if tree_hash(ROOT/'upstream/sph-exa')!=json.loads((ROOT/'evaluations/upstream-files.json').read_text()): raise ValueError('Upstream changed')
         write_json(out/'provenance.json',{'pin':pin,'library':tree_hash(LIB),'policy':policy,'gate_sha256':sha(Path(__file__)), 'reference_report_sha256':sha(ref/'result.json')})
-        argv=[sys.executable,str(ROOT/'tools/vine_exec.py'),'run','--lib','sph='+str(LIB),'--heap','2G']
+        argv=[sys.executable,str(ROOT/'tools/vine_exec.py'),'run','--lib','sph='+str(LIB),'--heap',f'{args.heap_gib}G']
         for side in policy['sides']:
             case=ref/f'side{side}'
             for stage in ['init','density','rest','eos']:
                 name=f'side{side}_{stage}';src=out/(name+'.vi');driver(src,side,stage)
-                r=run(argv+[str(src)],ROOT,out/name,policy['command_timeout_seconds'])
+                r=run(argv+[str(src)],ROOT,out/name,args.timeout)
                 expected=case/('init.tsv' if stage=='init' else f'i0-{stage}.tsv')
                 load_fields(r['stdout'],side**3)
                 check=compare(expected,r['stdout'],policy['atol'],policy['rtol'],side**3,31)
@@ -76,7 +73,7 @@ def main():
             for iteration in range(policy['updates']):
                 rows=load_fields(case/f'i{iteration}-rest.tsv',side**3)
                 name=f'side{side}_eos_snapshot{iteration}';src=out/(name+'.vi');eos_driver(src,rows)
-                r=run(argv+[str(src)],ROOT,out/name,policy['command_timeout_seconds'])
+                r=run(argv+[str(src)],ROOT,out/name,args.timeout)
                 load_fields(r['stdout'],side**3)
                 check=compare(case/f'i{iteration}-eos.tsv',r['stdout'],policy['atol'],policy['rtol'],side**3,31)
                 report['correctness'].append(dict(case=name,**check));write_json(out/'progress.json',report)
@@ -84,14 +81,13 @@ def main():
             rows=load_fields(case/'i0-eos.tsv',side**3)
             for count in policy['depth_query_counts']:
                 name=f'side{side}_q{count}_depth';src=out/(name+'.vi');driver(src,side,'eos',count,True)
-                r=run(argv+['--depth',str(src)],ROOT,out/name,policy['command_timeout_seconds'])
+                r=run(argv+['--depth',str(src)],ROOT,out/name,args.timeout)
                 check_checksum(r['stdout'],rows[:count],policy)
                 stats=parse_stats(Path(r['stderr']).read_text())
-                if stats['heap_bytes']>policy['heap_limit_bytes']: raise ValueError('Heap budget exceeded')
                 report['experiments'].append(dict(side=side,queries=count,all_input_particles=side**3,**stats,peak_rss_bytes=r['peak_rss_bytes']))
                 write_json(out/'progress.json',report)
             name=f'side{side}_workers2'
-            r=run(argv+['--workers','2',str(src)],ROOT,out/name,policy['command_timeout_seconds'])
+            r=run(argv+['--workers','2',str(src)],ROOT,out/name,args.timeout)
             check_checksum(r['stdout'],rows[:count],policy)
             report.setdefault('parallel_runs',[]).append(dict(side=side,queries=count,process_seconds=r['wall_seconds'],runtime_log=r['stderr']))
         report['passed']=True
