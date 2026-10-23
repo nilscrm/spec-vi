@@ -38,6 +38,18 @@ that the checkout is at the pinned commit and its `root/` tree hash matches `sou
 record the new binary hash in the pin and note the machine in the commit message.
 Large raw dumps (>1 MiB) under `reports/` are listed in `.gitignore` and exist only on
 the original machine; regenerate them with the corresponding tools when needed.
+Two of them are not reproducible bit-for-bit on another platform (L046):
+
+- `benchmarks/sph-exa/vine/tables.vi` (sha256 `f0bb9115…`): extract it from
+  `reports/checkpoint-20260926-batch-integration.tar.gz`. Regenerating it with
+  `reference/generate_tables.cpp` on Linux/glibc gives different last digits.
+- `reports/physics/first-stages/reference/` is missing 31 snapshots. On another host,
+  generate a local oracle with `python3 tools/stage_reference.py --output work/reference-<host>`
+  and pass it to the physics tools with `--reference`. Such an oracle is evidence
+  only for that host.
+
+On Linux `tools/vine_exec.py` sets the 64 MiB stack with `setrlimit`; zsh is only
+needed on macOS.
 
 ## Build and smoke-run the upstream serial reference
 

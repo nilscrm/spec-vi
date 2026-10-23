@@ -13,10 +13,11 @@ History before 2026-10-14: HISTORY.md, LESSONS L001-L043, reports/.
   validated-20260930, scale-readiness-20261005). Its checksum gates serialize
   particles, so it is not a valid depth candidate (L043).
 - The ungated depth-first candidate (reports/physics/depth-first-20261006/) removes
-  those gates. Side 12, 1 update, normal mode at 16 GiB completes: W 2.38e9, runtime
-  heap 10.5 GB, 99 s. At 16 GiB and the 600 s limit, depth mode and full-stage
-  validation both timed out, so the candidate has no depth number and is not yet
-  numerically validated.
+  those gates. Its reference-gather form exhausts memory. The routed-gather form
+  (depth-first-20261006/routed/sph) passes all 28 side-12 snapshots over 3 updates
+  (12 GiB heap, W 9.25e9, heap 9.6 GB). Whole-update depth at side 12 is 226,706
+  versus 16,653,836 gated (73x lower, +10% work, 30x heap); sides 6-10 show 46-66x (L047, reports/physics/routed-20261023/).
+  Side 16 exhausted 12 GiB on the 15 GiB Linux host, so it is not promoted yet.
 - The native driver is app/square_patch.vi. The side 16 / 3-update run timed out at
   600 s.
 - Vine changes are committed on spec-vi/sph-support (work/vine) and pinned at fec2d8c8.
@@ -26,14 +27,10 @@ History before 2026-10-14: HISTORY.md, LESSONS L001-L043, reports/.
 ## Wrap-up tasks
 
 1. ~~**Migrate the Vine changes.**~~ Done 2026-10-14 (see above; L045).
-2. **Turn performance gates into reports.** The thresholds in
-   evaluations/sph-exa/neighbors-policy.json (max_depth_ratio, the 361.2 figure,
-   max_depth_growth) and pilot-policy.json, plus the fixed 2 GiB heap, become reported
-   metrics compared against a baseline rather than pass/fail gates (AGENTS.md).
-   Correctness gates are unchanged. Make heap size and timeout explicit run
-   parameters recorded with each result. Update tools/, docs/RUNNER.md and the runner
-   status so a measurement no longer shows as a failed milestone.
-3. **Validate the ungated candidate.** Run full-stage validation at sides 12 and 16
+2. ~~**Turn performance gates into reports.**~~ Done 2026-10-23: gates check correctness
+   only, report `scaling`/`comparison` sections, and take `--heap-gib`/`--timeout`
+   (docs/RUNNER.md). Pilot and neighbors pass (reports/runs/linux-20261023/).
+3. **Validate the ungated candidate.** In progress: routed candidate passes side 12 (L047). Run full-stage validation at sides 12 and 16
    over 3 updates with whatever heap and timeout it needs (record both). If it is
    impractical even then, implement the routed-gather candidate described in
    depth-first-20261006/EXPERIMENT.md. Promote it to benchmarks/sph-exa/vine only after
@@ -51,5 +48,7 @@ History before 2026-10-14: HISTORY.md, LESSONS L001-L043, reports/.
 
 ## Next action
 
-Task 2: turn the performance thresholds into reported metrics, so the runner reflects
-the correctness-only acceptance policy. Then continue with task 3.
+Task 3: run tools/physics_gate.py with `--library` set to the routed candidate at
+sides 12 and 16 on a host with at least ~32 GiB (record heap and timeout). If no such
+host is available, reduce the per-pair live footprint first (L047 hypotheses), without
+gates. Then promote it and measure the task 4 table with tools/physics_measure.py.

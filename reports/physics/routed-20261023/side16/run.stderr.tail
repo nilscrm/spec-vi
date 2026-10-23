@@ -1,0 +1,17 @@
+warning: unused item
+     @ sph/pilot.vi:156:18
+ 156 | use #root::data::Lookup;
+
+
+thread 'main' (16045) panicked at ivm/src/runtime/allocator.rs:90:44:
+OOM
+stack backtrace:
+   0: __rustc::rust_begin_unwind
+   1: core::panicking::panic_fmt
+   2: core::option::expect_failed
+   3: ivm::runtime::graft::<impl ivm::runtime::Runtime>::graft
+   4: ivm::host::runner::Runner::normalize
+   5: vine_cli::common::RunArgs::run
+   6: vine_cli::vine_cli::VineRunCommand::execute
+   7: vine_cli::vine_cli::VineCommand::execute
+note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.
