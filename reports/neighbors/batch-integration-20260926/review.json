@@ -1,0 +1,39 @@
+{
+  "integration_verified": true,
+  "accepted_neighbor_milestone": false,
+  "port_complete": false,
+  "runner": "reports/runs/20260926T152748Z-33131",
+  "unit_tests": 24,
+  "membership_checks": 72,
+  "policy_unchanged": true,
+  "legacy_driver_and_modules_unchanged": true,
+  "grid_matches_clean_candidate": true,
+  "metrics_reproduced": true,
+  "budgets": {
+    "depth_ratio": {
+      "actual": 775,
+      "limit": 361.2,
+      "passed": false
+    },
+    "work_ratio": {
+      "actual": 7957961,
+      "limit": 24018868.5,
+      "passed": true
+    },
+    "work_growth": {
+      "actual": 7957961,
+      "limit": 16958500.0,
+      "passed": true
+    },
+    "depth_growth": {
+      "actual": 775,
+      "limit": 1902.0,
+      "passed": true
+    }
+  },
+  "result_sha256": {
+    "bootstrap": "169eb57ffe8bb65741fbd420a7fdc8090f743470739630fe77a2763b4cdfb170",
+    "pilot": "727575391543adc976de1bcd011392905ca7d51d38501c07c4ba342957c51dd5",
+    "neighbors": "98a8c944aaa1458cccab15033e94e6af092cb178f7a3bed48b53e3e7173bb002"
+  }
+}

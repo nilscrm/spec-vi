@@ -1,0 +1,26 @@
+{
+  "compact": {
+    "depth256": 1596,
+    "work256": 4294285,
+    "work_growth": 7.90554658605778,
+    "depth_heuristic_pass": false,
+    "work_growth_pass": true,
+    "accepted": false
+  },
+  "wires2": {
+    "depth256": 839,
+    "work256": 11136676,
+    "work_growth": 12.63574259414112,
+    "depth_heuristic_pass": false,
+    "work_growth_pass": false,
+    "accepted": false
+  },
+  "wires4": {
+    "depth256": 794,
+    "work256": 13640755,
+    "work_growth": 6.9475170622389735,
+    "depth_heuristic_pass": false,
+    "work_growth_pass": true,
+    "accepted": false
+  }
+}

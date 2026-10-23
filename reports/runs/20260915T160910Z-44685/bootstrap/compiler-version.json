@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "c++",
+    "--version"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 16351232,
+  "wall_seconds": 0.02437616699899081,
+  "stdout": "/Users/nils/repos/spec-vi/reports/runs/20260915T160910Z-44685/bootstrap/compiler-version.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/runs/20260915T160910Z-44685/bootstrap/compiler-version.stderr"
+}

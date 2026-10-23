@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "make",
+    "sph-exa-build"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 142114816,
+  "wall_seconds": 1.0123840419983026,
+  "stdout": "/Users/nils/repos/spec-vi/reports/runs/20260920T182738Z-80749/bootstrap/build.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/runs/20260920T182738Z-80749/bootstrap/build.stderr"
+}

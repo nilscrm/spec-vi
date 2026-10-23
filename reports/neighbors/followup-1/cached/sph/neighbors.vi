@@ -1,0 +1,158 @@
+
+use #sph::tree::Tree;
+
+pub type Point = { id: N32, x: F64, y: F64, z: F64 };
+pub type Query = { id: N32, x: F64, y: F64, z: F64, radius: F64, period_z: F64 };
+pub type Bounds = { n: N32, xmin: F64, xmax: F64, ymin: F64, ymax: F64, zmin: F64, zmax: F64 };
+pub enum* Index {
+  Empty(),
+  Leaf(Point),
+  Bucket(Tree[Point]),
+  Branch(Bounds, Index, Index),
+}
+
+fn min(a: F64, b: F64) -> F64 {
+  if a < b {
+    a
+  } else {
+    b
+  }
+}
+fn max(a: F64, b: F64) -> F64 {
+  if a > b {
+    a
+  } else {
+    b
+  }
+}
+fn bounds(t: Tree[Point]) -> Bounds {
+  match t {
+    Tree::Empty() {
+      {
+        n: 0,
+        xmin: 0.0[F64],
+        xmax: 0.0[F64],
+        ymin: 0.0[F64],
+        ymax: 0.0[F64],
+        zmin: 0.0[F64],
+        zmax: 0.0[F64],
+      }
+    }
+    Tree::Leaf(p) { { n: 1, xmin: p.x, xmax: p.x, ymin: p.y, ymax: p.y, zmin: p.z, zmax: p.z } }
+    Tree::Branch(l, r) { merge(bounds(l), bounds(r)) }
+  }
+}
+fn merge(a: Bounds, b: Bounds) -> Bounds {
+  if a.n == 0 {
+    b
+  } else {
+    if b.n == 0 {
+      a
+    } else {
+      {
+        n: a.n + b.n,
+        xmin: min(a.xmin, b.xmin),
+        xmax: max(a.xmax, b.xmax),
+        ymin: min(a.ymin, b.ymin),
+        ymax: max(a.ymax, b.ymax),
+        zmin: min(a.zmin, b.zmin),
+        zmax: max(a.zmax, b.zmax),
+      }
+    }
+  }
+}
+fn join(a: Tree[Point], b: Tree[Point]) -> Tree[Point] {
+  match (a, b) {
+    (Tree::Empty(), b) { b }
+    (a, Tree::Empty()) { a }
+    (a, b) { Tree::Branch(a, b) }
+  }
+}
+// Return bounds together with partitions, avoiding another traversal at each level.
+fn partition(t: Tree[Point],axis: N32,mid: F64) -> ((Bounds,Tree[Point]),(Bounds,Tree[Point])) {
+ match t {
+  Tree::Empty() { ((bounds(Tree::Empty()),Tree::Empty()),(bounds(Tree::Empty()),Tree::Empty())) }
+  Tree::Leaf(p) {
+   let v=if axis==0 {p.x} else {if axis==1 {p.y} else {p.z}};
+   let leaf=(bounds(Tree::Leaf(p)),Tree::Leaf(p));let empty=(bounds(Tree::Empty()),Tree::Empty());
+   if v < mid {(leaf,empty)} else {(empty,leaf)}
+  }
+  Tree::Branch(l,r) {
+   let ((a,ll),(b,lr))=partition(l,axis,mid);let ((c,rl),(d,rr))=partition(r,axis,mid);
+   ((merge(a,c),join(ll,rl)),(merge(b,d),join(lr,rr)))
+  }
+ }
+}
+fn unsplit(t: Tree[Point]) -> Index {
+ match t {
+  Tree::Empty() {Index::Empty()}
+  Tree::Leaf(p) {Index::Leaf(p)}
+  Tree::Branch(l,r) {Index::Bucket(Tree::Branch(l,r))}
+ }
+}
+pub fn build(points: Tree[Point]) -> Index {let b=bounds(points);build_rec(points,b,0)}
+fn build_rec(points: Tree[Point],b: Bounds,level: N32) -> Index {
+ if b.n<=8 or level>=32 {unsplit(points)} else {
+  let dx=b.xmax-b.xmin;let dy=b.ymax-b.ymin;let dz=b.zmax-b.zmin;
+  let axis=if (dx>=dy) & (dx>=dz) {0} else {if dy>=dz {1} else {2}};
+  let lo=if axis==0 {b.xmin} else {if axis==1 {b.ymin} else {b.zmin}};
+  let hi=if axis==0 {b.xmax} else {if axis==1 {b.ymax} else {b.zmax}};
+  let mid=lo+(hi-lo)*0.5[F64];
+  if (mid<=lo) | (mid>=hi) {unsplit(points)} else {
+   let ((a,l),(c,r))=partition(points,axis,mid);
+   Index::Branch(b,build_rec(l,a,level+1),build_rec(r,c,level+1))
+  }
+ }
+}
+fn scan(t: Tree[Point],q: Query) -> Tree[N32] {
+ match t {Tree::Empty() {Tree::Empty()} Tree::Leaf(p) {if inside(p,q) {Tree::Leaf(p.id)} else {Tree::Empty()}} Tree::Branch(l,r) {Tree::Branch(scan(l,q),scan(r,q))}}
+}
+fn inside(p: Point, q: Query) -> Bool {
+  let dx = q.x - p.x;
+  let dy = q.y - p.y;
+  let dz = q.z - p.z;
+  let a = q.z - q.period_z - p.z;
+  let b = q.z + q.period_z - p.z;
+  p.id != q.id
+    and ((dx * dx + dy * dy) + dz * dz < q.radius * q.radius
+      or (q.period_z > 0.0[F64]
+        and ((dx * dx + dy * dy) + a * a < q.radius * q.radius
+          or (dx * dx + dy * dy) + b * b < q.radius * q.radius
+        )
+      )
+    )
+}
+fn overlap_z(b: Bounds, z: F64, r: F64) -> Bool {
+  z + r >= b.zmin and z - r <= b.zmax
+}
+fn overlaps(b: Bounds, q: Query) -> Bool {
+  q.x + q.radius >= b.xmin
+    and q.x - q.radius <= b.xmax
+    and q.y + q.radius >= b.ymin
+    and q.y - q.radius <= b.ymax
+    and (overlap_z(b, q.z, q.radius)
+      or (q.period_z > 0.0[F64]
+        and (overlap_z(b, q.z - q.period_z, q.radius) or overlap_z(b, q.z + q.period_z, q.radius))
+      )
+    )
+}
+pub fn find(index: Index, q: Query) -> Tree[N32] {
+  match index {
+    Index::Empty() { Tree::Empty() }
+    Index::Bucket(t) { scan(t,q) }
+    Index::Leaf(p) {
+      if inside(p, q) {
+        Tree::Leaf(p.id)
+      } else {
+        Tree::Empty()
+      }
+    }
+    Index::Branch(b, l, r) {
+      if overlaps(b, q) {
+        Tree::Branch(find(l, q), find(r, q))
+      } else {
+        Tree::Empty()
+      }
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "argv": [
+    "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+    "/Users/nils/repos/spec-vi/tools/vine_exec.py",
+    "run",
+    "--lib",
+    "sph=/Users/nils/repos/spec-vi/reports/neighbors/cell-major/wires2/sph",
+    "--heap",
+    "2G",
+    "/Users/nils/repos/spec-vi/reports/neighbors/cell-major/wires2/clusters_shuffled_correctness.vi"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 132415488,
+  "wall_seconds": 0.564342875033617,
+  "stdout": "/Users/nils/repos/spec-vi/reports/neighbors/cell-major/wires2/clusters_shuffled_correctness.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/neighbors/cell-major/wires2/clusters_shuffled_correctness.stderr"
+}

@@ -1,0 +1,17 @@
+{
+  "argv": [
+    "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+    "/Users/nils/repos/spec-vi/tools/vine_exec.py",
+    "run",
+    "--lib",
+    "sph=/Users/nils/repos/spec-vi/benchmarks/sph-exa/vine",
+    "/Users/nils/repos/spec-vi/reports/neighbors/eager-cached-extra/cloud2.vi"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 836026368,
+  "wall_seconds": 1.1058817919983994,
+  "stdout": "/Users/nils/repos/spec-vi/reports/neighbors/eager-cached-extra/cloud2.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/neighbors/eager-cached-extra/cloud2.stderr"
+}

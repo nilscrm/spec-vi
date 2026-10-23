@@ -1,0 +1,19 @@
+{
+  "argv": [
+    "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+    "/Users/nils/repos/spec-vi/tools/vine_exec.py",
+    "run",
+    "--lib",
+    "sph=/Users/nils/repos/spec-vi/reports/physics/evolution/sph",
+    "--heap",
+    "2G",
+    "/Users/nils/repos/spec-vi/reports/physics/evolution/materialized_update/driver.vi"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 1,
+  "timed_out": false,
+  "peak_rss_bytes": 333430784,
+  "wall_seconds": 5.743528333026916,
+  "stdout": "/Users/nils/repos/spec-vi/reports/physics/evolution/materialized_update/run.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/physics/evolution/materialized_update/run.stderr"
+}

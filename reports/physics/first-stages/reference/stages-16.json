@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "/Users/nils/repos/spec-vi/reports/physics/first-stages/reference/stages",
+    "16",
+    "3",
+    "/Users/nils/repos/spec-vi/reports/physics/first-stages/reference/side16"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 14090240,
+  "wall_seconds": 1.7074808750185184,
+  "stdout": "/Users/nils/repos/spec-vi/reports/physics/first-stages/reference/stages-16.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/physics/first-stages/reference/stages-16.stderr"
+}

@@ -1,0 +1,10 @@
+use #sph::{pilot, tree};
+use tree::Tree;
+fn consume(p: pilot::Particle) -> F64 { ((((p.0 + (p.1 + p.2)) + ((p.3 + p.4) + (p.5 + p.6))) + (((p.7 + p.8) + (p.9 + p.10)) + ((p.11 + p.12) + (p.13 + p.14)))) + (((p.15 + (p.16 + p.17)) + ((p.18 + p.19) + (p.20 + p.21))) + (((p.22 + p.23) + (p.24 + p.25)) + ((p.26 + p.27) + (p.28 + p.29))))) }
+pub fn main(&io: &IO) {
+let input = black_box(Tree::Leaf(0));
+let output = tree::map(input, fn* (i: N32) { pilot::initialize(black_box(12), i, true) });
+let value = tree::sum(tree::map(output, consume));
+let N64(lo, hi) = value.to_bits();
+io.println("{lo} {hi}");
+}

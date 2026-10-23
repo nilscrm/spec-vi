@@ -1,0 +1,26 @@
+warning: unused variable
+    @ sph/sine.vi:33:27
+ 33 |  let z=y*y;let z2=z*z;let z4=z2*z2;
+
+warning: unused item
+   @ root_correctness.vi:1:17
+ 1 | use #sph::{tree,sine};use tree::Tree;
+
+
+Interactions
+  Total            2_037_420
+  Annihilate         775_224
+  Commute                  0
+  Copy               163_038
+  Erase               31_448
+  Graft              186_093
+  Extrinsic          881_617
+
+Memory
+  Heap             1_152_848 B
+  Allocated       48_642_736 B
+  Freed           48_642_736 B
+
+Performance
+  Time                    42 ms
+  Speed           47_506_057 IPS

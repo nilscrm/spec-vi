@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "/Users/nils/repos/spec-vi/work/build/pilot_reference",
+    "12",
+    "init"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "wall_seconds": 0.5522633750078967,
+  "stdout": "/Users/nils/repos/spec-vi/reports/pilot/first/init_12_reference.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/pilot/first/init_12_reference.stderr"
+}

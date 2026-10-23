@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/Users/nils/repos/spec-vi/tools/vine_exec.py", line 11, in <module>
+    resource.setrlimit(resource.RLIMIT_STACK,(max(soft,limit),hard))
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: current limit exceeds maximum limit

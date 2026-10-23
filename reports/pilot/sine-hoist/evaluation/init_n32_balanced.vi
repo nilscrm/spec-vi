@@ -1,0 +1,10 @@
+use #sph::{pilot, tree};
+use tree::Tree;
+fn consume(p: pilot::Particle) -> F64 { ((((p.0 + (p.1 + p.2)) + ((p.3 + p.4) + (p.5 + p.6))) + (((p.7 + p.8) + (p.9 + p.10)) + ((p.11 + p.12) + (p.13 + p.14)))) + (((p.15 + (p.16 + p.17)) + ((p.18 + p.19) + (p.20 + p.21))) + (((p.22 + p.23) + (p.24 + p.25)) + ((p.26 + p.27) + (p.28 + p.29))))) }
+pub fn main(&io: &IO) {
+let input = black_box(Tree::Branch(Tree::Branch(Tree::Branch(Tree::Branch(Tree::Branch(Tree::Leaf(0),Tree::Leaf(56)),Tree::Branch(Tree::Leaf(111),Tree::Leaf(167))),Tree::Branch(Tree::Branch(Tree::Leaf(223),Tree::Leaf(279)),Tree::Branch(Tree::Leaf(334),Tree::Leaf(390)))),Tree::Branch(Tree::Branch(Tree::Branch(Tree::Leaf(446),Tree::Leaf(501)),Tree::Branch(Tree::Leaf(557),Tree::Leaf(613))),Tree::Branch(Tree::Branch(Tree::Leaf(669),Tree::Leaf(724)),Tree::Branch(Tree::Leaf(780),Tree::Leaf(836))))),Tree::Branch(Tree::Branch(Tree::Branch(Tree::Branch(Tree::Leaf(891),Tree::Leaf(947)),Tree::Branch(Tree::Leaf(1003),Tree::Leaf(1058))),Tree::Branch(Tree::Branch(Tree::Leaf(1114),Tree::Leaf(1170)),Tree::Branch(Tree::Leaf(1226),Tree::Leaf(1281)))),Tree::Branch(Tree::Branch(Tree::Branch(Tree::Leaf(1337),Tree::Leaf(1393)),Tree::Branch(Tree::Leaf(1448),Tree::Leaf(1504))),Tree::Branch(Tree::Branch(Tree::Leaf(1560),Tree::Leaf(1616)),Tree::Branch(Tree::Leaf(1671),Tree::Leaf(1727)))))));
+let output = tree::map(input, fn* (i: N32) { pilot::initialize(black_box(12), i, true) });
+let value = tree::sum(tree::map(output, consume));
+let N64(lo, hi) = value.to_bits();
+io.println("{lo} {hi}");
+}

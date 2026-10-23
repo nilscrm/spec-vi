@@ -1,0 +1,10 @@
+use #sph::{routed,tree};use tree::Tree;
+pub fn main(&io:&IO) {
+ let data=Tree::Branch(Tree::Leaf(11[N32]),Tree::Branch(Tree::Leaf(22[N32]),Tree::Leaf(33[N32])));
+ let rows=Tree::Branch(Tree::Leaf((0,Tree::Branch(Tree::Leaf(2),Tree::Leaf(0)))),Tree::Leaf((1,Tree::Branch(Tree::Leaf(1),Tree::Leaf(2)))));
+ let result=routed::gather(data,3,rows);
+ match result {
+  Tree::Branch(Tree::Leaf(Tree::Branch(Tree::Leaf(a),Tree::Leaf(b))),Tree::Leaf(Tree::Branch(Tree::Leaf(c),Tree::Leaf(d)))) { io.println("{a} {b} {c} {d}"); }
+  _ { io.println("wrong shape"); }
+ }
+}

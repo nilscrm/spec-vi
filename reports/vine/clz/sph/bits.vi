@@ -1,0 +1,10 @@
+pub fn leading_zeros(n:N32)->N32 {
+ if n==0 {32}else{
+ let z=0;
+ if n<0x10000 {n <<= 16;z += 16;}
+ if n<0x1000000 {n <<= 8;z += 8;}
+ if n<0x10000000 {n <<= 4;z += 4;}
+ if n<0x40000000 {n <<= 2;z += 2;}
+ if n<0x80000000 {z+1}else{z}
+ }
+}

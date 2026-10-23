@@ -1,0 +1,174 @@
+{
+  "diagnostic_only": true,
+  "correctness": true,
+  "metrics": [
+    {
+      "points": 64,
+      "bucket_points": 4,
+      "queries": 1,
+      "mode": "ranges",
+      "depth": 210,
+      "interactions": 10587,
+      "heap_bytes": 110480,
+      "allocated_bytes": 219792
+    },
+    {
+      "points": 64,
+      "bucket_points": 4,
+      "queries": 1,
+      "mode": "scan",
+      "depth": 356,
+      "interactions": 28598,
+      "heap_bytes": 194000,
+      "allocated_bytes": 638400
+    },
+    {
+      "points": 64,
+      "bucket_points": 4,
+      "queries": 16,
+      "mode": "ranges",
+      "depth": 312,
+      "interactions": 18928,
+      "heap_bytes": 164064,
+      "allocated_bytes": 422912
+    },
+    {
+      "points": 64,
+      "bucket_points": 4,
+      "queries": 16,
+      "mode": "scan",
+      "depth": 510,
+      "interactions": 42496,
+      "heap_bytes": 203360,
+      "allocated_bytes": 983120
+    },
+    {
+      "points": 64,
+      "bucket_points": 4,
+      "queries": 64,
+      "mode": "ranges",
+      "depth": 622,
+      "interactions": 45551,
+      "heap_bytes": 337296,
+      "allocated_bytes": 1071776
+    },
+    {
+      "points": 64,
+      "bucket_points": 4,
+      "queries": 64,
+      "mode": "scan",
+      "depth": 555,
+      "interactions": 86809,
+      "heap_bytes": 277312,
+      "allocated_bytes": 2082912
+    },
+    {
+      "points": 64,
+      "bucket_points": 4,
+      "queries": 256,
+      "mode": "ranges",
+      "depth": 1776,
+      "interactions": 151919,
+      "heap_bytes": 1066192,
+      "allocated_bytes": 3664544
+    },
+    {
+      "points": 64,
+      "bucket_points": 4,
+      "queries": 256,
+      "mode": "scan",
+      "depth": 619,
+      "interactions": 264092,
+      "heap_bytes": 1108288,
+      "allocated_bytes": 6482688
+    },
+    {
+      "points": 256,
+      "bucket_points": 4,
+      "queries": 1,
+      "mode": "ranges",
+      "depth": 242,
+      "interactions": 40677,
+      "heap_bytes": 436208,
+      "allocated_bytes": 842096
+    },
+    {
+      "points": 256,
+      "bucket_points": 4,
+      "queries": 1,
+      "mode": "scan",
+      "depth": 418,
+      "interactions": 118784,
+      "heap_bytes": 777680,
+      "allocated_bytes": 2721424
+    },
+    {
+      "points": 256,
+      "bucket_points": 4,
+      "queries": 16,
+      "mode": "ranges",
+      "depth": 356,
+      "interactions": 51088,
+      "heap_bytes": 472528,
+      "allocated_bytes": 1117328
+    },
+    {
+      "points": 256,
+      "bucket_points": 4,
+      "queries": 16,
+      "mode": "scan",
+      "depth": 560,
+      "interactions": 132680,
+      "heap_bytes": 787040,
+      "allocated_bytes": 3065856
+    },
+    {
+      "points": 256,
+      "bucket_points": 4,
+      "queries": 64,
+      "mode": "ranges",
+      "depth": 666,
+      "interactions": 84335,
+      "heap_bytes": 658272,
+      "allocated_bytes": 1996592
+    },
+    {
+      "points": 256,
+      "bucket_points": 4,
+      "queries": 64,
+      "mode": "scan",
+      "depth": 604,
+      "interactions": 176992,
+      "heap_bytes": 816992,
+      "allocated_bytes": 4164800
+    },
+    {
+      "points": 256,
+      "bucket_points": 4,
+      "queries": 256,
+      "mode": "ranges",
+      "depth": 1820,
+      "interactions": 217199,
+      "heap_bytes": 1351056,
+      "allocated_bytes": 5510960
+    },
+    {
+      "points": 256,
+      "bucket_points": 4,
+      "queries": 256,
+      "mode": "scan",
+      "depth": 649,
+      "interactions": 354215,
+      "heap_bytes": 1894720,
+      "allocated_bytes": 8559744
+    }
+  ],
+  "library": {
+    "sha256": "9a7dbc35e5296670a12f5fea62e32d2fc107eca8a6381e0038ed4fa6ad7eeadc",
+    "files": {
+      "neighbors.vi": "6b4504ba1815049362dc58e6219eabb91f0a3da757eeae8a86fc241b6fc602b4",
+      "sph.vi": "4d53d62be57fe5faa97ccc5e0d296027d7623c8960c98021c1aac6a72af58b0d",
+      "tree.vi": "15a3c0b47bb30aecc34a828ef56695e81745535b22fe492c575eea760983508d"
+    }
+  }
+}

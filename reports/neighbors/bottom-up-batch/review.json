@@ -1,0 +1,26 @@
+{
+  "compact": {
+    "depth256": 1596,
+    "work256": 4294285,
+    "work_growth": 7.90554658605778,
+    "depth_pass": false,
+    "work_growth_pass": true,
+    "accepted": false
+  },
+  "bottom_up": {
+    "depth256": 1689,
+    "work256": 19096390,
+    "work_growth": 15.528815464094414,
+    "depth_pass": false,
+    "work_growth_pass": false,
+    "accepted": false
+  },
+  "buckets": {
+    "depth256": 1370,
+    "work256": 17362009,
+    "work_growth": 15.857294470408469,
+    "depth_pass": false,
+    "work_growth_pass": false,
+    "accepted": false
+  }
+}

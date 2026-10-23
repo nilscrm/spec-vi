@@ -1,0 +1,21 @@
+{
+  "argv": [
+    "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+    "/Users/nils/repos/spec-vi/tools/vine_exec.py",
+    "run",
+    "--lib",
+    "sph=/Users/nils/repos/spec-vi/reports/neighbors/radix-builder/sph",
+    "--heap",
+    "2G",
+    "--workers",
+    "2",
+    "/Users/nils/repos/spec-vi/reports/neighbors/radix-builder/scaling_256_workers2.vi"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 142278656,
+  "wall_seconds": 0.5894434170040768,
+  "stdout": "/Users/nils/repos/spec-vi/reports/neighbors/radix-builder/scaling_256_workers2.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/neighbors/radix-builder/scaling_256_workers2.stderr"
+}

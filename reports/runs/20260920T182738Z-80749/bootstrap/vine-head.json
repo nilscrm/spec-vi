@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "git",
+    "-C",
+    "/Users/nils/repos/vine",
+    "rev-parse",
+    "HEAD"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 4407296,
+  "wall_seconds": 0.02721083301003091,
+  "stdout": "/Users/nils/repos/spec-vi/reports/runs/20260920T182738Z-80749/bootstrap/vine-head.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/runs/20260920T182738Z-80749/bootstrap/vine-head.stderr"
+}

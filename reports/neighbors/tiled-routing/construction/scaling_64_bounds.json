@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+    "/Users/nils/repos/spec-vi/tools/vine_exec.py",
+    "run",
+    "--lib",
+    "sph=/Users/nils/repos/spec-vi/reports/neighbors/tiled-routing/construction/sph",
+    "--depth",
+    "/Users/nils/repos/spec-vi/reports/neighbors/tiled-routing/construction/scaling_64_bounds.vi"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 123322368,
+  "wall_seconds": 0.5607131659926381,
+  "stdout": "/Users/nils/repos/spec-vi/reports/neighbors/tiled-routing/construction/scaling_64_bounds.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/neighbors/tiled-routing/construction/scaling_64_bounds.stderr"
+}

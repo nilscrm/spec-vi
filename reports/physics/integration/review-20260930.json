@@ -1,0 +1,13 @@
+{
+  "checks": {
+    "numerical_report_passed": true,
+    "both_fixed_sides": true,
+    "all_snapshots": true,
+    "library_matches": true,
+    "policy_unchanged": true,
+    "upstream_unchanged": true
+  },
+  "numerical_scope_verified": true,
+  "full_port_accepted": false,
+  "report_sha256": "eb229545bda239fadd562a1ef86699ca699342ece1ea05e5205f3781d1e9f3cc"
+}

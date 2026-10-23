@@ -1,0 +1,86 @@
+{
+  "reference_verified": false,
+  "port_complete": false,
+  "fields": [
+    "x",
+    "y",
+    "z",
+    "x_m1",
+    "y_m1",
+    "z_m1",
+    "vx",
+    "vy",
+    "vz",
+    "ro",
+    "ro_0",
+    "u",
+    "p",
+    "p_0",
+    "h",
+    "m",
+    "c",
+    "grad_P_x",
+    "grad_P_y",
+    "grad_P_z",
+    "du",
+    "du_m1",
+    "dt",
+    "dt_m1",
+    "c11",
+    "c12",
+    "c13",
+    "c22",
+    "c23",
+    "c33"
+  ],
+  "stages": [
+    "geometry",
+    "density",
+    "rest",
+    "eos",
+    "iad",
+    "momentum",
+    "timestep",
+    "positions",
+    "energy"
+  ],
+  "policy": {
+    "scope": "Per-stage all-particle numerical checks and initial runtime density/EOS integration; full physics acceptance remains incomplete until every stage and multistep integration pass",
+    "sides": [
+      12,
+      16
+    ],
+    "updates": 3,
+    "atol": 1e-09,
+    "rtol": 5e-12,
+    "heap_limit_bytes": 2147483648,
+    "command_timeout_seconds": 600,
+    "depth_query_counts": [
+      1,
+      8,
+      32
+    ],
+    "performance_acceptance": "Existing neighbor/pilot gates remain required; new full-stage scaling acceptance is pending explicit review"
+  },
+  "source_sha256": "53ac4836751966356797ef442664bebb4ef61a0a655404738516cc37b27668a7",
+  "cases": [
+    {
+      "side": 12,
+      "particles": 1728,
+      "updates": 3,
+      "all_snapshots_finite": true,
+      "ordinary_outputs_identical": true,
+      "max_neighbors": 512,
+      "unsaturated": true
+    },
+    {
+      "side": 16,
+      "particles": 4096,
+      "updates": 3,
+      "all_snapshots_finite": true,
+      "ordinary_outputs_identical": true,
+      "max_neighbors": 512,
+      "unsaturated": true
+    }
+  ]
+}

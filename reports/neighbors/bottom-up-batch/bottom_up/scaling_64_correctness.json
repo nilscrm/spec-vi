@@ -1,0 +1,19 @@
+{
+  "argv": [
+    "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+    "/Users/nils/repos/spec-vi/tools/vine_exec.py",
+    "run",
+    "--lib",
+    "sph=/Users/nils/repos/spec-vi/reports/neighbors/bottom-up-batch/bottom_up/sph",
+    "--heap",
+    "2G",
+    "/Users/nils/repos/spec-vi/reports/neighbors/bottom-up-batch/bottom_up/scaling_64_correctness.vi"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 127238144,
+  "wall_seconds": 0.501501584018115,
+  "stdout": "/Users/nils/repos/spec-vi/reports/neighbors/bottom-up-batch/bottom_up/scaling_64_correctness.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/neighbors/bottom-up-batch/bottom_up/scaling_64_correctness.stderr"
+}

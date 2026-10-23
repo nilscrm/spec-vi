@@ -1,0 +1,34 @@
+[
+  {
+    "case": "scaling_64",
+    "mode": "bounds",
+    "depth": 348,
+    "interactions": 10393,
+    "heap_bytes": 108656,
+    "allocated_bytes": 214880
+  },
+  {
+    "case": "scaling_64",
+    "mode": "build",
+    "depth": 1217,
+    "interactions": 65294,
+    "heap_bytes": 258416,
+    "allocated_bytes": 1443824
+  },
+  {
+    "case": "scaling_256",
+    "mode": "bounds",
+    "depth": 374,
+    "interactions": 40345,
+    "heap_bytes": 434288,
+    "allocated_bytes": 832352
+  },
+  {
+    "case": "scaling_256",
+    "mode": "build",
+    "depth": 1622,
+    "interactions": 302194,
+    "heap_bytes": 1035632,
+    "allocated_bytes": 6814032
+  }
+]

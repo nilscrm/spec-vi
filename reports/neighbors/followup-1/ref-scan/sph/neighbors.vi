@@ -1,0 +1,15 @@
+use #sph::tree::Tree;
+pub type Point = {id:N32,x:F64,y:F64,z:F64};
+pub type Query = {id:N32,x:F64,y:F64,z:F64,radius:F64,period_z:F64};
+pub type Index = &Tree[Point];
+pub fn build(p: Tree[Point]) -> Index {&p}
+pub fn find(t: Index,q: Query) -> Tree[N32] {
+ match t { &Tree::Empty() {Tree::Empty()} &Tree::Leaf(p) {if inside(p,q) {Tree::Leaf(p.id)} else {Tree::Empty()}} &Tree::Branch(l,r) {Tree::Branch(find(&l,q),find(&r,q))} }
+}
+fn inside(p: Point,q: Query) -> Bool {
+ let dx=q.x-p.x;let dy=q.y-p.y;let dz=q.z-p.z;
+ let dxy=dx*dx+dy*dy;let r2=q.radius*q.radius;
+ let local=(dxy+dz*dz < r2);
+ let a=q.z-q.period_z-p.z;let b=q.z+q.period_z-p.z;
+ (p.id != q.id) & (local | ((q.period_z > 0.0[F64]) & ((dxy+a*a < r2) | (dxy+b*b < r2))))
+}

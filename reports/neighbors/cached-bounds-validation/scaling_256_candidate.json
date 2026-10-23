@@ -1,0 +1,20 @@
+{
+  "argv": [
+    "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+    "/Users/nils/repos/spec-vi/tools/vine_exec.py",
+    "run",
+    "--lib",
+    "sph=/Users/nils/repos/spec-vi/benchmarks/sph-exa/vine",
+    "--heap",
+    "2G",
+    "--depth",
+    "/Users/nils/repos/spec-vi/reports/neighbors/cached-bounds-validation/scaling_256_candidate.vi"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 840794112,
+  "wall_seconds": 1.4288367079861928,
+  "stdout": "/Users/nils/repos/spec-vi/reports/neighbors/cached-bounds-validation/scaling_256_candidate.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/neighbors/cached-bounds-validation/scaling_256_candidate.stderr"
+}

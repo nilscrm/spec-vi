@@ -1,0 +1,29 @@
+{
+  "compact": {
+    "depth256": 1596,
+    "work256": 4294285,
+    "work_growth": 7.90554658605778,
+    "depth_pass": false,
+    "work_growth_pass": true,
+    "work_pass": true,
+    "accepted": false
+  },
+  "grid2": {
+    "depth256": 901,
+    "work256": 26610342,
+    "work_growth": 15.349325036382798,
+    "depth_pass": false,
+    "work_growth_pass": false,
+    "work_pass": false,
+    "accepted": false
+  },
+  "grid4": {
+    "depth256": 876,
+    "work256": 86457809,
+    "work_growth": 13.084977169571738,
+    "depth_pass": false,
+    "work_growth_pass": false,
+    "work_pass": false,
+    "accepted": false
+  }
+}

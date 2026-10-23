@@ -1,0 +1,20 @@
+{
+  "argv": [
+    "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+    "/Users/nils/repos/spec-vi/tools/vine_exec.py",
+    "run",
+    "--lib",
+    "sph=/Users/nils/repos/spec-vi/reports/neighbors/explicit-prepare/wires2/sph",
+    "--heap",
+    "2G",
+    "--depth",
+    "/Users/nils/repos/spec-vi/reports/neighbors/explicit-prepare/wires2/scaling_256_depth.vi"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 172965888,
+  "wall_seconds": 1.831047874991782,
+  "stdout": "/Users/nils/repos/spec-vi/reports/neighbors/explicit-prepare/wires2/scaling_256_depth.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/neighbors/explicit-prepare/wires2/scaling_256_depth.stderr"
+}

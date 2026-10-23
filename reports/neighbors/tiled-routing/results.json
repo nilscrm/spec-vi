@@ -1,0 +1,66 @@
+[
+  {
+    "stride": 1,
+    "case": "scaling_64",
+    "depth": 1038,
+    "interactions": 751754,
+    "heap_bytes": 1830000,
+    "allocated_bytes": 17339968
+  },
+  {
+    "stride": 1,
+    "case": "scaling_256",
+    "depth": 1629,
+    "interactions": 7270948,
+    "heap_bytes": 12540272,
+    "allocated_bytes": 163981312
+  },
+  {
+    "stride": 2,
+    "case": "scaling_64",
+    "depth": 1011,
+    "interactions": 804328,
+    "heap_bytes": 1937744,
+    "allocated_bytes": 18385456
+  },
+  {
+    "stride": 2,
+    "case": "scaling_256",
+    "depth": 1593,
+    "interactions": 8276168,
+    "heap_bytes": 14501328,
+    "allocated_bytes": 184030080
+  },
+  {
+    "stride": 3,
+    "case": "scaling_64",
+    "depth": 1002,
+    "interactions": 854128,
+    "heap_bytes": 2101968,
+    "allocated_bytes": 19376176
+  },
+  {
+    "stride": 3,
+    "case": "scaling_256",
+    "depth": 1584,
+    "interactions": 8346762,
+    "heap_bytes": 14508112,
+    "allocated_bytes": 185426304
+  },
+  {
+    "stride": 4,
+    "case": "scaling_64",
+    "depth": 1002,
+    "interactions": 804104,
+    "heap_bytes": 1988688,
+    "allocated_bytes": 18380080
+  },
+  {
+    "stride": 4,
+    "case": "scaling_256",
+    "depth": 1579,
+    "interactions": 10700502,
+    "heap_bytes": 19375936,
+    "allocated_bytes": 232339584
+  }
+]

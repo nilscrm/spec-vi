@@ -1,0 +1,82 @@
+{
+  "cases": [
+    {
+      "name": "unknown",
+      "passed": false,
+      "process": {
+        "argv": [
+          "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+          "/Users/nils/repos/spec-vi/tools/vine_exec.py",
+          "run",
+          "--heap",
+          "2G",
+          "--lib",
+          "sph=/Users/nils/repos/spec-vi/benchmarks/sph-exa/vine",
+          "/Users/nils/repos/spec-vi/benchmarks/sph-exa/app/square_patch.vi",
+          "--",
+          "--bogus"
+        ],
+        "cwd": "/Users/nils/repos/spec-vi/reports/physics/driver/arguments-20260930/unknown",
+        "exit_code": -9,
+        "timed_out": true,
+        "peak_rss_bytes": null,
+        "wall_seconds": 60.08548295899527,
+        "stdout": "/Users/nils/repos/spec-vi/reports/physics/driver/arguments-20260930/unknown/run.stdout",
+        "stderr": "/Users/nils/repos/spec-vi/reports/physics/driver/arguments-20260930/unknown/run.stderr"
+      }
+    },
+    {
+      "name": "missing",
+      "passed": false,
+      "process": {
+        "argv": [
+          "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+          "/Users/nils/repos/spec-vi/tools/vine_exec.py",
+          "run",
+          "--heap",
+          "2G",
+          "--lib",
+          "sph=/Users/nils/repos/spec-vi/benchmarks/sph-exa/vine",
+          "/Users/nils/repos/spec-vi/benchmarks/sph-exa/app/square_patch.vi",
+          "--",
+          "-n"
+        ],
+        "cwd": "/Users/nils/repos/spec-vi/reports/physics/driver/arguments-20260930/missing",
+        "exit_code": 0,
+        "timed_out": false,
+        "peak_rss_bytes": 1642430464,
+        "wall_seconds": 12.975107332982589,
+        "stdout": "/Users/nils/repos/spec-vi/reports/physics/driver/arguments-20260930/missing/run.stdout",
+        "stderr": "/Users/nils/repos/spec-vi/reports/physics/driver/arguments-20260930/missing/run.stderr"
+      }
+    },
+    {
+      "name": "invalid_side",
+      "passed": false,
+      "process": {
+        "argv": [
+          "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+          "/Users/nils/repos/spec-vi/tools/vine_exec.py",
+          "run",
+          "--heap",
+          "2G",
+          "--lib",
+          "sph=/Users/nils/repos/spec-vi/benchmarks/sph-exa/vine",
+          "/Users/nils/repos/spec-vi/benchmarks/sph-exa/app/square_patch.vi",
+          "--",
+          "-n",
+          "9",
+          "-s",
+          "0"
+        ],
+        "cwd": "/Users/nils/repos/spec-vi/reports/physics/driver/arguments-20260930/invalid_side",
+        "exit_code": 0,
+        "timed_out": false,
+        "peak_rss_bytes": 1676574720,
+        "wall_seconds": 14.267296332982369,
+        "stdout": "/Users/nils/repos/spec-vi/reports/physics/driver/arguments-20260930/invalid_side/run.stdout",
+        "stderr": "/Users/nils/repos/spec-vi/reports/physics/driver/arguments-20260930/invalid_side/run.stderr"
+      }
+    }
+  ]
+}

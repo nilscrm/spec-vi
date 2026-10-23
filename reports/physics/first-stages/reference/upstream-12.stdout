@@ -1,0 +1,63 @@
+# domain::build: 3.208e-06s
+# mpi::synchronizeHalos: 8.5e-05s
+# BuildTree: 0.000150958s
+# FindNeighbors: 0.00703129s
+# Density: 0.00492879s
+# EquationOfState: 3.6958e-05s
+# mpi::synchronizeHalos: 7.458e-06s
+# IAD: 0.00695146s
+# mpi::synchronizeHalos: 1.9041e-05s
+# MomentumEnergyIAD: 0.0161592s
+# Timestep: 2.6041e-05s
+# UpdateQuantities: 2.2459e-05s
+# EnergyConservation: 6.666e-06s
+### Check ### Particles: 1728, Halos: 0
+### Check ### Computational domain: -45.8333 45.8333 -45.8333 45.8333 -50 50
+### Check ### Avg neighbor count per particle: 364
+### Check ### Total time: 1.1e-06, current time-step: 1.1e-06
+### Check ### Total energy: 2.06897e+10, (internal: 1e+06, cinetic: 2.06887e+10)
+# writeFile: 0.00923842s
+=== Total time for iteration(0) 0.0448731s
+
+# domain::build: 3.916e-06s
+# mpi::synchronizeHalos: 3.75e-06s
+# BuildTree: 8.5792e-05s
+# FindNeighbors: 0.00484667s
+# Density: 0.00322733s
+# EquationOfState: 2.9792e-05s
+# mpi::synchronizeHalos: 3.583e-06s
+# IAD: 0.00532454s
+# mpi::synchronizeHalos: 2.2208e-05s
+# MomentumEnergyIAD: 0.0149324s
+# Timestep: 2.1083e-05s
+# UpdateQuantities: 2.3458e-05s
+# EnergyConservation: 5.959e-06s
+### Check ### Particles: 1728, Halos: 0
+### Check ### Computational domain: -45.8336 45.8336 -45.8336 45.8336 -50 50
+### Check ### Avg neighbor count per particle: 360
+### Check ### Total time: 2.31e-06, current time-step: 1.21e-06
+### Check ### Total energy: 2.06897e+10, (internal: 999998, cinetic: 2.06887e+10)
+# writeFile: 0.00851554s
+=== Total time for iteration(1) 0.0372005s
+
+# domain::build: 5.375e-06s
+# mpi::synchronizeHalos: 3.625e-06s
+# BuildTree: 7.0208e-05s
+# FindNeighbors: 0.00442696s
+# Density: 0.00286592s
+# EquationOfState: 3e-05s
+# mpi::synchronizeHalos: 3.584e-06s
+# IAD: 0.00448125s
+# mpi::synchronizeHalos: 8.583e-06s
+# MomentumEnergyIAD: 0.0124821s
+# Timestep: 1.2042e-05s
+# UpdateQuantities: 1.9875e-05s
+# EnergyConservation: 4.917e-06s
+### Check ### Particles: 1728, Halos: 0
+### Check ### Computational domain: -45.8339 45.8339 -45.8339 45.8339 -50 50
+### Check ### Avg neighbor count per particle: 356
+### Check ### Total time: 3.641e-06, current time-step: 1.331e-06
+### Check ### Total energy: 2.06897e+10, (internal: 999998, cinetic: 2.06887e+10)
+# writeFile: 0.00812104s
+=== Total time for iteration(2) 0.0326558s
+

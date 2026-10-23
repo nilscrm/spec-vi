@@ -1,0 +1,344 @@
+
+use #sph::tree::Tree;
+
+pub type Point = { id: N32, x: F64, y: F64, z: F64 };
+pub type Query = { id: N32, x: F64, y: F64, z: F64, radius: F64, period_z: F64 };
+pub type Bounds = { n: N32, xmin: F64, xmax: F64, ymin: F64, ymax: F64, zmin: F64, zmax: F64 };
+pub enum* Index {
+  Empty(),
+  Leaf(Point),
+  Bucket(Tree[Point]),
+  Branch(Bounds, Index, Index),
+}
+
+fn min(a: F64, b: F64) -> F64 {
+  if a < b {
+    a
+  } else {
+    b
+  }
+}
+fn max(a: F64, b: F64) -> F64 {
+  if a > b {
+    a
+  } else {
+    b
+  }
+}
+fn bounds(t: Tree[Point]) -> Bounds {
+  match t {
+    Tree::Empty() {
+      {
+        n: 0,
+        xmin: F64::inf,
+        xmax: F64::neg_inf,
+        ymin: F64::inf,
+        ymax: F64::neg_inf,
+        zmin: F64::inf,
+        zmax: F64::neg_inf,
+      }
+    }
+    Tree::Leaf(p) { { n: 1, xmin: p.x, xmax: p.x, ymin: p.y, ymax: p.y, zmin: p.z, zmax: p.z } }
+    Tree::Branch(l, r) { merge(bounds(l), bounds(r)) }
+  }
+}
+fn merge(a: Bounds, b: Bounds) -> Bounds {
+  {
+    n: a.n + b.n,
+    xmin: min(a.xmin, b.xmin),
+    xmax: max(a.xmax, b.xmax),
+    ymin: min(a.ymin, b.ymin),
+    ymax: max(a.ymax, b.ymax),
+    zmin: min(a.zmin, b.zmin),
+    zmax: max(a.zmax, b.zmax),
+  }
+}
+fn join(a: Tree[Point], b: Tree[Point]) -> Tree[Point] {
+  match (a, b) {
+    (Tree::Empty(), b) { b }
+    (a, Tree::Empty()) { a }
+    (a, b) { Tree::Branch(a, b) }
+  }
+}
+// Return bounds together with partitions, avoiding another traversal at each level.
+fn partition(t: Tree[Point], axis: N32, mid: F64) ->
+  ((Bounds, Tree[Point]), (Bounds, Tree[Point]))
+{
+  match t {
+    Tree::Empty() {
+      ((bounds(Tree::Empty()), Tree::Empty()), (bounds(Tree::Empty()), Tree::Empty()))
+    }
+    Tree::Leaf(p) {
+      let v = if axis == 0 {
+        p.x
+      } else {
+        if axis == 1 {
+          p.y
+        } else {
+          p.z
+        }
+      };
+      let leaf = (bounds(Tree::Leaf(p)), Tree::Leaf(p));
+      let empty = (bounds(Tree::Empty()), Tree::Empty());
+      if v < mid {
+        (leaf, empty)
+      } else {
+        (empty, leaf)
+      }
+    }
+    Tree::Branch(l, r) {
+      let ((a, ll), (b, lr)) = partition(l, axis, mid);
+      let ((c, rl), (d, rr)) = partition(r, axis, mid);
+      ((merge(a, c), join(ll, rl)), (merge(b, d), join(lr, rr)))
+    }
+  }
+}
+fn unsplit(t: Tree[Point]) -> Index {
+  match t {
+    Tree::Empty() { Index::Empty() }
+    Tree::Leaf(p) { Index::Leaf(p) }
+    Tree::Branch(l, r) { Index::Bucket(Tree::Branch(l, r)) }
+  }
+}
+pub fn split_build(points: Tree[Point]) -> Index {
+  let b = bounds(points);
+  build_rec(points, b, 0)
+}
+fn build_rec(points: Tree[Point], b: Bounds, level: N32) -> Index {
+  if b.n <= 8 or level >= 32 {
+    unsplit(points)
+  } else {
+    let dx = b.xmax - b.xmin;
+    let dy = b.ymax - b.ymin;
+    let dz = b.zmax - b.zmin;
+    let axis = if (dx >= dy) & (dx >= dz) {
+      0
+    } else {
+      if dy >= dz {
+        1
+      } else {
+        2
+      }
+    };
+    let lo = if axis == 0 {
+      b.xmin
+    } else {
+      if axis == 1 {
+        b.ymin
+      } else {
+        b.zmin
+      }
+    };
+    let hi = if axis == 0 {
+      b.xmax
+    } else {
+      if axis == 1 {
+        b.ymax
+      } else {
+        b.zmax
+      }
+    };
+    let mid = lo + (hi - lo) * 0.5[F64];
+    if (mid <= lo) | (mid >= hi) {
+      unsplit(points)
+    } else {
+      let ((a, l), (c, r)) = partition(points, axis, mid);
+      Index::Branch(b, build_rec(l, a, level + 1), build_rec(r, c, level + 1))
+    }
+  }
+}
+fn scan(t: Tree[Point], q: Query) -> Tree[N32] {
+  match t {
+    Tree::Empty() { Tree::Empty() }
+    Tree::Leaf(p) {
+      if inside(p, q) {
+        Tree::Leaf(p.id)
+      } else {
+        Tree::Empty()
+      }
+    }
+    Tree::Branch(l, r) { Tree::Branch(scan(l, q), scan(r, q)) }
+  }
+}
+fn inside(p: Point, q: Query) -> Bool {
+  let dx = q.x - p.x;
+  let dy = q.y - p.y;
+  let dz = q.z - p.z;
+  let dxy = dx * dx + dy * dy;
+  let r2 = q.radius * q.radius;
+  let a = q.z - q.period_z - p.z;
+  let b = q.z + q.period_z - p.z;
+  (p.id != q.id)
+    & ((dxy + dz * dz < r2) | ((q.period_z > 0.0[F64]) & ((dxy + a * a < r2) | (dxy + b * b < r2))))
+}
+fn overlap_z(b: Bounds, z: F64, r: F64) -> Bool {
+  (z + r >= b.zmin) & (z - r <= b.zmax)
+}
+fn overlaps(b: Bounds, q: Query) -> Bool {
+  ((q.x + q.radius >= b.xmin) & (q.x - q.radius <= b.xmax))
+    & ((q.y + q.radius >= b.ymin) & (q.y - q.radius <= b.ymax))
+    & (overlap_z(b, q.z, q.radius)
+      | ((q.period_z > 0.0[F64])
+        & (overlap_z(b, q.z - q.period_z, q.radius) | overlap_z(b, q.z + q.period_z, q.radius))
+      )
+    )
+}
+pub fn find(index: Index, q: Query) -> Tree[N32] {
+  match index {
+    Index::Empty() { Tree::Empty() }
+    Index::Bucket(t) { scan(t, q) }
+    Index::Leaf(p) {
+      if inside(p, q) {
+        Tree::Leaf(p.id)
+      } else {
+        Tree::Empty()
+      }
+    }
+    Index::Branch(b, l, r) {
+      if overlaps(b, q) {
+        Tree::Branch(find(l, q), find(r, q))
+      } else {
+        Tree::Empty()
+      }
+    }
+  }
+}
+
+// Experimental batch interface; each query owns an independent result connection.
+type Request = (Query, ~Tree[N32]);
+fn prepare(queries: Tree[(N32,Query)]) -> (Tree[Request],Tree[(N32,Tree[N32])]) {
+ match queries {
+  Tree::Empty() {(Tree::Empty(),Tree::Empty())}
+  Tree::Leaf((id,q)) {let output;(Tree::Leaf((q,~output)),Tree::Leaf((id,output)))}
+  Tree::Branch(l,r) {let (lr,lo)=prepare(l);let (rr,ro)=prepare(r);(Tree::Branch(lr,rr),Tree::Branch(lo,ro))}
+ }
+}
+fn join_requests(a: Tree[Request],b: Tree[Request]) -> Tree[Request] {
+ match (a,b) {(Tree::Empty(),b){b}(a,Tree::Empty()){a}(a,b){Tree::Branch(a,b)}}
+}
+fn split_requests(requests: Tree[Request],b: Bounds) -> (Tree[Request],Tree[Request]) {
+ match requests {
+  Tree::Empty() {(Tree::Empty(),Tree::Empty())}
+  Tree::Leaf((q,output)) {
+   if overlaps(b,q) {
+    let l;let r;
+    let next=(Tree::Leaf((q,~l)),Tree::Leaf((q,~r)));
+    ~output=Tree::Branch(l,r);
+    next
+   } else {
+    ~output=Tree::Empty();(Tree::Empty(),Tree::Empty())
+   }
+  }
+  Tree::Branch(l,r) {
+   let (ll,lr)=split_requests(l,b);let (rl,rr)=split_requests(r,b);
+   (join_requests(ll,rl),join_requests(lr,rr))
+  }
+ }
+}
+fn finish(requests: Tree[Request],points: Tree[Point]) {
+ match requests {
+  Tree::Empty() {}
+  Tree::Leaf((q,output)) {~output=scan(points,q);}
+  Tree::Branch(l,r) {finish(l,points);finish(r,points);}
+ }
+}
+fn route(index: Index,requests: Tree[Request]) {
+ match requests {
+  Tree::Empty() {}
+  requests {
+   match index {
+    Index::Empty() {finish(requests,Tree::Empty());}
+    Index::Leaf(p) {finish(requests,Tree::Leaf(p));}
+    Index::Bucket(points) {finish(requests,points);}
+    Index::Branch(b,l,r) {
+     let (lq,rq)=split_requests(requests,b);
+     route(l,lq);route(r,rq);
+    }
+   }
+  }
+ }
+}
+pub fn find_batch(index: Index,queries: Tree[(N32,Query)]) -> Tree[(N32,Tree[N32])] {
+ let (requests,outputs)=prepare(queries);
+ route(index,requests);
+ outputs
+}
+
+struct* Radix(N32,N32,Body);
+enum* Body {Empty(),Bucket(Tree[Point]),Fork(Radix,Radix)}
+fn spread(x:N32)->N32 {
+ let a=x & 0x3ff;
+ let b=(a | (a << 16)) & 0x030000ff;
+ let c=(b | (b << 8)) & 0x0300f00f;
+ let d=(c | (c << 4)) & 0x030c30c3;
+ (d | (d << 2)) & 0x09249249
+}
+fn quantize(x:F64,lo:F64,hi:F64)->N32 {
+ if hi>lo {
+  let q=((x-lo)/(hi-lo)*1023.0[F64]) as N32;
+  if q>1023 {1023}else{q}
+ } else {0}
+}
+fn key(p:Point,b:Bounds)->N32 {
+ spread(quantize(p.x,b.xmin,b.xmax)) |
+ (spread(quantize(p.y,b.ymin,b.ymax)) << 1) |
+ (spread(quantize(p.z,b.zmin,b.zmax)) << 2)
+}
+fn high_bit(x:N32)->N32 {if x==0 {0}else{1 << (31-x.leading_zeros())}}
+fn radix_merge(Radix(ka,ma,a),Radix(kb,mb,b))->Radix {
+ match (a,b) {
+  (Body::Empty(),b) {Radix(kb,mb,b)}
+  (a,Body::Empty()) {Radix(ka,ma,a)}
+  (a,b) {
+   let diff=high_bit(ka ^ kb);
+   if (diff>ma) & (diff>mb) {
+    if ka & diff==0 {Radix(ka,diff,Body::Fork(Radix(ka,ma,a),Radix(kb,mb,b)))}
+    else {Radix(kb,diff,Body::Fork(Radix(kb,mb,b),Radix(ka,ma,a)))}
+   } else {
+    if ma>mb {
+     match a {
+      Body::Fork(l,r) {
+       if kb & ma==0 {Radix(ka,ma,Body::Fork(radix_merge(l,Radix(kb,mb,b)),r))}
+       else {Radix(ka,ma,Body::Fork(l,radix_merge(r,Radix(kb,mb,b))))}
+      }
+      _ {debug::error("invalid radix left branch")}
+     }
+    } else {
+     if mb>ma {
+      match b {
+       Body::Fork(l,r) {
+        if ka & mb==0 {Radix(kb,mb,Body::Fork(radix_merge(Radix(ka,ma,a),l),r))}
+        else {Radix(kb,mb,Body::Fork(l,radix_merge(Radix(ka,ma,a),r)))}
+       }
+       _ {debug::error("invalid radix right branch")}
+      }
+     } else {
+      match (a,b) {
+       (Body::Bucket(l),Body::Bucket(r)) {Radix(ka,0,Body::Bucket(Tree::Branch(l,r)))}
+       (Body::Fork(al,ar),Body::Fork(bl,br)) {Radix(ka,ma,Body::Fork(radix_merge(al,bl),radix_merge(ar,br)))}
+       _ {debug::error("invalid equal radix levels")}
+      }
+     }
+    }
+   }
+  }
+ }
+}
+fn radix_build(points:Tree[Point],b:Bounds)->Radix {
+ match points {
+  Tree::Empty() {Radix(0,0,Body::Empty())}
+  Tree::Leaf(p) {Radix(key(p,b),0,Body::Bucket(Tree::Leaf(p)))}
+  Tree::Branch(l,r) {radix_merge(radix_build(l,b),radix_build(r,b))}
+ }
+}
+fn radix_finish(Radix(_,_,body))->(Bounds,Index) {
+ match body {
+  Body::Empty() {(bounds(Tree::Empty()),Index::Empty())}
+  Body::Bucket(points) {(bounds(points),unsplit(points))}
+  Body::Fork(l,r) {
+   let (a,l)=radix_finish(l);let (b,r)=radix_finish(r);let box=merge(a,b);
+   (box,Index::Branch(box,l,r))
+  }
+ }
+}
+pub fn build(points:Tree[Point])->Index {let b=bounds(points);radix_finish(radix_build(points,b)).1}

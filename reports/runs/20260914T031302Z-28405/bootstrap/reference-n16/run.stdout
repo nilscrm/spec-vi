@@ -1,0 +1,42 @@
+# domain::build: 6.916e-06s
+# mpi::synchronizeHalos: 5.9042e-05s
+# BuildTree: 0.000117458s
+# FindNeighbors: 0.00965133s
+# Density: 0.00614467s
+# EquationOfState: 3.1584e-05s
+# mpi::synchronizeHalos: 7.916e-06s
+# IAD: 0.00989863s
+# mpi::synchronizeHalos: 2.4e-05s
+# MomentumEnergyIAD: 0.0269985s
+# Timestep: 4.2625e-05s
+# UpdateQuantities: 0.000157375s
+# EnergyConservation: 8.958e-06s
+### Check ### Particles: 4096, Halos: 0
+### Check ### Computational domain: -46.875 46.875 -46.875 46.875 -50 50
+### Check ### Avg neighbor count per particle: 379
+### Check ### Total time: 1.1e-06, current time-step: 1.1e-06
+### Check ### Total energy: 2.0753e+10, (internal: 1e+06, cinetic: 2.0752e+10)
+# writeFile: 0.01764s
+=== Total time for iteration(0) 0.0713609s
+
+# domain::build: 7.167e-06s
+# mpi::synchronizeHalos: 3.666e-06s
+# BuildTree: 0.000108667s
+# FindNeighbors: 0.0103488s
+# Density: 0.00652087s
+# EquationOfState: 5.7917e-05s
+# mpi::synchronizeHalos: 5.5e-06s
+# IAD: 0.0101018s
+# mpi::synchronizeHalos: 2.0917e-05s
+# MomentumEnergyIAD: 0.0307907s
+# Timestep: 1.9083e-05s
+# UpdateQuantities: 0.00016875s
+# EnergyConservation: 8.292e-06s
+### Check ### Particles: 4096, Halos: 0
+### Check ### Computational domain: -46.8753 46.8753 -46.8753 46.8753 -50 50
+### Check ### Avg neighbor count per particle: 392
+### Check ### Total time: 2.31e-06, current time-step: 1.21e-06
+### Check ### Total energy: 2.0753e+10, (internal: 999999, cinetic: 2.0752e+10)
+# writeFile: 0.0171362s
+=== Total time for iteration(1) 0.0764844s
+

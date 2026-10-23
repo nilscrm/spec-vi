@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "state": "failed",
+  "port_complete": false,
+  "pid": null,
+  "updated_at": "2026-09-26T15:31:30+00:00",
+  "current": "neighbors",
+  "run_id": "20260926T152748Z-33131",
+  "message": "Command failed: ['/Library/Frameworks/Python.framework/Versions/3.13/bin/python3', 'tools/neighbors_gate.py', '--output', '/Users/nils/repos/spec-vi/reports/runs/20260926T152748Z-33131/neighbors', '--candidate', 'grid']; see /Users/nils/repos/spec-vi/reports/runs/20260926T152748Z-33131/neighbors/gate.stderr",
+  "milestones": [
+    {
+      "id": "bootstrap",
+      "title": "Runner, source integrity, reference smoke, depth instrumentation",
+      "state": "passed",
+      "report": "reports/runs/20260926T152748Z-33131/bootstrap/result.json"
+    },
+    {
+      "id": "pilot",
+      "title": "Numerical evaluator and initialization/density pilot",
+      "state": "passed",
+      "report": "reports/runs/20260926T152748Z-33131/pilot/result.json"
+    },
+    {
+      "id": "neighbors",
+      "title": "Octree and neighbor-search validation",
+      "state": "failed"
+    },
+    {
+      "id": "physics",
+      "title": "All SPH physics stages",
+      "state": "pending"
+    },
+    {
+      "id": "integration",
+      "title": "Multiple timesteps and scaling",
+      "state": "pending"
+    },
+    {
+      "id": "workloads",
+      "title": "Full selected workloads and parallel hardware validation",
+      "state": "pending"
+    }
+  ]
+}

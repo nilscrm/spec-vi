@@ -1,0 +1,31 @@
+warning: unused item
+     @ sph/pilot.vi:156:18
+ 156 | use #root::data::Lookup;
+
+warning: unused item
+   @ side12_q8_depth.vi:1:20
+ 1 | use #sph::{physics,pilot,tree};
+
+
+Interactions
+  Total          140_665_010
+  Annihilate       9_609_600
+  Commute              9_144
+  Copy             1_154_069
+  Erase           55_191_548
+  Graft            3_323_701
+  Extrinsic       71_376_948
+
+Parallelism
+  Depth               16_178
+  Breadth              8_694
+  Speedup                394 cB
+
+Memory
+  Heap         1_046_631_984 B
+  Allocated    2_672_377_952 B
+  Freed        2_672_377_952 B
+
+Performance
+  Time                 5_363 ms
+  Speed           26_227_374 IPS

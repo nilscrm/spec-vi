@@ -1,0 +1,27 @@
+warning: unused item
+     @ sph/neighbors.vi:216:4
+ 216 | fn join_requests(a: Tree[Request],b: Tree[Request]) -> Tree[Request] {
+
+
+Interactions
+  Total            7_270_948
+  Annihilate       2_522_696
+  Commute                  0
+  Copy               133_776
+  Erase            1_107_122
+  Graft              829_289
+  Extrinsic        2_678_065
+
+Parallelism
+  Depth                1_629
+  Breadth              4_463
+  Speedup                365 cB
+
+Memory
+  Heap            12_540_272 B
+  Allocated      163_981_312 B
+  Freed          163_981_312 B
+
+Performance
+  Time                   222 ms
+  Speed           32_643_207 IPS

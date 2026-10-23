@@ -1,0 +1,19 @@
+{
+  "argv": [
+    "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+    "/Users/nils/repos/spec-vi/tools/vine_exec.py",
+    "run",
+    "--lib",
+    "sph=/Users/nils/repos/spec-vi/reports/neighbors/cell-filter/filtered/sph",
+    "--heap",
+    "2G",
+    "/Users/nils/repos/spec-vi/reports/neighbors/cell-filter/extra/random3d_7_single.vi"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 143278080,
+  "wall_seconds": 0.9929531670059077,
+  "stdout": "/Users/nils/repos/spec-vi/reports/neighbors/cell-filter/extra/random3d_7_single.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/neighbors/cell-filter/extra/random3d_7_single.stderr"
+}

@@ -1,0 +1,17 @@
+{
+  "argv": [
+    "git",
+    "-C",
+    "/Users/nils/repos/vine",
+    "diff",
+    "HEAD",
+    "--binary"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 6029312,
+  "wall_seconds": 0.05040045903297141,
+  "stdout": "/Users/nils/repos/spec-vi/reports/runs/20260923T154358Z-6786/bootstrap/vine-diff.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/runs/20260923T154358Z-6786/bootstrap/vine-diff.stderr"
+}

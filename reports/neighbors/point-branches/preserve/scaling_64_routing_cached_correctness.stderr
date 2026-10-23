@@ -1,0 +1,26 @@
+warning: unused item
+    @ sph/neighbors.vi:56:4
+ 56 | fn join(a: Tree[Point], b: Tree[Point]) -> Tree[Point] {
+
+warning: unused item
+   @ scaling_64_routing_cached_correctness.vi:5:4
+ 5 | fn checksum(b:neighbors::Bounds)->N32 {((bits(b.xmin)+bits(b.xmax))+(bits(b.ymin)+bits(b.ymax)))+((bits(b.zmin)+bits(b.zmax))+b.n)}
+
+
+Interactions
+  Total               34_303
+  Annihilate          10_875
+  Commute                  0
+  Copy                 1_452
+  Erase                6_428
+  Graft                2_482
+  Extrinsic           13_066
+
+Memory
+  Heap                36_704 B
+  Allocated          727_568 B
+  Freed              727_568 B
+
+Performance
+  Time                     0 ms
+  Speed           42_460_776 IPS

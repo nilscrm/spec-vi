@@ -1,0 +1,4 @@
+error: expected `[`, an operator, `==`, `!=`, `<`, `>`, `<=`, `>=`, `->`, or `{`; found `||`
+    @ sph/neighbors.vi:52:14
+ 52 |  if b.n <= 8 || level >= 32 {unsplit(points)} else {
+

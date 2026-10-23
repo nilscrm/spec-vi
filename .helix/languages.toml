@@ -1,0 +1,19 @@
+# Local checkout paths keep server startup independent of Helix's working directory.
+[language-server.vine]
+command = "python3"
+args = [
+  "/Users/nils/repos/spec-vi/tools/vine_exec.py",
+  "lsp",
+  "--lib", "sph=/Users/nils/repos/spec-vi/benchmarks/sph-exa/vine",
+  "/Users/nils/repos/spec-vi/benchmarks/sph-exa/app/square_patch.vi",
+]
+
+[[language]]
+name = "vine"
+scope = "source.vine"
+file-types = ["vi"]
+roots = [".helix"]
+language-servers = ["vine"]
+grammar = "vine"
+comment-tokens = ["//"]
+formatter = { command = "python3", args = ["/Users/nils/repos/spec-vi/tools/vine_exec.py", "fmt"] }

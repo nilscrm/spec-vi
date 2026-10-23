@@ -1,0 +1,20 @@
+{
+  "milestone": "pilot",
+  "passed": false,
+  "port_complete": false,
+  "scope": "Initialization fields and density with upstream-provided neighbor lists on initial square-patch states; not tree search or time integration",
+  "correctness": [
+    {
+      "case": "init_12",
+      "passed": true,
+      "failures": 0,
+      "rows": 32,
+      "columns": 30,
+      "max_absolute_error": 4.3655745685100555e-11,
+      "atol": 1e-09,
+      "rtol": 5e-12
+    }
+  ],
+  "experiments": [],
+  "error": "Command failed: ['/Users/nils/repos/spec-vi/work/bin/vine', 'run', '--lib', 'sph=/Users/nils/repos/spec-vi/benchmarks/sph-exa/vine', '--heap', '2G', '/Users/nils/repos/spec-vi/reports/pilot/first/density_12.vi']; see /Users/nils/repos/spec-vi/reports/pilot/first/density_12_vine.stderr"
+}

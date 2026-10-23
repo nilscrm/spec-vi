@@ -1,0 +1,19 @@
+{
+  "argv": [
+    "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+    "/Users/nils/repos/spec-vi/tools/vine_exec.py",
+    "run",
+    "--lib",
+    "sph=/Users/nils/repos/spec-vi/reports/neighbors/grid-clean/clean/sph",
+    "--heap",
+    "2G",
+    "/Users/nils/repos/spec-vi/reports/neighbors/grid-clean/extra/periodic_union_batch.vi"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 129777664,
+  "wall_seconds": 2.0395804589497857,
+  "stdout": "/Users/nils/repos/spec-vi/reports/neighbors/grid-clean/extra/periodic_union_batch.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/neighbors/grid-clean/extra/periodic_union_batch.stderr"
+}

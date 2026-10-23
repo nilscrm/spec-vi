@@ -1,0 +1,17 @@
+{
+  "argv": [
+    "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+    "/Users/nils/repos/spec-vi/tools/vine_exec.py",
+    "run",
+    "--lib",
+    "sph=/Users/nils/repos/spec-vi/reports/neighbors/point-branches/preserve/sph",
+    "/Users/nils/repos/spec-vi/reports/neighbors/point-branches/preserve/scaling_256_routing_cached_correctness.vi"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 129433600,
+  "wall_seconds": 0.49132358402130194,
+  "stdout": "/Users/nils/repos/spec-vi/reports/neighbors/point-branches/preserve/scaling_256_routing_cached_correctness.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/neighbors/point-branches/preserve/scaling_256_routing_cached_correctness.stderr"
+}

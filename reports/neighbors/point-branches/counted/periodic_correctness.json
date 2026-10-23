@@ -1,0 +1,19 @@
+{
+  "argv": [
+    "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+    "/Users/nils/repos/spec-vi/tools/vine_exec.py",
+    "run",
+    "--lib",
+    "sph=/Users/nils/repos/spec-vi/reports/neighbors/point-branches/counted/sph",
+    "--heap",
+    "2G",
+    "/Users/nils/repos/spec-vi/reports/neighbors/point-branches/counted/periodic_correctness.vi"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 125239296,
+  "wall_seconds": 0.4844266250147484,
+  "stdout": "/Users/nils/repos/spec-vi/reports/neighbors/point-branches/counted/periodic_correctness.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/neighbors/point-branches/counted/periodic_correctness.stderr"
+}

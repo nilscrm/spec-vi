@@ -1,0 +1,22 @@
+warning: unused item
+   @ scaling_256_routing_cached_correctness.vi:5:4
+ 5 | fn checksum(b:neighbors::Bounds)->N32 {((bits(b.xmin)+bits(b.xmax))+(bits(b.ymin)+bits(b.ymax)))+((bits(b.zmin)+bits(b.zmax))+b.n)}
+
+
+Interactions
+  Total              135_927
+  Annihilate          42_741
+  Commute                  0
+  Copy                 5_634
+  Erase               25_628
+  Graft                9_888
+  Extrinsic           52_036
+
+Memory
+  Heap                88_624 B
+  Allocated        2_883_152 B
+  Freed            2_883_152 B
+
+Performance
+  Time                     2 ms
+  Speed           46_644_189 IPS

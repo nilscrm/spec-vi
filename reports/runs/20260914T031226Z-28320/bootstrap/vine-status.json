@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "git",
+    "-C",
+    "/Users/nils/repos/vine",
+    "status",
+    "--porcelain"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "wall_seconds": 0.07474595800158568,
+  "stdout": "/Users/nils/repos/spec-vi/reports/runs/20260914T031226Z-28320/bootstrap/vine-status.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/runs/20260914T031226Z-28320/bootstrap/vine-status.stderr"
+}

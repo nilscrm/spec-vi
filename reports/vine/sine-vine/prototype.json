@@ -1,0 +1,56 @@
+{
+  "balanced": {
+    "cases": 2420,
+    "max_ulp": 1,
+    "metrics": [
+      {
+        "count": 1,
+        "depth": 320,
+        "interactions": 570,
+        "heap_bytes": 2496,
+        "allocated_bytes": 13968
+      },
+      {
+        "count": 32,
+        "depth": 351,
+        "interactions": 6584,
+        "heap_bytes": 66048,
+        "allocated_bytes": 203888
+      },
+      {
+        "count": 256,
+        "depth": 369,
+        "interactions": 51012,
+        "heap_bytes": 538912,
+        "allocated_bytes": 1611408
+      }
+    ]
+  },
+  "horner": {
+    "cases": 2420,
+    "max_ulp": 1,
+    "metrics": [
+      {
+        "count": 1,
+        "depth": 315,
+        "interactions": 574,
+        "heap_bytes": 2528,
+        "allocated_bytes": 14032
+      },
+      {
+        "count": 32,
+        "depth": 346,
+        "interactions": 6708,
+        "heap_bytes": 67040,
+        "allocated_bytes": 205872
+      },
+      {
+        "count": 256,
+        "depth": 364,
+        "interactions": 52032,
+        "heap_bytes": 547072,
+        "allocated_bytes": 1627728
+      }
+    ]
+  }
+}

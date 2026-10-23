@@ -1,0 +1,24 @@
+{
+  "argv": [
+    "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+    "/Users/nils/repos/spec-vi/tools/vine_exec.py",
+    "run",
+    "--heap",
+    "2G",
+    "--lib",
+    "sph=/Users/nils/repos/spec-vi/benchmarks/sph-exa/vine",
+    "/Users/nils/repos/spec-vi/reports/physics/driver/argument-fix/square_patch.vi",
+    "--",
+    "-n",
+    "9",
+    "-s",
+    "0"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi/reports/physics/driver/argument-fix/invalid_side",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 1489289216,
+  "wall_seconds": 17.173041542002466,
+  "stdout": "/Users/nils/repos/spec-vi/reports/physics/driver/argument-fix/invalid_side/run.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/physics/driver/argument-fix/invalid_side/run.stderr"
+}

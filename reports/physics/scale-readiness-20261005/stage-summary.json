@@ -1,0 +1,30 @@
+{
+  "full_stage_passed": true,
+  "cases": [
+    {
+      "side": 12,
+      "snapshots": 28,
+      "max_field_error": 2.1100277081131935e-10,
+      "stats": {
+        "interactions": 8530050485,
+        "heap_bytes": 553140400,
+        "allocated_bytes": 200870937184,
+        "runtime_ms": 179380
+      }
+    },
+    {
+      "side": 16,
+      "snapshots": 28,
+      "max_field_error": 4.3655745685100555e-10,
+      "stats": {
+        "interactions": 22350462444,
+        "heap_bytes": 1309769984,
+        "allocated_bytes": 528192954864,
+        "runtime_ms": 483431
+      }
+    }
+  ],
+  "full_scale_run": false,
+  "large_configuration_only": true,
+  "port_complete": false
+}

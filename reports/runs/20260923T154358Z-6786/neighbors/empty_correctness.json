@@ -1,0 +1,19 @@
+{
+  "argv": [
+    "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+    "/Users/nils/repos/spec-vi/tools/vine_exec.py",
+    "run",
+    "--lib",
+    "sph=/Users/nils/repos/spec-vi/benchmarks/sph-exa/vine",
+    "--heap",
+    "2G",
+    "/Users/nils/repos/spec-vi/reports/runs/20260923T154358Z-6786/neighbors/empty.vi"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 833323008,
+  "wall_seconds": 1.1043384579825215,
+  "stdout": "/Users/nils/repos/spec-vi/reports/runs/20260923T154358Z-6786/neighbors/empty_correctness.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/runs/20260923T154358Z-6786/neighbors/empty_correctness.stderr"
+}

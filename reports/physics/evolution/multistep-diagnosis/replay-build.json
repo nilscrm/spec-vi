@@ -1,0 +1,24 @@
+{
+  "argv": [
+    "c++",
+    "-std=c++14",
+    "-O2",
+    "-ffp-contract=off",
+    "-DNDEBUG",
+    "-Wno-unknown-pragmas",
+    "-include",
+    "sstream",
+    "-I/Users/nils/repos/spec-vi/upstream/sph-exa/src",
+    "-I/Users/nils/repos/spec-vi/upstream/sph-exa/src/include",
+    "/Users/nils/repos/spec-vi/reports/physics/evolution/multistep-diagnosis/replay.cpp",
+    "-o",
+    "/Users/nils/repos/spec-vi/reports/physics/evolution/multistep-diagnosis/replay"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 125173760,
+  "wall_seconds": 0.8737710839486681,
+  "stdout": "/Users/nils/repos/spec-vi/reports/physics/evolution/multistep-diagnosis/replay-build.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/physics/evolution/multistep-diagnosis/replay-build.stderr"
+}

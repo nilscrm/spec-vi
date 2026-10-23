@@ -1,0 +1,22 @@
+{
+  "argv": [
+    "c++",
+    "-std=c++14",
+    "-O2",
+    "-ffp-contract=off",
+    "-DNDEBUG",
+    "-Wno-unknown-pragmas",
+    "-I/Users/nils/repos/spec-vi/upstream/sph-exa/src",
+    "-I/Users/nils/repos/spec-vi/upstream/sph-exa/src/include",
+    "/Users/nils/repos/spec-vi/benchmarks/sph-exa/reference/pilot.cpp",
+    "-o",
+    "/Users/nils/repos/spec-vi/work/build/neighbors_reference"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 132694016,
+  "wall_seconds": 0.8563498749863356,
+  "stdout": "/Users/nils/repos/spec-vi/reports/neighbors/second-candidate/build-reference.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/neighbors/second-candidate/build-reference.stderr"
+}

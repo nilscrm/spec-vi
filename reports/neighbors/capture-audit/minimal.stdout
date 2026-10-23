@@ -1,0 +1,8 @@
+{'count': 1, 'mode': 'field', 'depth': 246, 'interactions': 469, 'heap_bytes': 1392, 'allocated_bytes': 9440}
+{'count': 1, 'mode': 'copy', 'depth': 246, 'interactions': 435, 'heap_bytes': 1152, 'allocated_bytes': 8976}
+{'count': 16, 'mode': 'field', 'depth': 281, 'interactions': 934, 'heap_bytes': 6336, 'allocated_bytes': 22032}
+{'count': 16, 'mode': 'copy', 'depth': 266, 'interactions': 1005, 'heap_bytes': 6720, 'allocated_bytes': 22896}
+{'count': 64, 'mode': 'field', 'depth': 341, 'interactions': 2422, 'heap_bytes': 24000, 'allocated_bytes': 62352}
+{'count': 64, 'mode': 'copy', 'depth': 278, 'interactions': 2829, 'heap_bytes': 25920, 'allocated_bytes': 67440}
+{'count': 256, 'mode': 'field', 'depth': 545, 'interactions': 8374, 'heap_bytes': 94656, 'allocated_bytes': 223632}
+{'count': 256, 'mode': 'copy', 'depth': 290, 'interactions': 10125, 'heap_bytes': 102720, 'allocated_bytes': 245616}

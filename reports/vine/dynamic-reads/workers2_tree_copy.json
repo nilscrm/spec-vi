@@ -1,0 +1,19 @@
+{
+  "argv": [
+    "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+    "/Users/nils/repos/spec-vi/tools/vine_exec.py",
+    "run",
+    "--lib",
+    "sph=/Users/nils/repos/spec-vi/reports/vine/dynamic-reads/sph",
+    "--workers",
+    "2",
+    "/Users/nils/repos/spec-vi/reports/vine/dynamic-reads/n256_q256_mixed_tree_copy_depth.vi"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 122847232,
+  "wall_seconds": 0.36379166701226495,
+  "stdout": "/Users/nils/repos/spec-vi/reports/vine/dynamic-reads/workers2_tree_copy.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/vine/dynamic-reads/workers2_tree_copy.stderr"
+}

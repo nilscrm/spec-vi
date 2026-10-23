@@ -1,0 +1,12 @@
+{
+  "scope": "Exact unsaturated neighbor membership, index construction and batched query depth; order and timestep integration pending",
+  "sides": [12, 16],
+  "queries_per_side": 8,
+  "scaling_counts": [64, 256],
+  "max_depth_ratio": 0.7,
+  "max_work_ratio": 1.5,
+  "max_work_growth": 10.0,
+  "max_depth_growth": 3.0,
+  "heap_limit_bytes": 2147483648,
+  "command_timeout_seconds": 180
+}

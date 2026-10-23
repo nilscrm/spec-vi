@@ -1,0 +1,22 @@
+use #sph::{neighbors,tree};
+use tree::Tree;
+fn sum(t: Tree[N32]) -> N32 {
+ match t { Tree::Empty() { 0 } Tree::Leaf(v) { v+1 } Tree::Branch(l,r) { sum(l)+sum(r) } }
+}
+fn dump(t: Tree[N32], &io: &IO) {
+ match t { Tree::Empty() {} Tree::Leaf(v) { io.print(" {v}"); } Tree::Branch(l,r) { dump(l,&io); dump(r,&io); } }
+}
+fn emit(t: Tree[(N32,Tree[N32])], &io: &IO) {
+ match t { Tree::Empty() {} Tree::Leaf((i,v)) { io.print("{i}"); dump(v,&io); io.println(""); } Tree::Branch(l,r) { emit(l,&io);emit(r,&io); } }
+}
+fn totals(t: Tree[N32]) -> N32 {
+ match t { Tree::Empty() {0} Tree::Leaf(v) {v} Tree::Branch(l,r) {totals(l)+totals(r)} }
+}
+use #sph::grid;
+pub fn main(&io: &IO) {
+let points=black_box(Tree::Branch(Tree::Branch(Tree::Leaf({id:0,x:0.00000000000000000e+00[F64],y:0.00000000000000000e+00[F64],z:0.00000000000000000e+00[F64]}),Tree::Leaf({id:1,x:1.00000000000000000e+00[F64],y:0.00000000000000000e+00[F64],z:0.00000000000000000e+00[F64]})),Tree::Branch(Tree::Leaf({id:2,x:9.99999999999999889e-01[F64],y:0.00000000000000000e+00[F64],z:0.00000000000000000e+00[F64]}),Tree::Branch(Tree::Leaf({id:3,x:1.00000000000000022e+00[F64],y:0.00000000000000000e+00[F64],z:0.00000000000000000e+00[F64]}),Tree::Leaf({id:4,x:0.00000000000000000e+00[F64],y:0.00000000000000000e+00[F64],z:0.00000000000000000e+00[F64]})))));
+let queries=black_box(Tree::Branch(Tree::Leaf((0,{id:0,x:0.00000000000000000e+00[F64],y:0.00000000000000000e+00[F64],z:0.00000000000000000e+00[F64],radius:1.00000000000000000e+00[F64],period_z:0.00000000000000000e+00[F64]})),Tree::Leaf((1,{id:0,x:0.00000000000000000e+00[F64],y:0.00000000000000000e+00[F64],z:0.00000000000000000e+00[F64],radius:0.00000000000000000e+00[F64],period_z:0.00000000000000000e+00[F64]}))));
+let index=grid::build(points);
+let output=tree::map(queries,fn* ((i,q)) {(i,grid::find(index,q))});
+emit(output,&io);
+}

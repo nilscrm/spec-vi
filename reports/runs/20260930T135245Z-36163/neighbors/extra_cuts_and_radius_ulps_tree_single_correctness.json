@@ -1,0 +1,19 @@
+{
+  "argv": [
+    "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+    "/Users/nils/repos/spec-vi/tools/vine_exec.py",
+    "run",
+    "--lib",
+    "sph=/Users/nils/repos/spec-vi/benchmarks/sph-exa/vine",
+    "--heap",
+    "2G",
+    "/Users/nils/repos/spec-vi/reports/runs/20260930T135245Z-36163/neighbors/extra_cuts_and_radius_ulps_tree_single.vi"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 794165248,
+  "wall_seconds": 7.398543415998574,
+  "stdout": "/Users/nils/repos/spec-vi/reports/runs/20260930T135245Z-36163/neighbors/extra_cuts_and_radius_ulps_tree_single_correctness.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/runs/20260930T135245Z-36163/neighbors/extra_cuts_and_radius_ulps_tree_single_correctness.stderr"
+}

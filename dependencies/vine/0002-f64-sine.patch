@@ -1,0 +1,89 @@
+diff --git a/root/numeric/F64/F64.vi b/root/numeric/F64/F64.vi
+index 8a6a886f..e4169861 100644
+--- a/root/numeric/F64/F64.vi
++++ b/root/numeric/F64/F64.vi
+@@ -10,6 +10,9 @@ pub mod F64 {
+   pub mod exp;
+   pub mod ln;
+ 
++  /// Nearest binary64 value to pi.
++  pub const pi: F64 = 3.141592653589793[F64];
++
+   pub const nan: F64 = F32::nan as F64;
+   pub const inf: F64 = F32::inf as F64;
+   pub const neg_inf: F64 = F32::neg_inf as F64;
+@@ -80,6 +83,13 @@ pub mod F64 {
+     safe $ivy { ${a} = vi:ext#1[vi:f64:sqrt](^) }
+   }
+ 
++  /// Sine of an angle in radians, using the host floating-point implementation.
++  /// Preserves signed zero; nonfinite inputs produce NaN. Rounding accuracy is
++  /// platform-dependent, as with the underlying host math library.
++  pub fn .sin(a: F64) -> F64 {
++    safe $ivy { ${a} = vi:ext#1[vi:f64:sin](^) }
++  }
++
+   pub impl pos: Pos[F64, F64] {
+     fn pos(f: F64) -> F64 {
+       f
+diff --git a/tests/programs/f64_sin.vi b/tests/programs/f64_sin.vi
+new file mode 100644
+index 00000000..b43b55b5
+--- /dev/null
++++ b/tests/programs/f64_sin.vi
+@@ -0,0 +1,16 @@
++
++pub fn main(&io: &IO) {
++  let positive_zero = 0.0[F64];
++  let negative_zero = F64::from_bits(0x8000000000000000[N64]);
++  assert positive_zero.sin().to_bits() == 0[N64] else { debug::error("check failed") }
++  assert negative_zero.sin().to_bits() == 0x8000000000000000[N64] else {
++    debug::error("check failed")
++  }
++  assert F64::pi.to_bits() == 0x400921fb54442d18[N64] else { debug::error("check failed") }
++  assert (F64::pi / 2.0[F64]).sin() == 1.0[F64] else { debug::error("check failed") }
++  let inf_sin = F64::inf.sin();
++  assert inf_sin != inf_sin else { debug::error("check failed") }
++  let nan_sin = F64::nan.sin();
++  assert nan_sin != nan_sin else { debug::error("check failed") }
++  io.println("passed");
++}
+diff --git a/tests/snaps/programs/f64_sin/output.txt b/tests/snaps/programs/f64_sin/output.txt
+new file mode 100644
+index 00000000..b0aad4de
+--- /dev/null
++++ b/tests/snaps/programs/f64_sin/output.txt
+@@ -0,0 +1 @@
++passed
+diff --git a/tests/snaps/programs/f64_sin/stats b/tests/snaps/programs/f64_sin/stats
+new file mode 100644
+index 00000000..251cdc52
+--- /dev/null
++++ b/tests/snaps/programs/f64_sin/stats
+@@ -0,0 +1,14 @@
++
++Interactions
++  Total                  547
++  Annihilate             228
++  Commute                  0
++  Copy                    42
++  Erase                   71
++  Graft                   92
++  Extrinsic              114
++
++Memory
++  Heap                   896 B
++  Allocated           10_256 B
++  Freed               10_256 B
+diff --git a/util/src/arithmetic.rs b/util/src/arithmetic.rs
+index 51186054..57855a2d 100644
+--- a/util/src/arithmetic.rs
++++ b/util/src/arithmetic.rs
+@@ -150,6 +150,7 @@ where
+       Fn("vi:f64:div", |(a, b): (f64, f64)| a / b),
+       Fn("vi:f64:rem", |(a, b): (f64, f64)| a.rem_euclid(b)),
+       Fn("vi:f64:sqrt", |a: f64| a.sqrt()),
++      Fn("vi:f64:sin", |a: f64| a.sin()),
+     ),
+     (
+       Fn("vi:f64:eq", |(a, b): (f64, f64)| a == b),

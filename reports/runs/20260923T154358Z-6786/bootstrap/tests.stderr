@@ -1,0 +1,22 @@
+test_exact_and_tolerance (test_evaluation.EvaluationTests.test_exact_and_tolerance) ... ok
+test_gate_rejects_missing_false_or_wrong_report (test_evaluation.EvaluationTests.test_gate_rejects_missing_false_or_wrong_report) ... ok
+test_malformed_outputs_fail (test_evaluation.EvaluationTests.test_malformed_outputs_fail) ... ok
+test_metrics_are_section_aware (test_evaluation.EvaluationTests.test_metrics_are_section_aware) ... ok
+test_stale_running_status_is_not_completion (test_evaluation.EvaluationTests.test_stale_running_status_is_not_completion) ... ok
+test_timeout_is_failure_and_preserves_logs (test_evaluation.EvaluationTests.test_timeout_is_failure_and_preserves_logs) ... ok
+test_wrong_shape_and_invalid_tolerance (test_evaluation.EvaluationTests.test_wrong_shape_and_invalid_tolerance) ... ok
+test_missing_duplicate_extra_and_wrong_identity_fail (test_neighbors.NeighborOracleTests.test_missing_duplicate_extra_and_wrong_identity_fail) ... ok
+test_periodic_z_only (test_neighbors.NeighborOracleTests.test_periodic_z_only) ... ok
+test_strict_radius_and_self (test_neighbors.NeighborOracleTests.test_strict_radius_and_self) ... ok
+test_agent_cannot_change_acceptance_inputs (test_runner.RunnerLifecycleTests.test_agent_cannot_change_acceptance_inputs) ... ok
+test_agent_claim_cannot_override_failed_gate (test_runner.RunnerLifecycleTests.test_agent_claim_cannot_override_failed_gate) ... ok
+test_complete_requires_every_gate (test_runner.RunnerLifecycleTests.test_complete_requires_every_gate) ... ok
+test_gate_failure_marks_failed (test_runner.RunnerLifecycleTests.test_gate_failure_marks_failed) ... ok
+test_interrupt_records_stopped (test_runner.RunnerLifecycleTests.test_interrupt_records_stopped) ... ok
+test_missing_gate_waits_and_never_starts_agent (test_runner.RunnerLifecycleTests.test_missing_gate_waits_and_never_starts_agent) ... ok
+test_removed_milestones_are_rejected (test_runner.RunnerLifecycleTests.test_removed_milestones_are_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 17 tests in 0.515s
+
+OK

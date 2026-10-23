@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+    "tools/neighbors_gate.py",
+    "--output",
+    "/Users/nils/repos/spec-vi/reports/runs/20260921T190441Z-95573/neighbors"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 1,
+  "timed_out": false,
+  "peak_rss_bytes": 905510912,
+  "wall_seconds": 26.09345845799544,
+  "stdout": "/Users/nils/repos/spec-vi/reports/runs/20260921T190441Z-95573/neighbors/gate.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/runs/20260921T190441Z-95573/neighbors/gate.stderr"
+}

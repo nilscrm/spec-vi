@@ -1,0 +1,27 @@
+{
+  "compiled_driver": "reports/vine/sine-vine/root_n256.ivy",
+  "arithmetic_extrinsics": [
+    "vi:f64:add",
+    "vi:f64:drop",
+    "vi:f64:eq",
+    "vi:f64:fork",
+    "vi:f64:from_bits",
+    "vi:f64:le",
+    "vi:f64:lt",
+    "vi:f64:mul",
+    "vi:f64:ne",
+    "vi:f64:sub",
+    "vi:f64:to_bits",
+    "vi:f64:to_n32",
+    "vi:n32:add",
+    "vi:n32:and",
+    "vi:n32:div",
+    "vi:n32:eq",
+    "vi:n32:ne",
+    "vi:n32:rem",
+    "vi:n32:sub",
+    "vi:n32:to_f64"
+  ],
+  "host_sine_absent": true,
+  "scope": "compiled bounded sine with input/output driver; not a target hardware validation"
+}

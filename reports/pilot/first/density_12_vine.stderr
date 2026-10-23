@@ -1,0 +1,7 @@
+warning: unused item
+    @ sph/pilot.vi:59:18
+ 59 | use #root::data::Lookup;
+
+
+thread 'main' (1483229) has overflowed its stack
+fatal runtime error: stack overflow, aborting

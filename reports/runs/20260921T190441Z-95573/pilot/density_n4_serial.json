@@ -1,0 +1,20 @@
+{
+  "argv": [
+    "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+    "/Users/nils/repos/spec-vi/tools/vine_exec.py",
+    "run",
+    "--lib",
+    "sph=/Users/nils/repos/spec-vi/benchmarks/sph-exa/vine",
+    "--heap",
+    "2G",
+    "--depth",
+    "/Users/nils/repos/spec-vi/reports/runs/20260921T190441Z-95573/pilot/density_n4_serial.vi"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 1753153536,
+  "wall_seconds": 6.828938082995592,
+  "stdout": "/Users/nils/repos/spec-vi/reports/runs/20260921T190441Z-95573/pilot/density_n4_serial.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/runs/20260921T190441Z-95573/pilot/density_n4_serial.stderr"
+}

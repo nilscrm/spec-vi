@@ -1,0 +1,30 @@
+warning: unused item
+     @ sph/pilot.vi:156:18
+ 156 | use #root::data::Lookup;
+
+warning: unused item
+   @ side12_init.vi:1:20
+ 1 | use #sph::{physics,pilot,tree};
+
+warning: unused item
+   @ side12_init.vi:7:4
+ 7 | fn value(p:physics::Particle)->F64 {((((p.x + (p.y + p.z)) + ((p.x_m1 + p.y_m1) + (p.z_m1 + p.vx))) + (((p.vy + p.vz) + (p.ro + p.ro_0)) + ((p.u + p.p) + (p.p_0 + p.h)))) + (((p.m + (p.c + p.grad_P_x)) + ((p.grad_P_y + p.grad_P_z) + (p.du + p.du_m1))) + (((p.dt + p.dt_m1) + (p.c11 + p.c12)) + ((p.c13 + p.c22) + (p.c23 + p.c33)))))}
+
+
+Interactions
+  Total           873_938_978
+  Annihilate      340_185_169
+  Commute           5_861_808
+  Copy            104_376_070
+  Erase           109_843_350
+  Graft            74_603_120
+  Extrinsic       239_069_461
+
+Memory
+  Heap            929_891_552 B
+  Allocated    18_177_208_912 B
+  Freed        18_177_208_912 B
+
+Performance
+  Time                 15_949 ms
+  Speed            54_792_809 IPS

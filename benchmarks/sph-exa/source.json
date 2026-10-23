@@ -1,0 +1,10 @@
+{
+  "repository": "https://github.com/unibas-dmi-hpc/SPH-EXA_mini-app",
+  "commit": "7604c8241ee3f0e0fa2cf1c0b3c7821c122e0dd6",
+  "archive_sha256": "c6feec4eb9ffc2fd09799659c87078a711e3e08b97d4af87c9120255544ec746",
+  "spec_documentation": "https://www.spec.org/cpu2026/Docs/benchmarks/803.sph_exa_s/803.sph_exa_s.html",
+  "status": "Unmodified upstream starting point identified by SPEC; not the SPEC distribution",
+  "vine_checkout": "/Users/nils/repos/vine",
+  "vine_observed_commit": "e459270bcbc05f69d22911ba00b13e682adb2f00",
+  "vine_dirty": true
+}

@@ -1,0 +1,24 @@
+use #sph::{evolution,physics,tree};use tree::Tree;
+fn dump_particles(t:Tree[physics::Particle],start:N32,count:N32,&io:&IO){
+ match t{Tree::Empty(){}Tree::Leaf(p){io.print("P {start}");let N64(lo,hi)=(p.x).to_bits();io.print(" {lo} {hi}");let N64(lo,hi)=(p.y).to_bits();io.print(" {lo} {hi}");let N64(lo,hi)=(p.z).to_bits();io.print(" {lo} {hi}");let N64(lo,hi)=(p.x_m1).to_bits();io.print(" {lo} {hi}");let N64(lo,hi)=(p.y_m1).to_bits();io.print(" {lo} {hi}");let N64(lo,hi)=(p.z_m1).to_bits();io.print(" {lo} {hi}");let N64(lo,hi)=(p.vx).to_bits();io.print(" {lo} {hi}");let N64(lo,hi)=(p.vy).to_bits();io.print(" {lo} {hi}");let N64(lo,hi)=(p.vz).to_bits();io.print(" {lo} {hi}");let N64(lo,hi)=(p.ro).to_bits();io.print(" {lo} {hi}");let N64(lo,hi)=(p.ro_0).to_bits();io.print(" {lo} {hi}");let N64(lo,hi)=(p.u).to_bits();io.print(" {lo} {hi}");let N64(lo,hi)=(p.p).to_bits();io.print(" {lo} {hi}");let N64(lo,hi)=(p.p_0).to_bits();io.print(" {lo} {hi}");let N64(lo,hi)=(p.h).to_bits();io.print(" {lo} {hi}");let N64(lo,hi)=(p.m).to_bits();io.print(" {lo} {hi}");let N64(lo,hi)=(p.c).to_bits();io.print(" {lo} {hi}");let N64(lo,hi)=(p.grad_P_x).to_bits();io.print(" {lo} {hi}");let N64(lo,hi)=(p.grad_P_y).to_bits();io.print(" {lo} {hi}");let N64(lo,hi)=(p.grad_P_z).to_bits();io.print(" {lo} {hi}");let N64(lo,hi)=(p.du).to_bits();io.print(" {lo} {hi}");let N64(lo,hi)=(p.du_m1).to_bits();io.print(" {lo} {hi}");let N64(lo,hi)=(p.dt).to_bits();io.print(" {lo} {hi}");let N64(lo,hi)=(p.dt_m1).to_bits();io.print(" {lo} {hi}");let N64(lo,hi)=(p.c11).to_bits();io.print(" {lo} {hi}");let N64(lo,hi)=(p.c12).to_bits();io.print(" {lo} {hi}");let N64(lo,hi)=(p.c13).to_bits();io.print(" {lo} {hi}");let N64(lo,hi)=(p.c22).to_bits();io.print(" {lo} {hi}");let N64(lo,hi)=(p.c23).to_bits();io.print(" {lo} {hi}");let N64(lo,hi)=(p.c33).to_bits();io.print(" {lo} {hi}");io.println("");}
+ Tree::Branch(l,r){let half=count/2;dump_particles(l,start,half,&io);dump_particles(r,start+half,count-half,&io);}}
+}
+fn snapshot(name:String,s:evolution::State,&io:&IO){io.println("STAGE {name}");dump_particles(s.data,0,s.n,&io);io.print("META");let N64(lo,hi)=(s.ttot).to_bits();io.print(" {lo} {hi}");let N64(lo,hi)=(s.etot).to_bits();io.print(" {lo} {hi}");let N64(lo,hi)=(s.ecin).to_bits();io.print(" {lo} {hi}");let N64(lo,hi)=(s.eint).to_bits();io.print(" {lo} {hi}");let N64(lo,hi)=(s.bounds.xmin).to_bits();io.print(" {lo} {hi}");let N64(lo,hi)=(s.bounds.xmax).to_bits();io.print(" {lo} {hi}");let N64(lo,hi)=(s.bounds.ymin).to_bits();io.print(" {lo} {hi}");let N64(lo,hi)=(s.bounds.ymax).to_bits();io.print(" {lo} {hi}");let N64(lo,hi)=(s.bounds.zmin).to_bits();io.print(" {lo} {hi}");let N64(lo,hi)=(s.bounds.zmax).to_bits();io.print(" {lo} {hi}");io.println("");}
+fn dump_ids(t:Tree[N32],&io:&IO){match t{Tree::Empty(){}Tree::Leaf(i){io.print(" {i}");}Tree::Branch(l,r){dump_ids(l,&io);dump_ids(r,&io);}}}
+fn dump_neighbors(rows:evolution::Rows,&io:&IO){match rows{Tree::Empty(){}Tree::Leaf((i,ns)){io.print("N {i}");dump_ids(ns,&io);io.println("");}Tree::Branch(l,r){dump_neighbors(l,&io);dump_neighbors(r,&io);}}}
+pub fn main(&io:&IO){
+ let s=evolution::initialize(black_box(12));snapshot("init",s,&io);
+ for iteration in 0..black_box(1) {
+  let (prepared,rows)=evolution::prepare(s);s=prepared;
+  snapshot("i{iteration}-geometry",s,&io);
+  dump_neighbors(rows,&io);let nn=evolution::neighbor_count(rows);io.println("COUNT {nn}");
+  s=evolution::density(s,rows);snapshot("i{iteration}-density",s,&io);
+  s=evolution::rest(s,iteration);snapshot("i{iteration}-rest",s,&io);
+  s=evolution::eos(s);snapshot("i{iteration}-eos",s,&io);
+  s=evolution::iad(s,rows);snapshot("i{iteration}-iad",s,&io);
+  s=evolution::momentum(s,rows);snapshot("i{iteration}-momentum",s,&io);
+  s=evolution::timestep(s);snapshot("i{iteration}-timestep",s,&io);
+  s=evolution::positions(s);snapshot("i{iteration}-positions",s,&io);
+  s=evolution::energy(s);snapshot("i{iteration}-energy",s,&io);
+ }
+}

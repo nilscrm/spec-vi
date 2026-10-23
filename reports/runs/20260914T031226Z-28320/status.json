@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "state": "failed",
+  "port_complete": false,
+  "pid": null,
+  "updated_at": "2026-09-14T03:12:29+00:00",
+  "current": "bootstrap",
+  "run_id": "20260914T031226Z-28320",
+  "message": "Command failed: ['/Library/Frameworks/Python.framework/Versions/3.13/bin/python3', 'tools/evaluate.py', 'bootstrap', '--output', '/Users/nils/repos/spec-vi/reports/runs/20260914T031226Z-28320/bootstrap']; see /Users/nils/repos/spec-vi/reports/runs/20260914T031226Z-28320/bootstrap/gate.stderr",
+  "milestones": [
+    {
+      "id": "bootstrap",
+      "title": "Runner, source integrity, reference smoke, depth instrumentation",
+      "state": "failed"
+    },
+    {
+      "id": "pilot",
+      "title": "Numerical evaluator and initialization/density pilot",
+      "state": "pending"
+    },
+    {
+      "id": "neighbors",
+      "title": "Octree and neighbor-search validation",
+      "state": "pending"
+    },
+    {
+      "id": "physics",
+      "title": "All SPH physics stages",
+      "state": "pending"
+    },
+    {
+      "id": "integration",
+      "title": "Multiple timesteps and scaling",
+      "state": "pending"
+    },
+    {
+      "id": "workloads",
+      "title": "Full selected workloads and parallel hardware validation",
+      "state": "pending"
+    }
+  ]
+}

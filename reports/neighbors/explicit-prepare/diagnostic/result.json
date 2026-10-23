@@ -1,0 +1,94 @@
+{
+  "diagnostic_only": true,
+  "correctness": true,
+  "metrics": [
+    {
+      "points": 64,
+      "bucket_points": 4,
+      "queries": 1,
+      "mode": "ranges",
+      "depth": 210,
+      "interactions": 10574,
+      "heap_bytes": 110960,
+      "allocated_bytes": 219472
+    },
+    {
+      "points": 64,
+      "bucket_points": 4,
+      "queries": 16,
+      "mode": "ranges",
+      "depth": 239,
+      "interactions": 19365,
+      "heap_bytes": 167824,
+      "allocated_bytes": 430032
+    },
+    {
+      "points": 64,
+      "bucket_points": 4,
+      "queries": 64,
+      "mode": "ranges",
+      "depth": 263,
+      "interactions": 47428,
+      "heap_bytes": 353920,
+      "allocated_bytes": 1102320
+    },
+    {
+      "points": 64,
+      "bucket_points": 4,
+      "queries": 256,
+      "mode": "ranges",
+      "depth": 267,
+      "interactions": 159556,
+      "heap_bytes": 1113520,
+      "allocated_bytes": 3788784
+    },
+    {
+      "points": 256,
+      "bucket_points": 4,
+      "queries": 1,
+      "mode": "ranges",
+      "depth": 242,
+      "interactions": 40664,
+      "heap_bytes": 436208,
+      "allocated_bytes": 841776
+    },
+    {
+      "points": 256,
+      "bucket_points": 4,
+      "queries": 16,
+      "mode": "ranges",
+      "depth": 271,
+      "interactions": 51525,
+      "heap_bytes": 480256,
+      "allocated_bytes": 1124816
+    },
+    {
+      "points": 256,
+      "bucket_points": 4,
+      "queries": 64,
+      "mode": "ranges",
+      "depth": 295,
+      "interactions": 86212,
+      "heap_bytes": 673936,
+      "allocated_bytes": 2029040
+    },
+    {
+      "points": 256,
+      "bucket_points": 4,
+      "queries": 256,
+      "mode": "ranges",
+      "depth": 299,
+      "interactions": 224836,
+      "heap_bytes": 1418368,
+      "allocated_bytes": 5643248
+    }
+  ],
+  "library": {
+    "sha256": "15ab6fe0d35f3c1fbff8deccafdac097472a042386cfdea7586b4f3c4ef81aeb",
+    "files": {
+      "neighbors.vi": "4f8f86c57859313957efc5afdf9ef4b6ac1107245b9ee6e2ac2efa9039353ca5",
+      "sph.vi": "4d53d62be57fe5faa97ccc5e0d296027d7623c8960c98021c1aac6a72af58b0d",
+      "tree.vi": "15a3c0b47bb30aecc34a828ef56695e81745535b22fe492c575eea760983508d"
+    }
+  }
+}

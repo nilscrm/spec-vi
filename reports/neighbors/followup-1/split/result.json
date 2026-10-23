@@ -1,0 +1,16 @@
+[
+  {
+    "case": "scaling_64",
+    "depth": 1986,
+    "interactions": 821216,
+    "heap_bytes": 698672,
+    "allocated_bytes": 17908656
+  },
+  {
+    "case": "scaling_256",
+    "depth": 3542,
+    "interactions": 11093894,
+    "heap_bytes": 5431040,
+    "allocated_bytes": 238392192
+  }
+]

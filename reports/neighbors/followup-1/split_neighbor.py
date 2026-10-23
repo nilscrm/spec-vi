@@ -1,0 +1,53 @@
+from pathlib import Path
+out=Path('reports/neighbors/followup-1/split/sph');out.mkdir(parents=True,exist_ok=True)
+base=Path('reports/neighbors/followup-1/eager-cached/sph/neighbors.vi').read_text()
+s='''use #sph::tree::Tree;
+pub type Point = {id:N32,x:F64,y:F64,z:F64};
+pub type Query = {id:N32,x:F64,y:F64,z:F64,radius:F64,period_z:F64};
+pub enum* Index {Bucket(Tree[Point]), Split(N32,F64,Index,Index)}
+fn min(a:F64,b:F64)->F64 {if a<b {a}else{b}}
+fn max(a:F64,b:F64)->F64 {if a>b {a}else{b}}
+fn coord(p:Point,axis:N32)->F64 {if axis==0{p.x}else{if axis==1{p.y}else{p.z}}}
+fn count(t:Tree[Point])->N32 {match t{Tree::Empty(){0}Tree::Leaf(_){1}Tree::Branch(l,r){count(l)+count(r)}}}
+fn first(t:Tree[Point])->Point {match t{Tree::Leaf(p){p}Tree::Branch(l,_){first(l)}Tree::Empty(){unreachable()}}}
+fn last(t:Tree[Point])->Point {match t{Tree::Leaf(p){p}Tree::Branch(_,r){last(r)}Tree::Empty(){unreachable()}}}
+fn middle(t:Tree[Point])->Point {match t{Tree::Leaf(p){p}Tree::Branch(_,r){first(r)}Tree::Empty(){unreachable()}}}
+fn compact(t:Tree[Point])->Tree[Point] {match t{Tree::Branch(l,r){join(compact(l),compact(r))}x{x}}}
+fn join(a:Tree[Point],b:Tree[Point])->Tree[Point] {match (a,b){(Tree::Empty(),b){b}(a,Tree::Empty()){a}(a,b){Tree::Branch(a,b)}}}
+fn partition(t:Tree[Point],axis:N32,mid:F64)->((N32,Tree[Point]),(N32,Tree[Point])) {
+ match t{
+ Tree::Empty(){((0,Tree::Empty()),(0,Tree::Empty()))}
+ Tree::Leaf(p){if coord(p,axis)<mid {((1,Tree::Leaf(p)),(0,Tree::Empty()))}else{((0,Tree::Empty()),(1,Tree::Leaf(p)))}}
+ Tree::Branch(l,r){let ((a,ll),(b,lr))=partition(l,axis,mid);let ((c,rl),(d,rr))=partition(r,axis,mid);((a+c,join(ll,rl)),(b+d,join(lr,rr)))}
+ }
+}
+pub fn build(points:Tree[Point])->Index {let points=compact(points);let n=count(points);build_rec(points,n,0,0)}
+fn build_rec(points:Tree[Point],n:N32,level:N32,stalled:N32)->Index {
+ if n<=8 or level>=32 or stalled>=3 {Index::Bucket(points)}else{
+ let axis=level%3;
+ let a=coord(first(points),axis);let b=coord(middle(points),axis);let c=coord(last(points),axis);
+ let lo=min(a,min(b,c));let hi=max(a,max(b,c));let mid=lo+(hi-lo)*0.5[F64];
+ if mid<=lo or mid>=hi {build_rec(points,n,level+1,stalled+1)}else{
+ let ((nl,l),(nr,r))=partition(points,axis,mid);
+ if nl==0 or nr==0 {Index::Bucket(join(l,r))}else{Index::Split(axis,mid,build_rec(l,nl,level+1,0),build_rec(r,nr,level+1,0))}
+ }
+ }
+}
+fn scan(t:Tree[Point],q:Query)->Tree[N32] {match t{Tree::Empty(){Tree::Empty()}Tree::Leaf(p){if inside(p,q){Tree::Leaf(p.id)}else{Tree::Empty()}}Tree::Branch(l,r){Tree::Branch(scan(l,q),scan(r,q))}}}
+pub fn find(index:Index,q:Query)->Tree[N32] {
+ match index {
+ Index::Bucket(t){scan(t,q)}
+ Index::Split(axis,mid,l,r){
+ let x=if axis==0{q.x}else{if axis==1{q.y}else{q.z}};
+ let periodic=(axis==2) & (q.period_z>0.0[F64]);
+ let left=(x-q.radius<=mid) | (periodic & (x-q.period_z-q.radius<=mid));
+ let right=(x+q.radius>=mid) | (periodic & (x+q.period_z+q.radius>=mid));
+ Tree::Branch(if left {find(l,q)}else{Tree::Empty()},if right {find(r,q)}else{Tree::Empty()})
+ }
+ }
+}
+'''
+s+=base[base.index('fn inside('):base.index('fn overlap_z(')]
+# Empty samples are unreachable after compact/count guards, use explicit diagnostic.
+s=s.replace('unreachable()','debug::error("empty sample")')
+(out/'neighbors.vi').write_text(s);(out/'sph.vi').write_text('pub mod neighbors;pub mod tree;\n');(out/'tree.vi').write_text(Path('benchmarks/sph-exa/vine/tree.vi').read_text())

@@ -1,0 +1,9 @@
+{
+  "milestone": "pilot",
+  "passed": false,
+  "port_complete": false,
+  "scope": "Initialization fields and density with upstream-provided neighbor lists on initial square-patch states; not tree search or time integration",
+  "correctness": [],
+  "experiments": [],
+  "error": "Command failed: ['/Applications/Xcode.app/Contents/Developer/usr/bin/python3', '/Users/nils/repos/spec-vi/tools/vine_exec.py', 'run', '--lib', 'sph=/Users/nils/repos/spec-vi/benchmarks/sph-exa/vine', '--heap', '2G', '/Users/nils/repos/spec-vi/reports/vine/repin-20261014/pilot/init_12.vi']; see /Users/nils/repos/spec-vi/reports/vine/repin-20261014/pilot/init_12_vine.stderr"
+}

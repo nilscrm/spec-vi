@@ -1,0 +1,17 @@
+{
+  "argv": [
+    "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+    "/Users/nils/repos/spec-vi/tools/vine_exec.py",
+    "run",
+    "--lib",
+    "sph=/Users/nils/repos/spec-vi/reports/neighbors/cell-diagnostics/sph",
+    "/Users/nils/repos/spec-vi/reports/neighbors/cell-diagnostics/scaling_256_q256_ranges_correctness.vi"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 143556608,
+  "wall_seconds": 0.479762666975148,
+  "stdout": "/Users/nils/repos/spec-vi/reports/neighbors/cell-diagnostics/scaling_256_q256_ranges_correctness.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/neighbors/cell-diagnostics/scaling_256_q256_ranges_correctness.stderr"
+}

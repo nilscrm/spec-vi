@@ -1,0 +1,227 @@
+
+use ops::{Cast, arithmetic::{Add, Div, Mul, Neg, Pos, Pow, Rem, Sub}, comparison::{Eq, Le, Lt}};
+
+#[builtin = "F64"]
+pub type F64;
+
+mod common;
+
+pub mod F64 {
+  pub mod exp;
+  pub mod ln;
+
+  /// Nearest binary64 value to pi.
+  pub const pi: F64 = 3.141592653589793[F64];
+
+  pub const nan: F64 = F32::nan as F64;
+  pub const inf: F64 = F32::inf as F64;
+  pub const neg_inf: F64 = F32::neg_inf as F64;
+
+  pub impl : Default[F64] {
+    const default: F64 = 0.0[F64];
+  }
+
+  pub impl fork: Fork[F64] {
+    fn fork(&f: &F64) -> F64 {
+      safe $ivy { ${f} = vi:ext#1[vi:f64:fork](${~f} ^) }
+    }
+  }
+
+  pub impl drop: Drop[F64] {
+    fn drop(f: F64) {
+      safe $ivy { ${f} = vi:ext#1[vi:f64:drop] }
+    }
+  }
+
+  pub impl add: Add[F64, F64, F64] {
+    fn add(a: F64, b: F64) -> F64 {
+      safe $ivy { ${a} = vi:ext#2[vi:f64:add](${b} ^) }
+    }
+  }
+
+  pub impl sub: Sub[F64, F64, F64] {
+    fn sub(a: F64, b: F64) -> F64 {
+      safe $ivy { ${a} = vi:ext#2[vi:f64:sub](${b} ^) }
+    }
+  }
+
+  pub impl mul: Mul[F64, F64, F64] {
+    fn mul(a: F64, b: F64) -> F64 {
+      safe $ivy { ${a} = vi:ext#2[vi:f64:mul](${b} ^) }
+    }
+  }
+
+  pub impl pow_n32: Pow[F64, N32, F64] {
+    fn pow(base: F64, exp: N32) -> F64 {
+      Pow::pow_by_squaring(base, exp)
+    }
+  }
+
+  pub impl pow_i32: Pow[F64, I32, F64] {
+    fn pow(base: F64, exp: I32) -> F64 {
+      if exp < +0 {
+        (1.0 as F64) / (base ** (-exp as N32))
+      } else {
+        base ** (exp as N32)
+      }
+    }
+  }
+
+  pub impl div: Div[F64, F64, F64] {
+    fn div(a: F64, b: F64) -> F64 {
+      safe $ivy { ${a} = vi:ext#2[vi:f64:div](${b} ^) }
+    }
+  }
+
+  pub impl rem: Rem[F64, F64, F64] {
+    fn rem(a: F64, b: F64) -> F64 {
+      safe $ivy { ${a} = vi:ext#2[vi:f64:rem](${b} ^) }
+    }
+  }
+
+  pub fn .sqrt(a: F64) -> F64 {
+    safe $ivy { ${a} = vi:ext#1[vi:f64:sqrt](^) }
+  }
+
+  /// Sine of an angle in radians, using the host floating-point implementation.
+  /// Preserves signed zero; nonfinite inputs produce NaN. Rounding accuracy is
+  /// platform-dependent, as with the underlying host math library.
+  pub fn .sin(a: F64) -> F64 {
+    safe $ivy { ${a} = vi:ext#1[vi:f64:sin](^) }
+  }
+
+  pub impl pos: Pos[F64, F64] {
+    fn pos(f: F64) -> F64 {
+      f
+    }
+  }
+
+  pub impl neg: Neg[F64, F64] {
+    fn neg(f: F64) -> F64 {
+      F64::from_bits(N64(0, I32::minimum as N32)) - f
+    }
+  }
+
+  pub impl eq: Eq[F64] {
+    fn eq(&a: &F64, &b: &F64) -> Bool {
+      safe $ivy { ${a} = vi:ext#2[vi:f64:eq](${b} ^) }
+    }
+
+    fn ne(&a: &F64, &b: &F64) -> Bool {
+      safe $ivy { ${a} = vi:ext#2[vi:f64:ne](${b} ^) }
+    }
+  }
+
+  pub impl lt: Lt[F64] {
+    fn lt(&a: &F64, &b: &F64) -> Bool {
+      safe $ivy { ${a} = vi:ext#2[vi:f64:lt](${b} ^) }
+    }
+  }
+
+  pub impl le: Le[F64] {
+    fn le(&a: &F64, &b: &F64) -> Bool {
+      safe $ivy { ${a} = vi:ext#2[vi:f64:le](${b} ^) }
+    }
+  }
+
+  pub impl from_n32: Cast[N32, F64] {
+    fn cast(n: N32) -> F64 {
+      safe $ivy { ${n} = vi:ext#1[vi:n32:to_f64](^) }
+    }
+  }
+
+  pub impl to_n32: Cast[F64, N32] {
+    fn cast(f: F64) -> N32 {
+      safe $ivy { ${f} = vi:ext#1[vi:f64:to_n32](^) }
+    }
+  }
+
+  pub impl from_i32: Cast[I32, F64] {
+    fn cast(i: I32) -> F64 {
+      safe $ivy { ${i} = vi:ext#1[vi:i32:to_f64](^) }
+    }
+  }
+
+  pub impl to_i32: Cast[F64, I32] {
+    fn cast(f: F64) -> I32 {
+      safe $ivy { ${f} = vi:ext#1[vi:f64:to_i32](^) }
+    }
+  }
+
+  pub impl from_f32: Cast[F32, F64] {
+    fn cast(f: F32) -> F64 {
+      safe $ivy { ${f} = vi:ext#1[vi:f32:to_f64](^) }
+    }
+  }
+
+  pub impl to_f32: Cast[F64, F32] {
+    fn cast(f: F64) -> F32 {
+      safe $ivy { ${f} = vi:ext#1[vi:f64:to_f32](^) }
+    }
+  }
+
+  pub impl from_n64: Cast[N64, F64] {
+    fn cast(N64(lo, hi): N64) -> F64 {
+      safe $ivy { ${lo} = vi:ext#2[vi:n64:to_f64](${hi} ^) }
+    }
+  }
+
+  pub impl to_n64: Cast[F64, N64] {
+    fn cast(f: F64) -> N64 {
+      N64(safe $ivy { ${f} = vi:ext#1[vi:f64:to_n64](^0 ^1) })
+    }
+  }
+
+  pub fn .to_bits(f: F64) -> N64 {
+    N64(safe $ivy { ${f} = vi:ext#1[vi:f64:to_bits](^0 ^1) })
+  }
+
+  pub fn from_bits(N64(lo, hi): N64) -> F64 {
+    safe $ivy { ${lo} = vi:ext#2[vi:f64:from_bits](${hi} ^) }
+  }
+
+  pub fn .abs(f: F64) -> F64 {
+    if f < (0.0 as F64) {
+      -f
+    } else {
+      f
+    }
+  }
+
+  pub impl show: Show[F64] {
+    fn show(&self: &F64) -> Show {
+      Show::Literal("{self}")
+    }
+  }
+
+  pub fn parse(s: String) -> Option[F64] {
+    Float::parse[F64, N64](s)
+  }
+
+  pub impl float: Float[F64, N64] {
+    const nan: F64 = F64::nan;
+    const inf: F64 = F64::inf;
+    const neg_inf: F64 = F64::neg_inf;
+    const zero: F64 = 0.0[F64];
+
+    const num_mantissa_bits: N32 = 52;
+    const num_exponent_bits: N32 = 11;
+
+    const max_exponent: I32 = +1023;
+    const min_exponent: I32 = -1022;
+    const min_subnormal_exponent: I32 = -1074;
+    const max_decimal_digits: N32 = 19;
+
+    fn from_parts(negative: Bool, raw_exp: N32, mantissa: N64) -> F64 {
+      F64::from_bits(negative as N64 << 63 | raw_exp as N64 << 52 | mantissa)
+    }
+
+    fn to_parts(f: F64) -> { negative: Bool, raw_exp: N32, mantissa: N64 } {
+      let bits = f.to_bits();
+      let negative = (bits >> 63) as N32 == 1;
+      let raw_exp = (bits >> 52) as N32 & 0x7ff;
+      let mantissa = bits & 0xfffffffffffff[N64];
+      { negative, raw_exp, mantissa }
+    }
+  }
+}

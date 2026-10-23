@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "/Users/nils/repos/spec-vi/work/build/sph-exa",
+    "-n",
+    "12",
+    "-s",
+    "1",
+    "-w",
+    "1"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi/reports/runs/20260920T180935Z-79500/bootstrap/reference-n12",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 7176192,
+  "wall_seconds": 0.3849998749792576,
+  "stdout": "/Users/nils/repos/spec-vi/reports/runs/20260920T180935Z-79500/bootstrap/reference-n12/run.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/runs/20260920T180935Z-79500/bootstrap/reference-n12/run.stderr"
+}

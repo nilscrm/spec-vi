@@ -1,0 +1,20 @@
+{
+  "argv": [
+    "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+    "/Users/nils/repos/spec-vi/tools/vine_exec.py",
+    "run",
+    "--lib",
+    "sph=/Users/nils/repos/spec-vi/reports/vine/dynamic-reads/sph",
+    "--heap",
+    "2G",
+    "--depth",
+    "/Users/nils/repos/spec-vi/reports/vine/dynamic-reads/n64_q8_mixed_array_ref_depth.vi"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 117981184,
+  "wall_seconds": 0.41124312501051463,
+  "stdout": "/Users/nils/repos/spec-vi/reports/vine/dynamic-reads/n64_q8_mixed_array_ref_depth.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/vine/dynamic-reads/n64_q8_mixed_array_ref_depth.stderr"
+}

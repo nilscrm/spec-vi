@@ -1,0 +1,42 @@
+{
+  "compact": {
+    "depth256": 1596,
+    "work256": 4294285,
+    "work_growth": 7.90554658605778,
+    "depth_heuristic_pass": false,
+    "work_growth_pass": true,
+    "accepted": false
+  },
+  "grid2": {
+    "depth256": 2043,
+    "work256": 11288949,
+    "work_growth": 12.28122266656803,
+    "depth_heuristic_pass": false,
+    "work_growth_pass": false,
+    "accepted": false
+  },
+  "grid4": {
+    "depth256": 2029,
+    "work256": 15094860,
+    "work_growth": 6.493415542442897,
+    "depth_heuristic_pass": false,
+    "work_growth_pass": true,
+    "accepted": false
+  },
+  "wires2": {
+    "depth256": 2043,
+    "work256": 11129039,
+    "work_growth": 12.654026329014902,
+    "depth_heuristic_pass": false,
+    "work_growth_pass": false,
+    "accepted": false
+  },
+  "wires4": {
+    "depth256": 2029,
+    "work256": 13633118,
+    "work_growth": 6.95027180410324,
+    "depth_heuristic_pass": false,
+    "work_growth_pass": true,
+    "accepted": false
+  }
+}

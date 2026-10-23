@@ -1,0 +1,6 @@
+use #sph::{physics,tree};
+use tree::Tree;
+pub fn main(&io:&IO) {
+ let output=physics::initial_stages(black_box(12),0,1,3);
+ match output {Tree::Leaf((i,p)){io.println("{i} {p.x} {p.ro} {p.ro_0} {p.p} {p.u}");} _{debug::error("unexpected output");}}
+}

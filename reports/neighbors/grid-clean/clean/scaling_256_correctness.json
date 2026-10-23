@@ -1,0 +1,19 @@
+{
+  "argv": [
+    "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+    "/Users/nils/repos/spec-vi/tools/vine_exec.py",
+    "run",
+    "--lib",
+    "sph=/Users/nils/repos/spec-vi/reports/neighbors/grid-clean/clean/sph",
+    "--heap",
+    "2G",
+    "/Users/nils/repos/spec-vi/reports/neighbors/grid-clean/clean/scaling_256_correctness.vi"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 179650560,
+  "wall_seconds": 0.7779042079928331,
+  "stdout": "/Users/nils/repos/spec-vi/reports/neighbors/grid-clean/clean/scaling_256_correctness.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/neighbors/grid-clean/clean/scaling_256_correctness.stderr"
+}

@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+    "/Users/nils/repos/spec-vi/tools/vine_exec.py",
+    "run",
+    "--no-perf",
+    "/Users/nils/repos/spec-vi/work/vine-lookup/tests/programs/n64_div_rem.vi"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 119734272,
+  "wall_seconds": 0.5015770420141052,
+  "stdout": "/Users/nils/repos/spec-vi/reports/vine/clz/n64_div_rem.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/vine/clz/n64_div_rem.stderr"
+}

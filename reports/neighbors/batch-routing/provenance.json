@@ -1,0 +1,13 @@
+{
+  "library": {
+    "sha256": "486e9365cc8f6d5a56a8d901ae8f51bd7689a218b63b8adf5b2854f18b8b5992",
+    "files": {
+      "neighbors.vi": "dc5712f271a12189140233b8adabacb68593c5fe7ce5b651a123e0f4efb54390",
+      "sph.vi": "4d53d62be57fe5faa97ccc5e0d296027d7623c8960c98021c1aac6a72af58b0d",
+      "tree.vi": "15a3c0b47bb30aecc34a828ef56695e81745535b22fe492c575eea760983508d"
+    }
+  },
+  "original": "77119c67cd5b666e8092a7f3baf08dd66437b3bb36e17ca37975f526a3ec0c5e",
+  "fixtures": "d56bedad91b134068accbffa5ad7029e37c46c317e4088d6c0648c63e2f461c7",
+  "policy": "9ce2f516204a0f398b94a78b78b0125914eaa33d23e27603888fdb8fca32dbba"
+}

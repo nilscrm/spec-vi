@@ -1,0 +1,14 @@
+use #sph::{pilot, tree};
+use tree::Tree;
+fn dump(tree: Tree[pilot::Particle], &io: &IO) {
+  match tree {
+    Tree::Empty() {}
+    Tree::Leaf(p) { io.println("{p.0} {p.1} {p.2} {p.3} {p.4} {p.5} {p.6} {p.7} {p.8} {p.9} {p.10} {p.11} {p.12} {p.13} {p.14} {p.15} {p.16} {p.17} {p.18} {p.19} {p.20} {p.21} {p.22} {p.23} {p.24} {p.25} {p.26} {p.27} {p.28} {p.29}"); }
+    Tree::Branch(l,r) { dump(l, &io); dump(r, &io); }
+  }
+}
+pub fn main(&io: &IO) {
+let input = black_box(Tree::Branch(Tree::Branch(Tree::Branch(Tree::Branch(Tree::Branch(Tree::Leaf(0),Tree::Leaf(132)),Tree::Branch(Tree::Leaf(264),Tree::Leaf(396))),Tree::Branch(Tree::Branch(Tree::Leaf(528),Tree::Leaf(660)),Tree::Branch(Tree::Leaf(793),Tree::Leaf(925)))),Tree::Branch(Tree::Branch(Tree::Branch(Tree::Leaf(1057),Tree::Leaf(1189)),Tree::Branch(Tree::Leaf(1321),Tree::Leaf(1453))),Tree::Branch(Tree::Branch(Tree::Leaf(1585),Tree::Leaf(1717)),Tree::Branch(Tree::Leaf(1849),Tree::Leaf(1981))))),Tree::Branch(Tree::Branch(Tree::Branch(Tree::Branch(Tree::Leaf(2114),Tree::Leaf(2246)),Tree::Branch(Tree::Leaf(2378),Tree::Leaf(2510))),Tree::Branch(Tree::Branch(Tree::Leaf(2642),Tree::Leaf(2774)),Tree::Branch(Tree::Leaf(2906),Tree::Leaf(3038)))),Tree::Branch(Tree::Branch(Tree::Branch(Tree::Leaf(3170),Tree::Leaf(3302)),Tree::Branch(Tree::Leaf(3435),Tree::Leaf(3567))),Tree::Branch(Tree::Branch(Tree::Leaf(3699),Tree::Leaf(3831)),Tree::Branch(Tree::Leaf(3963),Tree::Leaf(4095)))))));
+let output = tree::map(input, fn* (i: N32) { pilot::initialize(black_box(16), i, true) });
+dump(output, &io);
+}

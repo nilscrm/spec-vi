@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "checks": {
+    "all_evaluators_pass": true,
+    "matching_current_library": true,
+    "current_driver": true,
+    "fixed_stage_coverage": true,
+    "fixed_output_coverage": true,
+    "all_stage_fields_scalars": true,
+    "unchanged_upstream": true,
+    "unchanged_oracle": true,
+    "unchanged_policy": true,
+    "pinned_toolchain": true
+  },
+  "port_complete": false,
+  "scope": "Counter/configuration change and fixed-domain regressions only"
+}

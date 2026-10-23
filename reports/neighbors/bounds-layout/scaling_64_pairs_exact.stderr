@@ -1,0 +1,22 @@
+warning: unused item
+   @ scaling_64_pairs_exact.vi:5:4
+ 5 | fn checksum(b:neighbors::Bounds)->N32 {((bits(b.xmin)+bits(b.xmax))+(bits(b.ymin)+bits(b.ymax)))+((bits(b.zmin)+bits(b.zmax))+b.n)}
+
+
+Interactions
+  Total               44_816
+  Annihilate          20_575
+  Commute                  0
+  Copy                 1_122
+  Erase                3_724
+  Graft                6_821
+  Extrinsic           12_574
+
+Memory
+  Heap                30_624 B
+  Allocated          949_120 B
+  Freed              949_120 B
+
+Performance
+  Time                     0 ms
+  Speed           46_644_851 IPS

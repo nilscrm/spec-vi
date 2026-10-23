@@ -1,0 +1,12 @@
+{
+  "accepted_milestone": false,
+  "all_fixed_memberships_pass": true,
+  "depth256": 775,
+  "work256": 7957961,
+  "work_growth": 4.692609016127606,
+  "heap256": 38552928,
+  "depth_heuristic_pass": false,
+  "work_growth_pass": true,
+  "work_ratio_pass": true,
+  "next": "extra boundary/random/degenerate correctness before any API/gate integration"
+}

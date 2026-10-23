@@ -1,0 +1,15 @@
+use #sph::tree;use tree::Tree;use #root::data::Array;
+fn value(x:N32)->N32 {(x*1664525)+1013904223}
+fn pick(t:Tree[N32],n:N32,i:N32)->N32 {match t {Tree::Empty(){0}Tree::Leaf(x){x}Tree::Branch(l,r){let mid=n/2;if i<mid {pick(l,mid,i)}else{pick(r,n-mid,i-mid)}}}}
+fn tree_reads(t:Tree[N32],n:N32,qs:Tree[N32])->Tree[N32]{match qs{
+ Tree::Empty(){Tree::Empty()}Tree::Leaf(i){Tree::Leaf(pick(t,n,i))}Tree::Branch(l,r){Tree::Branch(tree_reads(t,n,l),tree_reads(t,n,r))}
+}}
+fn array_copy(a:Array[N32],qs:Tree[N32])->Tree[N32]{match qs{
+ Tree::Empty(){Tree::Empty()}Tree::Leaf(i){Tree::Leaf(a.get(i).assume())}Tree::Branch(l,r){Tree::Branch(array_copy(a,l),array_copy(a,r))}
+}}
+fn array_ref(&a:&Array[N32],qs:Tree[N32])->Tree[N32]{match qs{
+ Tree::Empty(){Tree::Empty()}Tree::Leaf(i){Tree::Leaf(a.get(i).assume())}Tree::Branch(l,r){Tree::Branch(array_ref(&a,l),array_ref(&a,r))}
+}}
+fn sum(t:Tree[N32])->N32{match t{Tree::Empty(){0}Tree::Leaf(x){x}Tree::Branch(l,r){sum(l)+sum(r)}}}
+fn dump(t:Tree[N32],&io:&IO){match t{Tree::Empty(){}Tree::Leaf(x){io.println("{x}");}Tree::Branch(l,r){dump(l,&io);dump(r,&io);}}}
+pub fn main(&io:&IO){let raw=black_box([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63]);let data=(raw as Array).map_unordered(fn*(x:N32)->N32 {value(x)});let queries=black_box(Tree::Branch(Tree::Branch(Tree::Branch(Tree::Leaf(44),Tree::Leaf(7)),Tree::Branch(Tree::Leaf(29),Tree::Leaf(56))),Tree::Branch(Tree::Branch(Tree::Leaf(1),Tree::Leaf(26)),Tree::Branch(Tree::Leaf(41),Tree::Leaf(0)))));let result=array_copy(data,queries);dump(result,&io);}

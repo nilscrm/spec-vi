@@ -1,0 +1,10 @@
+{
+  "checks": {
+    "original_driver_matches_report": true,
+    "computation_and_output_unchanged": true,
+    "argument_probes_passed": true,
+    "repaired_driver_matches_probes": true
+  },
+  "new_driver_sha256": "5d59cd8d38c709cc5894a520260a2d26848ca9b3f7e42cd88e0d44427f72f849",
+  "positive_rerun": "validated-parser-20260930"
+}

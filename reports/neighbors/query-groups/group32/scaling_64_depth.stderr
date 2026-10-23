@@ -1,0 +1,23 @@
+
+Interactions
+  Total              545_502
+  Annihilate         146_300
+  Commute                  0
+  Copy                10_659
+  Erase               99_473
+  Graft               41_137
+  Extrinsic          247_933
+
+Parallelism
+  Depth                1_026
+  Breadth                531
+  Speedup                273 cB
+
+Memory
+  Heap             1_159_344 B
+  Allocated       13_244_768 B
+  Freed           13_244_768 B
+
+Performance
+  Time                     9 ms
+  Speed           55_982_414 IPS

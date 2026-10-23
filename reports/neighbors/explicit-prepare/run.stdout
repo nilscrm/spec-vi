@@ -1,0 +1,30 @@
+compact scaling_64 correctness passed
+compact scaling_64 depth [{'variant': 'compact', 'case': 'scaling_64', 'mode': 'depth', 'wall_seconds': 0.4668370000435971, 'peak_rss_bytes': 129236992, 'depth': 1037, 'interactions': 543199, 'heap_bytes': 1180720, 'allocated_bytes': 13196960}]
+compact scaling_64 workers2 passed
+compact scaling_256 correctness passed
+compact scaling_256 depth [{'variant': 'compact', 'case': 'scaling_256', 'mode': 'depth', 'wall_seconds': 0.5363696250133216, 'peak_rss_bytes': 148340736, 'depth': 1596, 'interactions': 4294285, 'heap_bytes': 7557088, 'allocated_bytes': 104764256}]
+compact scaling_256 workers2 passed
+wires2 empty correctness passed
+wires2 strict_boundary correctness passed
+wires2 periodic correctness passed
+wires2 clusters_shuffled correctness passed
+wires2 scaling_64 correctness passed
+wires2 scaling_64 depth [{'variant': 'wires2', 'case': 'scaling_64', 'mode': 'depth', 'wall_seconds': 0.7101532089873217, 'peak_rss_bytes': 133513216, 'depth': 651, 'interactions': 881363, 'heap_bytes': 2000288, 'allocated_bytes': 19644432}]
+wires2 scaling_64 workers2 passed
+wires2 scaling_256 correctness passed
+wires2 scaling_256 depth [{'variant': 'wires2', 'case': 'scaling_256', 'mode': 'depth', 'wall_seconds': 1.831047874991782, 'peak_rss_bytes': 172965888, 'depth': 839, 'interactions': 11136676, 'heap_bytes': 26859424, 'allocated_bytes': 245140064}]
+wires2 scaling_256 workers2 passed
+wires2 upstream_12 correctness passed
+wires2 upstream_16 correctness passed
+wires4 empty correctness passed
+wires4 strict_boundary correctness passed
+wires4 periodic correctness passed
+wires4 clusters_shuffled correctness passed
+wires4 scaling_64 correctness passed
+wires4 scaling_64 depth [{'variant': 'wires4', 'case': 'scaling_64', 'mode': 'depth', 'wall_seconds': 0.6139268330298364, 'peak_rss_bytes': 142786560, 'depth': 656, 'interactions': 1963400, 'heap_bytes': 9232240, 'allocated_bytes': 40785280}]
+wires4 scaling_64 workers2 passed
+wires4 scaling_256 correctness passed
+wires4 scaling_256 depth [{'variant': 'wires4', 'case': 'scaling_256', 'mode': 'depth', 'wall_seconds': 1.1669542500167154, 'peak_rss_bytes': 192692224, 'depth': 794, 'interactions': 13640755, 'heap_bytes': 40113504, 'allocated_bytes': 282786896}]
+wires4 scaling_256 workers2 passed
+wires4 upstream_12 correctness passed
+wires4 upstream_16 correctness passed

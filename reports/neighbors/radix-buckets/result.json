@@ -1,0 +1,72 @@
+{
+  "experiment": "batched query routing",
+  "accepted_milestone": false,
+  "correctness": [
+    {
+      "case": "empty",
+      "passed": true
+    },
+    {
+      "case": "strict_boundary",
+      "passed": true
+    },
+    {
+      "case": "periodic",
+      "passed": true
+    },
+    {
+      "case": "clusters_shuffled",
+      "passed": true
+    },
+    {
+      "case": "scaling_64",
+      "passed": true
+    },
+    {
+      "case": "scaling_256",
+      "passed": true
+    },
+    {
+      "case": "upstream_12",
+      "passed": true
+    },
+    {
+      "case": "upstream_16",
+      "passed": true
+    }
+  ],
+  "metrics": [
+    {
+      "case": "scaling_64",
+      "mode": "depth",
+      "peak_rss_bytes": 131366912,
+      "process_wall_seconds": 0.5317490000161342,
+      "depth": 1911,
+      "interactions": 552092,
+      "heap_bytes": 1492528,
+      "allocated_bytes": 13426352
+    },
+    {
+      "case": "scaling_64",
+      "mode": "workers2",
+      "peak_rss_bytes": 130777088,
+      "process_wall_seconds": 0.5225991659972351
+    },
+    {
+      "case": "scaling_256",
+      "mode": "depth",
+      "peak_rss_bytes": 155238400,
+      "process_wall_seconds": 0.742199125001207,
+      "depth": 2809,
+      "interactions": 5087347,
+      "heap_bytes": 12100816,
+      "allocated_bytes": 125251296
+    },
+    {
+      "case": "scaling_256",
+      "mode": "workers2",
+      "peak_rss_bytes": 145260544,
+      "process_wall_seconds": 0.5907637079944834
+    }
+  ]
+}

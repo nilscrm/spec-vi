@@ -1,0 +1,20 @@
+{
+  "argv": [
+    "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+    "/Users/nils/repos/spec-vi/tools/vine_exec.py",
+    "run",
+    "--heap",
+    "2G",
+    "--lib",
+    "sph=/Users/nils/repos/spec-vi/benchmarks/sph-exa/vine",
+    "--depth",
+    "/Users/nils/repos/spec-vi/reports/physics/scale-readiness-20261005/configuration/counts.vi"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 820297728,
+  "wall_seconds": 6.915048625029158,
+  "stdout": "/Users/nils/repos/spec-vi/reports/physics/scale-readiness-20261005/configuration/counts.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/physics/scale-readiness-20261005/configuration/counts.stderr"
+}

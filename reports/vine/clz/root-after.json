@@ -1,0 +1,26 @@
+{
+  "passed": true,
+  "measurements": [
+    {
+      "count": 1,
+      "depth": 74,
+      "interactions": 124,
+      "heap_bytes": 864,
+      "allocated_bytes": 2208
+    },
+    {
+      "count": 32,
+      "depth": 140,
+      "interactions": 1693,
+      "heap_bytes": 17280,
+      "allocated_bytes": 32400
+    },
+    {
+      "count": 1118,
+      "depth": 216,
+      "interactions": 56217,
+      "heap_bytes": 579584,
+      "allocated_bytes": 1084000
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "compact": {
+    "depth256": 1596,
+    "work256": 4294285,
+    "work_growth": 7.90554658605778,
+    "depth_pass": false,
+    "work_growth_pass": true,
+    "accepted": false
+  },
+  "single": {
+    "depth256": 1587,
+    "work256": 11793450,
+    "work_growth": 13.215756103355304,
+    "depth_pass": false,
+    "work_growth_pass": false,
+    "accepted": false
+  },
+  "group8": {
+    "depth256": 1566,
+    "work256": 4601958,
+    "work_growth": 8.375663397907703,
+    "depth_pass": false,
+    "work_growth_pass": true,
+    "accepted": false
+  },
+  "group32": {
+    "depth256": 1570,
+    "work256": 4320138,
+    "work_growth": 7.91956399793218,
+    "depth_pass": false,
+    "work_growth_pass": true,
+    "accepted": false
+  }
+}

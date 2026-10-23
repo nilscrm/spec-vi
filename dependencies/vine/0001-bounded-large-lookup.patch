@@ -1,0 +1,169 @@
+diff --git a/root/data/Lookup.vi b/root/data/Lookup.vi
+index 1d80b2dd..f7db608e 100644
+--- a/root/data/Lookup.vi
++++ b/root/data/Lookup.vi
+@@ -3,17 +3,17 @@
+ /// ```vi
+ /// use #root::data::Lookup;
+ ///
+-/// fn primes(_: Lookup::Size8) -> List[N32] {
+-///   [2, 3, 5, 7, 11, 13]
++/// fn primes() -> Lookup::Size8[N32] {
++///   Lookup([2, 3, 5, 7, 11, 13])
+ /// }
+ ///
+ /// primes.lookup(2) // 5
+ /// ```
+ ///
+-/// Functions of the form `fn (Lookup::SizeN) -> List[T]` implement the
++/// Functions of the form `fn () -> Lookup::SizeN[T]` implement the
+ /// `Lookup` trait, allowing `O(log(n))` lookup via the `lookup` method.
+ ///
+-/// The `Lookup::SizeN` parameter provides a power-of-two upper bound on the
++/// The `Lookup::SizeN` return type provides a power-of-two upper bound on the
+ /// length of the list; it is an error if the list exceeds this length.
+ mod;
+ 
+@@ -31,6 +31,7 @@ pub fn .lookup[L?, N, T; Lookup[L, N, T], Size[N], Drop[T]](_: L, index: N32) ->
+   assert Lookup::table[L].len() <= Size::max_size[N] else {
+     debug::error("lookup table size exceeds given upper bound")
+   }
++  assert index < Lookup::table[L].len() else { debug::error("lookup index out of bounds") }
+   Size::select[N; _, table[L]](index)
+ }
+ 
+@@ -93,6 +94,9 @@ type _512 = S[_256];
+ type _1024 = S[_512];
+ type _2048 = S[_1024];
+ type _4096 = S[_2048];
++type _8192 = S[_4096];
++type _16384 = S[_8192];
++type _32768 = S[_16384];
+ 
+ pub type Size1[T] = Lookup[_1, T];
+ pub type Size2[T] = Lookup[_2, T];
+@@ -107,6 +111,9 @@ pub type Size512[T] = Lookup[_512, T];
+ pub type Size1024[T] = Lookup[_1024, T];
+ pub type Size2048[T] = Lookup[_2048, T];
+ pub type Size4096[T] = Lookup[_4096, T];
++pub type Size8192[T] = Lookup[_8192, T];
++pub type Size16384[T] = Lookup[_16384, T];
++pub type Size32768[T] = Lookup[_32768, T];
+ 
+ trait[] Const[T] {
+   const value: T;
+diff --git a/tests/programs/lookup_large.vi b/tests/programs/lookup_large.vi
+new file mode 100644
+index 00000000..e3a4ddcf
+--- /dev/null
++++ b/tests/programs/lookup_large.vi
+@@ -0,0 +1,12 @@
++
++use #root::data::Lookup;
++fn table() -> Lookup::Size32768[N32] {
++  Lookup((0..20000).map(fn* (x: N32) { x * 3 }).collect[List]())
++}
++pub fn main(&io: &IO) {
++  assert table.lookup(0) == 0 else { debug::error("check failed") }
++  assert table.lookup(8191) == 24573 else { debug::error("check failed") }
++  assert table.lookup(16384) == 49152 else { debug::error("check failed") }
++  assert table.lookup(19999) == 59997 else { debug::error("check failed") }
++  io.println("passed");
++}
+diff --git a/tests/programs/lookup_oob.vi b/tests/programs/lookup_oob.vi
+new file mode 100644
+index 00000000..e7f5b646
+--- /dev/null
++++ b/tests/programs/lookup_oob.vi
+@@ -0,0 +1,9 @@
++
++// @fail
++use #root::data::Lookup;
++fn table() -> Lookup::Size8[N32] {
++  Lookup([10, 20, 30])
++}
++pub fn main(&io: &IO) {
++  io.println("{table.lookup(black_box(8))}");
++}
+diff --git a/tests/snaps/programs/lookup/stats b/tests/snaps/programs/lookup/stats
+index 97604ec1..b2dd30c1 100644
+--- a/tests/snaps/programs/lookup/stats
++++ b/tests/snaps/programs/lookup/stats
+@@ -1,14 +1,14 @@
+ 
+ Interactions
+-  Total                  387
+-  Annihilate             115
++  Total                  397
++  Annihilate             117
+   Commute                  0
+-  Copy                    56
++  Copy                    58
+   Erase                   36
+-  Graft                   48
+-  Extrinsic              132
++  Graft                   50
++  Extrinsic              136
+ 
+ Memory
+   Heap                   816 B
+-  Allocated            6_688 B
+-  Freed                6_688 B
++  Allocated            6_848 B
++  Freed                6_848 B
+diff --git a/tests/snaps/programs/lookup_large/output.txt b/tests/snaps/programs/lookup_large/output.txt
+new file mode 100644
+index 00000000..b0aad4de
+--- /dev/null
++++ b/tests/snaps/programs/lookup_large/output.txt
+@@ -0,0 +1 @@
++passed
+diff --git a/tests/snaps/programs/lookup_large/stats b/tests/snaps/programs/lookup_large/stats
+new file mode 100644
+index 00000000..3cc3f3e3
+--- /dev/null
++++ b/tests/snaps/programs/lookup_large/stats
+@@ -0,0 +1,14 @@
++
++Interactions
++  Total                  817
++  Annihilate             171
++  Commute                  0
++  Copy                   150
++  Erase                  100
++  Graft                  106
++  Extrinsic              290
++
++Memory
++  Heap                   576 B
++  Allocated           12_512 B
++  Freed               12_512 B
+diff --git a/tests/snaps/programs/lookup_oob/output.txt b/tests/snaps/programs/lookup_oob/output.txt
+new file mode 100644
+index 00000000..e69de29b
+diff --git a/tests/snaps/programs/lookup_oob/stats b/tests/snaps/programs/lookup_oob/stats
+new file mode 100644
+index 00000000..bd294722
+--- /dev/null
++++ b/tests/snaps/programs/lookup_oob/stats
+@@ -0,0 +1,20 @@
++
++Error: the net did not return its `IO` handle
++
++  hint: try running the program in `--debug` mode to see error messages
++
++Error: a linear extrinsic was erased
++
++Interactions
++  Total                  232
++  Annihilate              45
++  Commute                  0
++  Copy                    72
++  Erase                   71
++  Graft                   37
++  Extrinsic                7
++
++Memory
++  Heap                   896 B
++  Allocated            2_720 B
++  Freed                2_720 B

@@ -1,0 +1,12 @@
+{
+  "milestone": "neighbors",
+  "passed": false,
+  "port_complete": false,
+  "scope": "Exact unsaturated neighbor membership, index construction and batched query depth; order and timestep integration pending",
+  "candidate": "grid",
+  "api": "batch",
+  "correctness": [],
+  "experiments": [],
+  "error": "Command failed: ['/Applications/Xcode.app/Contents/Developer/usr/bin/python3', '/Users/nils/repos/spec-vi/tools/vine_exec.py', 'run', '--lib', 'sph=/Users/nils/repos/spec-vi/benchmarks/sph-exa/vine', '--heap', '2G', '/Users/nils/repos/spec-vi/reports/vine/repin-20261014/neighbors/empty_tree_single.vi']; see /Users/nils/repos/spec-vi/reports/vine/repin-20261014/neighbors/empty_tree_single_correctness.stderr"
+}
+neighbors exit 1

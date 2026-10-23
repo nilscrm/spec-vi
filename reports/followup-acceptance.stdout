@@ -1,0 +1,24 @@
+# SPH-EXA runner status
+
+**Runner: failed**
+**Full port complete: no**
+
+Command failed: ['/Library/Frameworks/Python.framework/Versions/3.13/bin/python3', 'tools/neighbors_gate.py', '--output', '/Users/nils/repos/spec-vi/reports/runs/20260920T184247Z-82053/neighbors']; see /Users/nils/repos/spec-vi/reports/runs/20260920T184247Z-82053/neighbors/gate.stderr
+
+Updated: 2026-09-20T18:44:26+00:00
+Run: 20260920T184247Z-82053
+
+| Milestone | State |
+|---|---|
+| Runner, source integrity, reference smoke, depth instrumentation | passed |
+| Numerical evaluator and initialization/density pilot | passed |
+| Octree and neighbor-search validation | failed |
+| All SPH physics stages | pending |
+| Multiple timesteps and scaling | pending |
+| Full selected workloads and parallel hardware validation | pending |
+
+Live status: `make status` or `make watch`.
+Reports and raw logs: `reports/runs/<run-id>/`.
+STATUS.md is a snapshot; the status command also detects a crashed runner.
+A 30-minute follow-up in the Codex task continues the port; inspect its automation card for schedule/state.
+

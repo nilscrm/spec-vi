@@ -1,0 +1,8 @@
+{'points': 64, 'bucket_points': 4, 'queries': 1, 'mode': 'ranges', 'depth': 210, 'interactions': 10574, 'heap_bytes': 110960, 'allocated_bytes': 219472}
+{'points': 64, 'bucket_points': 4, 'queries': 16, 'mode': 'ranges', 'depth': 239, 'interactions': 19365, 'heap_bytes': 167824, 'allocated_bytes': 430032}
+{'points': 64, 'bucket_points': 4, 'queries': 64, 'mode': 'ranges', 'depth': 263, 'interactions': 47428, 'heap_bytes': 353920, 'allocated_bytes': 1102320}
+{'points': 64, 'bucket_points': 4, 'queries': 256, 'mode': 'ranges', 'depth': 267, 'interactions': 159556, 'heap_bytes': 1113520, 'allocated_bytes': 3788784}
+{'points': 256, 'bucket_points': 4, 'queries': 1, 'mode': 'ranges', 'depth': 242, 'interactions': 40664, 'heap_bytes': 436208, 'allocated_bytes': 841776}
+{'points': 256, 'bucket_points': 4, 'queries': 16, 'mode': 'ranges', 'depth': 271, 'interactions': 51525, 'heap_bytes': 480256, 'allocated_bytes': 1124816}
+{'points': 256, 'bucket_points': 4, 'queries': 64, 'mode': 'ranges', 'depth': 295, 'interactions': 86212, 'heap_bytes': 673936, 'allocated_bytes': 2029040}
+{'points': 256, 'bucket_points': 4, 'queries': 256, 'mode': 'ranges', 'depth': 299, 'interactions': 224836, 'heap_bytes': 1418368, 'allocated_bytes': 5643248}

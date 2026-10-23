@@ -1,0 +1,19 @@
+{
+  "argv": [
+    "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+    "/Users/nils/repos/spec-vi/tools/vine_exec.py",
+    "run",
+    "--lib",
+    "sph=/Users/nils/repos/spec-vi/benchmarks/sph-exa/vine",
+    "--heap",
+    "2G",
+    "/Users/nils/repos/spec-vi/reports/vine/repin-20261014/neighbors/extra_empty_queries_grid_batch.vi"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 871677952,
+  "wall_seconds": 6.854906083000003,
+  "stdout": "/Users/nils/repos/spec-vi/reports/vine/repin-20261014/neighbors/extra_empty_queries_grid_batch_correctness.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/vine/repin-20261014/neighbors/extra_empty_queries_grid_batch_correctness.stderr"
+}

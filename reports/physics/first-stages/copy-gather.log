@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "diagnostic_only": true,
+  "cases": [
+    {
+      "queries": 1,
+      "depth": 13672,
+      "interactions": 135190829,
+      "heap_bytes": 151541776,
+      "allocated_bytes": 2698708848,
+      "peak_rss_bytes": 1614610432
+    },
+    {
+      "queries": 8,
+      "depth": 13755,
+      "interactions": 1405749324,
+      "heap_bytes": 2006551856,
+      "allocated_bytes": 28042346208,
+      "peak_rss_bytes": 2876358656
+    }
+  ]
+}

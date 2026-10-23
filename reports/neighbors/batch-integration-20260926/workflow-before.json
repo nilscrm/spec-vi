@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "milestones": [
+    {
+      "id": "bootstrap",
+      "title": "Runner, source integrity, reference smoke, depth instrumentation",
+      "gate": [
+        "{python}",
+        "tools/evaluate.py",
+        "bootstrap",
+        "--output",
+        "{output}"
+      ],
+      "timeout_seconds": 300
+    },
+    {
+      "id": "pilot",
+      "title": "Numerical evaluator and initialization/density pilot",
+      "gate": [
+        "{python}",
+        "tools/pilot_gate.py",
+        "--output",
+        "{output}"
+      ],
+      "next_action": "Pilot has a real gate; resolve reported numerical/depth failures without changing acceptance budgets.",
+      "prompt": "docs/WORKER_PROMPT.md",
+      "timeout_seconds": 1800
+    },
+    {
+      "id": "neighbors",
+      "title": "Octree and neighbor-search validation",
+      "gate": [
+        "{python}",
+        "tools/neighbors_gate.py",
+        "--output",
+        "{output}",
+        "--candidate",
+        "grid"
+      ],
+      "next_action": "Optimize neighbor build/query depth and work without weakening the fixed gate.",
+      "prompt": "docs/NEIGHBOR_WORKER.md",
+      "timeout_seconds": 1800
+    },
+    {
+      "id": "physics",
+      "title": "All SPH physics stages",
+      "gate": null,
+      "next_action": "Implement per-stage numerical and depth acceptance checks.",
+      "prompt": "docs/WORKER_PROMPT.md"
+    },
+    {
+      "id": "integration",
+      "title": "Multiple timesteps and scaling",
+      "gate": null,
+      "next_action": "Implement integrated acceptance checks.",
+      "prompt": "docs/WORKER_PROMPT.md"
+    },
+    {
+      "id": "workloads",
+      "title": "Full selected workloads and parallel hardware validation",
+      "gate": null,
+      "next_action": "Run the selected full workloads, verify resource budgets and numerical outputs, and document compatibility limits.",
+      "prompt": "docs/WORKER_PROMPT.md"
+    }
+  ]
+}

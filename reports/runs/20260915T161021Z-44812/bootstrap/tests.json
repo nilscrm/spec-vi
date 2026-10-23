@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests",
+    "-v"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 30441472,
+  "wall_seconds": 0.6674514589976752,
+  "stdout": "/Users/nils/repos/spec-vi/reports/runs/20260915T161021Z-44812/bootstrap/tests.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/runs/20260915T161021Z-44812/bootstrap/tests.stderr"
+}

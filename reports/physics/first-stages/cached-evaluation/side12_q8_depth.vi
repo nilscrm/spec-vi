@@ -1,0 +1,8 @@
+use #sph::{physics,pilot,tree};
+use tree::Tree;
+fn dump(t:Tree[(N32,physics::Particle)],&io:&IO) {
+ match t {Tree::Empty(){} Tree::Leaf((i,p)){io.println("{i} {p.x} {p.y} {p.z} {p.x_m1} {p.y_m1} {p.z_m1} {p.vx} {p.vy} {p.vz} {p.ro} {p.ro_0} {p.u} {p.p} {p.p_0} {p.h} {p.m} {p.c} {p.grad_P_x} {p.grad_P_y} {p.grad_P_z} {p.du} {p.du_m1} {p.dt} {p.dt_m1} {p.c11} {p.c12} {p.c13} {p.c22} {p.c23} {p.c33}");}
+ Tree::Branch(l,r){dump(l,&io);dump(r,&io);}}
+}
+fn value(p:physics::Particle)->F64 {((((p.x + (p.y + p.z)) + ((p.x_m1 + p.y_m1) + (p.z_m1 + p.vx))) + (((p.vy + p.vz) + (p.ro + p.ro_0)) + ((p.u + p.p) + (p.p_0 + p.h)))) + (((p.m + (p.c + p.grad_P_x)) + ((p.grad_P_y + p.grad_P_z) + (p.du + p.du_m1))) + (((p.dt + p.dt_m1) + (p.c11 + p.c12)) + ((p.c13 + p.c22) + (p.c23 + p.c33)))))}
+pub fn main(&io:&IO){let side=black_box(12);let output=physics::initial_stages(side,0,8,3);let total=tree::sum(tree::map(output,fn*((_,p)){value(p)}));let N64(lo,hi)=total.to_bits();io.println("{lo} {hi}");}

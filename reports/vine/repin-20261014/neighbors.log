@@ -1,0 +1,578 @@
+{
+  "milestone": "neighbors",
+  "passed": false,
+  "port_complete": false,
+  "scope": "Exact unsaturated neighbor membership, index construction and batched query depth; order and timestep integration pending",
+  "candidate": "grid",
+  "api": "batch",
+  "correctness": [
+    {
+      "case": "empty",
+      "candidate": "tree",
+      "api": "single",
+      "queries": 1,
+      "passed": true
+    },
+    {
+      "case": "empty",
+      "candidate": "grid",
+      "api": "single",
+      "queries": 1,
+      "passed": true
+    },
+    {
+      "case": "empty",
+      "candidate": "grid",
+      "api": "batch",
+      "queries": 1,
+      "passed": true
+    },
+    {
+      "case": "strict_boundary",
+      "candidate": "tree",
+      "api": "single",
+      "queries": 2,
+      "passed": true
+    },
+    {
+      "case": "strict_boundary",
+      "candidate": "grid",
+      "api": "single",
+      "queries": 2,
+      "passed": true
+    },
+    {
+      "case": "strict_boundary",
+      "candidate": "grid",
+      "api": "batch",
+      "queries": 2,
+      "passed": true
+    },
+    {
+      "case": "periodic",
+      "candidate": "tree",
+      "api": "single",
+      "queries": 4,
+      "passed": true
+    },
+    {
+      "case": "periodic",
+      "candidate": "grid",
+      "api": "single",
+      "queries": 4,
+      "passed": true
+    },
+    {
+      "case": "periodic",
+      "candidate": "grid",
+      "api": "batch",
+      "queries": 4,
+      "passed": true
+    },
+    {
+      "case": "clusters_shuffled",
+      "candidate": "tree",
+      "api": "single",
+      "queries": 16,
+      "passed": true
+    },
+    {
+      "case": "clusters_shuffled",
+      "candidate": "grid",
+      "api": "single",
+      "queries": 16,
+      "passed": true
+    },
+    {
+      "case": "clusters_shuffled",
+      "candidate": "grid",
+      "api": "batch",
+      "queries": 16,
+      "passed": true
+    },
+    {
+      "case": "scaling_64",
+      "candidate": "tree",
+      "api": "single",
+      "queries": 64,
+      "passed": true
+    },
+    {
+      "case": "scaling_64",
+      "candidate": "grid",
+      "api": "single",
+      "queries": 64,
+      "passed": true
+    },
+    {
+      "case": "scaling_64",
+      "candidate": "grid",
+      "api": "batch",
+      "queries": 64,
+      "passed": true
+    },
+    {
+      "case": "scaling_256",
+      "candidate": "tree",
+      "api": "single",
+      "queries": 256,
+      "passed": true
+    },
+    {
+      "case": "scaling_256",
+      "candidate": "grid",
+      "api": "single",
+      "queries": 256,
+      "passed": true
+    },
+    {
+      "case": "scaling_256",
+      "candidate": "grid",
+      "api": "batch",
+      "queries": 256,
+      "passed": true
+    },
+    {
+      "case": "upstream_12",
+      "candidate": "tree",
+      "api": "single",
+      "queries": 8,
+      "passed": true
+    },
+    {
+      "case": "upstream_12",
+      "candidate": "grid",
+      "api": "single",
+      "queries": 8,
+      "passed": true
+    },
+    {
+      "case": "upstream_12",
+      "candidate": "grid",
+      "api": "batch",
+      "queries": 8,
+      "passed": true
+    },
+    {
+      "case": "upstream_16",
+      "candidate": "tree",
+      "api": "single",
+      "queries": 8,
+      "passed": true
+    },
+    {
+      "case": "upstream_16",
+      "candidate": "grid",
+      "api": "single",
+      "queries": 8,
+      "passed": true
+    },
+    {
+      "case": "upstream_16",
+      "candidate": "grid",
+      "api": "batch",
+      "queries": 8,
+      "passed": true
+    },
+    {
+      "case": "extra_empty_queries",
+      "candidate": "tree",
+      "api": "single",
+      "queries": 0,
+      "passed": true
+    },
+    {
+      "case": "extra_empty_queries",
+      "candidate": "grid",
+      "api": "single",
+      "queries": 0,
+      "passed": true
+    },
+    {
+      "case": "extra_empty_queries",
+      "candidate": "grid",
+      "api": "batch",
+      "queries": 0,
+      "passed": true
+    },
+    {
+      "case": "extra_both_empty",
+      "candidate": "tree",
+      "api": "single",
+      "queries": 0,
+      "passed": true
+    },
+    {
+      "case": "extra_both_empty",
+      "candidate": "grid",
+      "api": "single",
+      "queries": 0,
+      "passed": true
+    },
+    {
+      "case": "extra_both_empty",
+      "candidate": "grid",
+      "api": "batch",
+      "queries": 0,
+      "passed": true
+    },
+    {
+      "case": "extra_coincident",
+      "candidate": "tree",
+      "api": "single",
+      "queries": 3,
+      "passed": true
+    },
+    {
+      "case": "extra_coincident",
+      "candidate": "grid",
+      "api": "single",
+      "queries": 3,
+      "passed": true
+    },
+    {
+      "case": "extra_coincident",
+      "candidate": "grid",
+      "api": "batch",
+      "queries": 3,
+      "passed": true
+    },
+    {
+      "case": "extra_line0",
+      "candidate": "tree",
+      "api": "single",
+      "queries": 6,
+      "passed": true
+    },
+    {
+      "case": "extra_line0",
+      "candidate": "grid",
+      "api": "single",
+      "queries": 6,
+      "passed": true
+    },
+    {
+      "case": "extra_line0",
+      "candidate": "grid",
+      "api": "batch",
+      "queries": 6,
+      "passed": true
+    },
+    {
+      "case": "extra_line1",
+      "candidate": "tree",
+      "api": "single",
+      "queries": 6,
+      "passed": true
+    },
+    {
+      "case": "extra_line1",
+      "candidate": "grid",
+      "api": "single",
+      "queries": 6,
+      "passed": true
+    },
+    {
+      "case": "extra_line1",
+      "candidate": "grid",
+      "api": "batch",
+      "queries": 6,
+      "passed": true
+    },
+    {
+      "case": "extra_line2",
+      "candidate": "tree",
+      "api": "single",
+      "queries": 6,
+      "passed": true
+    },
+    {
+      "case": "extra_line2",
+      "candidate": "grid",
+      "api": "single",
+      "queries": 6,
+      "passed": true
+    },
+    {
+      "case": "extra_line2",
+      "candidate": "grid",
+      "api": "batch",
+      "queries": 6,
+      "passed": true
+    },
+    {
+      "case": "extra_cuts_and_radius_ulps",
+      "candidate": "tree",
+      "api": "single",
+      "queries": 33,
+      "passed": true
+    },
+    {
+      "case": "extra_cuts_and_radius_ulps",
+      "candidate": "grid",
+      "api": "single",
+      "queries": 33,
+      "passed": true
+    },
+    {
+      "case": "extra_cuts_and_radius_ulps",
+      "candidate": "grid",
+      "api": "batch",
+      "queries": 33,
+      "passed": true
+    },
+    {
+      "case": "extra_periodic_union",
+      "candidate": "tree",
+      "api": "single",
+      "queries": 21,
+      "passed": true
+    },
+    {
+      "case": "extra_periodic_union",
+      "candidate": "grid",
+      "api": "single",
+      "queries": 21,
+      "passed": true
+    },
+    {
+      "case": "extra_periodic_union",
+      "candidate": "grid",
+      "api": "batch",
+      "queries": 21,
+      "passed": true
+    },
+    {
+      "case": "extra_random3d_0",
+      "candidate": "tree",
+      "api": "single",
+      "queries": 21,
+      "passed": true
+    },
+    {
+      "case": "extra_random3d_0",
+      "candidate": "grid",
+      "api": "single",
+      "queries": 21,
+      "passed": true
+    },
+    {
+      "case": "extra_random3d_0",
+      "candidate": "grid",
+      "api": "batch",
+      "queries": 21,
+      "passed": true
+    },
+    {
+      "case": "extra_random3d_1",
+      "candidate": "tree",
+      "api": "single",
+      "queries": 24,
+      "passed": true
+    },
+    {
+      "case": "extra_random3d_1",
+      "candidate": "grid",
+      "api": "single",
+      "queries": 24,
+      "passed": true
+    },
+    {
+      "case": "extra_random3d_1",
+      "candidate": "grid",
+      "api": "batch",
+      "queries": 24,
+      "passed": true
+    },
+    {
+      "case": "extra_random3d_2",
+      "candidate": "tree",
+      "api": "single",
+      "queries": 28,
+      "passed": true
+    },
+    {
+      "case": "extra_random3d_2",
+      "candidate": "grid",
+      "api": "single",
+      "queries": 28,
+      "passed": true
+    },
+    {
+      "case": "extra_random3d_2",
+      "candidate": "grid",
+      "api": "batch",
+      "queries": 28,
+      "passed": true
+    },
+    {
+      "case": "extra_random3d_3",
+      "candidate": "tree",
+      "api": "single",
+      "queries": 31,
+      "passed": true
+    },
+    {
+      "case": "extra_random3d_3",
+      "candidate": "grid",
+      "api": "single",
+      "queries": 31,
+      "passed": true
+    },
+    {
+      "case": "extra_random3d_3",
+      "candidate": "grid",
+      "api": "batch",
+      "queries": 31,
+      "passed": true
+    },
+    {
+      "case": "extra_random3d_4",
+      "candidate": "tree",
+      "api": "single",
+      "queries": 35,
+      "passed": true
+    },
+    {
+      "case": "extra_random3d_4",
+      "candidate": "grid",
+      "api": "single",
+      "queries": 35,
+      "passed": true
+    },
+    {
+      "case": "extra_random3d_4",
+      "candidate": "grid",
+      "api": "batch",
+      "queries": 35,
+      "passed": true
+    },
+    {
+      "case": "extra_random3d_5",
+      "candidate": "tree",
+      "api": "single",
+      "queries": 38,
+      "passed": true
+    },
+    {
+      "case": "extra_random3d_5",
+      "candidate": "grid",
+      "api": "single",
+      "queries": 38,
+      "passed": true
+    },
+    {
+      "case": "extra_random3d_5",
+      "candidate": "grid",
+      "api": "batch",
+      "queries": 38,
+      "passed": true
+    },
+    {
+      "case": "extra_random3d_6",
+      "candidate": "tree",
+      "api": "single",
+      "queries": 42,
+      "passed": true
+    },
+    {
+      "case": "extra_random3d_6",
+      "candidate": "grid",
+      "api": "single",
+      "queries": 42,
+      "passed": true
+    },
+    {
+      "case": "extra_random3d_6",
+      "candidate": "grid",
+      "api": "batch",
+      "queries": 42,
+      "passed": true
+    },
+    {
+      "case": "extra_random3d_7",
+      "candidate": "tree",
+      "api": "single",
+      "queries": 45,
+      "passed": true
+    },
+    {
+      "case": "extra_random3d_7",
+      "candidate": "grid",
+      "api": "single",
+      "queries": 45,
+      "passed": true
+    },
+    {
+      "case": "extra_random3d_7",
+      "candidate": "grid",
+      "api": "batch",
+      "queries": 45,
+      "passed": true
+    }
+  ],
+  "experiments": [
+    {
+      "count": 64,
+      "candidate": {
+        "depth": 634,
+        "interactions": 1695850,
+        "heap_bytes": 8851312,
+        "allocated_bytes": 34977504,
+        "peak_rss_bytes": 791412736
+      },
+      "serial": {
+        "depth": 393,
+        "interactions": 993221,
+        "heap_bytes": 5626688,
+        "allocated_bytes": 23645728,
+        "peak_rss_bytes": 763183104
+      },
+      "parallel_process_seconds": 7.393009374999991,
+      "parallel_runtime_log": "/Users/nils/repos/spec-vi/reports/vine/repin-20261014/neighbors/scaling_64_workers2.stderr"
+    },
+    {
+      "count": 256,
+      "candidate": {
+        "depth": 775,
+        "interactions": 7957961,
+        "heap_bytes": 38552928,
+        "allocated_bytes": 167548960,
+        "peak_rss_bytes": 697401344
+      },
+      "serial": {
+        "depth": 516,
+        "interactions": 16012579,
+        "heap_bytes": 90138944,
+        "allocated_bytes": 381550768,
+        "peak_rss_bytes": 763609088
+      },
+      "parallel_process_seconds": 8.180834333999996,
+      "parallel_runtime_log": "/Users/nils/repos/spec-vi/reports/vine/repin-20261014/neighbors/scaling_256_workers2.stderr"
+    }
+  ],
+  "budgets": {
+    "depth_ratio": {
+      "actual": 775,
+      "limit": 361.2,
+      "passed": false
+    },
+    "work_ratio": {
+      "actual": 7957961,
+      "limit": 24018868.5,
+      "passed": true
+    },
+    "work_growth": {
+      "actual": 7957961,
+      "limit": 16958500.0,
+      "passed": true
+    },
+    "depth_growth": {
+      "actual": 775,
+      "limit": 1902.0,
+      "passed": true
+    }
+  },
+  "error": "Neighbor performance budgets failed: depth_ratio"
+}
+neighbors exit 1

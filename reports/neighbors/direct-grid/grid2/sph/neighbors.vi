@@ -1,0 +1,127 @@
+
+use #sph::tree::Tree;
+
+pub type Point = { id: N32, x: F64, y: F64, z: F64 };
+pub type Query = { id: N32, x: F64, y: F64, z: F64, radius: F64, period_z: F64 };
+pub type Bounds = { n: N32, xmin: F64, xmax: F64, ymin: F64, ymax: F64, zmin: F64, zmax: F64 };
+pub enum* Index {
+  Empty(),
+  Leaf(Point),
+  Bucket(Tree[Point]),
+  Branch(Bounds, Index, Index),
+}
+
+fn min(a: F64, b: F64) -> F64 {
+  if a < b {
+    a
+  } else {
+    b
+  }
+}
+fn max(a: F64, b: F64) -> F64 {
+  if a > b {
+    a
+  } else {
+    b
+  }
+}
+fn bounds(t: Tree[Point]) -> Bounds {
+  match t {
+    Tree::Empty() {
+      {
+        n: 0,
+        xmin: F64::inf,
+        xmax: F64::neg_inf,
+        ymin: F64::inf,
+        ymax: F64::neg_inf,
+        zmin: F64::inf,
+        zmax: F64::neg_inf,
+      }
+    }
+    Tree::Leaf(p) { { n: 1, xmin: p.x, xmax: p.x, ymin: p.y, ymax: p.y, zmin: p.z, zmax: p.z } }
+    Tree::Branch(l, r) { merge(bounds(l), bounds(r)) }
+  }
+}
+fn merge(a: Bounds, b: Bounds) -> Bounds {
+  {
+    n: a.n + b.n,
+    xmin: min(a.xmin, b.xmin),
+    xmax: max(a.xmax, b.xmax),
+    ymin: min(a.ymin, b.ymin),
+    ymax: max(a.ymax, b.ymax),
+    zmin: min(a.zmin, b.zmin),
+    zmax: max(a.zmax, b.zmax),
+  }
+}
+fn join(a: Tree[Point], b: Tree[Point]) -> Tree[Point] {
+  match (a, b) {
+    (Tree::Empty(), b) { b }
+    (a, Tree::Empty()) { a }
+    (a, b) { Tree::Branch(a, b) }
+  }
+}
+fn scan(t: Tree[Point], q: Query) -> Tree[N32] {
+  match t {
+    Tree::Empty() { Tree::Empty() }
+    Tree::Leaf(p) {
+      if inside(p, q) {
+        Tree::Leaf(p.id)
+      } else {
+        Tree::Empty()
+      }
+    }
+    Tree::Branch(l, r) { Tree::Branch(scan(l, q), scan(r, q)) }
+  }
+}
+fn inside(p: Point, q: Query) -> Bool {
+  let dx = q.x - p.x;
+  let dy = q.y - p.y;
+  let dz = q.z - p.z;
+  let dxy = dx * dx + dy * dy;
+  let r2 = q.radius * q.radius;
+  let a = q.z - q.period_z - p.z;
+  let b = q.z + q.period_z - p.z;
+  (p.id != q.id)
+    & ((dxy + dz * dz < r2) | ((q.period_z > 0.0[F64]) & ((dxy + a * a < r2) | (dxy + b * b < r2))))
+}
+
+pub struct* Grid(Bounds,Tree[Tree[Point]]);
+fn cell(x:F64,lo:F64,hi:F64)->N32 {
+ if hi<=lo {0}else{let d=hi-lo;if x<lo+d*0.5[F64] {0}else{1}}
+}
+fn labels(t:Tree[Point],b:Bounds)->Tree[(N32,Point)] {match t{
+ Tree::Empty(){Tree::Empty()}Tree::Leaf(p){Tree::Leaf((cell(p.x,b.xmin,b.xmax)+2*cell(p.y,b.ymin,b.ymax)+2*2*cell(p.z,b.zmin,b.zmax),p))}
+ Tree::Branch(l,r){Tree::Branch(labels(l,b),labels(r,b))}
+}}
+fn select(t:Tree[(N32,Point)],k:N32)->Tree[Point]{match t{
+ Tree::Empty(){Tree::Empty()}Tree::Leaf((i,p)){if i==k {Tree::Leaf(p)}else{Tree::Empty()}}
+ Tree::Branch(l,r){join(select(l,k),select(r,k))}
+}}
+fn buckets(t:Tree[(N32,Point)],first:N32,n:N32)->Tree[Tree[Point]] {
+ if n==1 {Tree::Leaf(select(t,first))}else{let half=n/2;Tree::Branch(buckets(t,first,half),buckets(t,first+half,half))}
+}
+pub fn build(t:Tree[Point])->Grid {let b=bounds(t);Grid(b,buckets(labels(t,b),0,2*2*2))}
+fn pick(t:Tree[Tree[Point]],k:N32,n:N32)->Tree[Point]{match t{
+ Tree::Empty(){Tree::Empty()}Tree::Leaf(p){p}Tree::Branch(l,r){let half=n/2;if k<half {pick(l,k,half)}else{pick(r,k-half,half)}}
+}}
+type Ranges=(N32,N32,N32,N32,N32,N32,N32,N32,N32,N32);
+fn xs(t:Tree[Tree[Point]],q:Query,z:N32,y:N32,x:N32,n:N32)->Tree[N32]{
+ if n==1 {scan(pick(t,x+2*y+2*2*z,2*2*2),q)}else{let half=n/2;Tree::Branch(xs(t,q,z,y,x,half),xs(t,q,z,y,x+half,n-half))}
+}
+fn ys(t:Tree[Tree[Point]],q:Query,z:N32,y:N32,n:N32,x:N32,nx:N32)->Tree[N32]{
+ if n==1 {xs(t,q,z,y,x,nx)}else{let half=n/2;Tree::Branch(ys(t,q,z,y,half,x,nx),ys(t,q,z,y+half,n-half,x,nx))}
+}
+fn zs(t:Tree[Tree[Point]],q:Query,r:Ranges,z:N32,n:N32)->Tree[N32]{
+ if n==1 {let(x0,x1,y0,y1,z0,z1,a0,a1,b0,b1)=r;
+ if ((z>=z0)&(z<=z1)) | ((q.period_z>0.0[F64]) & (((z>=a0)&(z<=a1)) | ((z>=b0)&(z<=b1)))) {ys(t,q,z,y0,y1-y0+1,x0,x1-x0+1)}else{Tree::Empty()}
+ }else{let half=n/2;Tree::Branch(zs(t,q,r,z,half),zs(t,q,r,z+half,n-half))}
+}
+pub fn find(Grid(b,t):Grid,q:Query)->Tree[N32]{
+ if b.n==0 {Tree::Empty()}else{
+ let r=(cell(q.x-q.radius,b.xmin,b.xmax),cell(q.x+q.radius,b.xmin,b.xmax),cell(q.y-q.radius,b.ymin,b.ymax),cell(q.y+q.radius,b.ymin,b.ymax),
+ cell(q.z-q.radius,b.zmin,b.zmax),cell(q.z+q.radius,b.zmin,b.zmax),
+ cell((q.z-q.period_z)-q.radius,b.zmin,b.zmax),cell((q.z-q.period_z)+q.radius,b.zmin,b.zmax),
+ cell((q.z+q.period_z)-q.radius,b.zmin,b.zmax),cell((q.z+q.period_z)+q.radius,b.zmin,b.zmax));zs(t,q,r,0,2)
+ }
+}
+pub fn find_batch(g:Grid,qs:Tree[(N32,Query)])->Tree[(N32,Tree[N32])]{#sph::tree::map(qs,fn*((i,q)){(i,find(g,q))})}

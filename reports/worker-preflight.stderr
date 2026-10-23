@@ -1,0 +1,4 @@
+2026-09-20T18:23:08.091064Z  WARN codex_state::runtime: failed to open goals db at /Users/nils/.codex/goals_1.sqlite: failed to open goals DB at /Users/nils/.codex/goals_1.sqlite: error returned from database: (code: 14) unable to open database file
+2026-09-20T18:23:08.093034Z  WARN codex_rollout::state_db: failed to initialize state runtime: failed to initialize state runtime at /Users/nils/.codex: failed to open goals DB at /Users/nils/.codex/goals_1.sqlite: error returned from database: (code: 14) unable to open database file: error returned from database: (code: 14) unable to open database file: (code: 14) unable to open database file
+Reading additional input from stdin...
+Error: failed to initialize in-process app-server client: Operation not permitted (os error 1)

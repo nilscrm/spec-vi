@@ -1,0 +1,27 @@
+warning: unused item
+    @ sph/neighbors.vi:56:4
+ 56 | fn join(a: Tree[Point], b: Tree[Point]) -> Tree[Point] {
+
+
+Interactions
+  Total              566_145
+  Annihilate         144_988
+  Commute                  0
+  Copy                12_814
+  Erase              109_962
+  Graft               41_111
+  Extrinsic          257_270
+
+Parallelism
+  Depth                1_049
+  Breadth                539
+  Speedup                273 cB
+
+Memory
+  Heap             1_180_720 B
+  Allocated       13_528_800 B
+  Freed           13_528_800 B
+
+Performance
+  Time                    10 ms
+  Speed           52_986_885 IPS

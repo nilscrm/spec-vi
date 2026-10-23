@@ -1,0 +1,94 @@
+{
+  "diagnostic_only": true,
+  "correctness": true,
+  "metrics": [
+    {
+      "points": 64,
+      "bucket_points": 4,
+      "queries": 1,
+      "mode": "scan",
+      "depth": 356,
+      "interactions": 28599,
+      "heap_bytes": 194000,
+      "allocated_bytes": 638432
+    },
+    {
+      "points": 64,
+      "bucket_points": 4,
+      "queries": 16,
+      "mode": "scan",
+      "depth": 510,
+      "interactions": 42497,
+      "heap_bytes": 203360,
+      "allocated_bytes": 983152
+    },
+    {
+      "points": 64,
+      "bucket_points": 4,
+      "queries": 64,
+      "mode": "scan",
+      "depth": 555,
+      "interactions": 86810,
+      "heap_bytes": 277312,
+      "allocated_bytes": 2082944
+    },
+    {
+      "points": 64,
+      "bucket_points": 4,
+      "queries": 256,
+      "mode": "scan",
+      "depth": 619,
+      "interactions": 264093,
+      "heap_bytes": 1108288,
+      "allocated_bytes": 6482720
+    },
+    {
+      "points": 256,
+      "bucket_points": 4,
+      "queries": 1,
+      "mode": "scan",
+      "depth": 418,
+      "interactions": 118785,
+      "heap_bytes": 777680,
+      "allocated_bytes": 2721456
+    },
+    {
+      "points": 256,
+      "bucket_points": 4,
+      "queries": 16,
+      "mode": "scan",
+      "depth": 560,
+      "interactions": 132681,
+      "heap_bytes": 787040,
+      "allocated_bytes": 3065888
+    },
+    {
+      "points": 256,
+      "bucket_points": 4,
+      "queries": 64,
+      "mode": "scan",
+      "depth": 604,
+      "interactions": 176993,
+      "heap_bytes": 816992,
+      "allocated_bytes": 4164832
+    },
+    {
+      "points": 256,
+      "bucket_points": 4,
+      "queries": 256,
+      "mode": "scan",
+      "depth": 649,
+      "interactions": 354216,
+      "heap_bytes": 1894720,
+      "allocated_bytes": 8559776
+    }
+  ],
+  "library": {
+    "sha256": "484df8887b840ffb4f64bc98234eb4727a474e1372f089a0831206ad9bf5092b",
+    "files": {
+      "neighbors.vi": "26a37988dbb1cf5a8deee7fcad6992d6e9b8def3e19610a7785af0fc7b53dccd",
+      "sph.vi": "4d53d62be57fe5faa97ccc5e0d296027d7623c8960c98021c1aac6a72af58b0d",
+      "tree.vi": "15a3c0b47bb30aecc34a828ef56695e81745535b22fe492c575eea760983508d"
+    }
+  }
+}

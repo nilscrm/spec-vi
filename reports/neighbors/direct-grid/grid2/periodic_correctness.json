@@ -1,0 +1,19 @@
+{
+  "argv": [
+    "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+    "/Users/nils/repos/spec-vi/tools/vine_exec.py",
+    "run",
+    "--lib",
+    "sph=/Users/nils/repos/spec-vi/reports/neighbors/direct-grid/grid2/sph",
+    "--heap",
+    "2G",
+    "/Users/nils/repos/spec-vi/reports/neighbors/direct-grid/grid2/periodic_correctness.vi"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 123764736,
+  "wall_seconds": 0.40032845799578354,
+  "stdout": "/Users/nils/repos/spec-vi/reports/neighbors/direct-grid/grid2/periodic_correctness.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/neighbors/direct-grid/grid2/periodic_correctness.stderr"
+}

@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "scope": "Initialization fields and density with upstream-provided neighbor lists on initial square-patch states; not tree search or time integration",
+  "sides": [12, 16],
+  "initialization_samples_per_side": 32,
+  "density_samples_per_side": 16,
+  "atol": 1e-9,
+  "rtol": 5e-12,
+  "depth_counts": {"init": [1, 8, 32], "density": [1, 4, 16]},
+  "max_balanced_to_serial_depth": 0.7,
+  "max_balanced_to_serial_work": 1.5,
+  "max_depth_growth": 2.5,
+  "heap_limit_bytes": 2147483648,
+  "command_timeout_seconds": 180,
+  "note": "Initial pilot acceptance budgets, fixed before measuring candidate comparisons. These establish a parallelism improvement, not global optimality or full-workload performance."
+}

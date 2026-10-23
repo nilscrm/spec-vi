@@ -1,0 +1,75 @@
+diff --git a/ivm/src/runtime/heap.rs b/ivm/src/runtime/heap.rs
+index de9c0e28..157bdd85 100644
+--- a/ivm/src/runtime/heap.rs
++++ b/ivm/src/runtime/heap.rs
+@@ -12,10 +12,14 @@ pub struct Heap(pub(crate) [Node]);
+ pub(crate) struct Node(pub AtomicWord, pub AtomicWord);
+ 
+ /// The maximum size of heap to attempt to allocate.
++///
++/// On 64-bit targets this is a virtual-memory reservation; pages are only
++/// committed as touched, and `Heap::new` halves the request until allocation
++/// succeeds, so a large cap is safe on smaller machines.
+ pub const HEAP_SIZE_BYTES: usize = if cfg!(miri) {
+   1 << 16
+ } else if cfg!(target_pointer_width = "64") {
+-  1 << 32
++  1 << 36
+ } else {
+   1 << 30
+ };
+diff --git a/root/numeric/F64/F64.vi b/root/numeric/F64/F64.vi
+index 8a6a886f..6e8818b2 100644
+--- a/root/numeric/F64/F64.vi
++++ b/root/numeric/F64/F64.vi
+@@ -13,6 +13,7 @@ pub mod F64 {
+   pub const nan: F64 = F32::nan as F64;
+   pub const inf: F64 = F32::inf as F64;
+   pub const neg_inf: F64 = F32::neg_inf as F64;
++  pub const pi: F64 = 3.141592653589793[F64];
+ 
+   pub impl : Default[F64] {
+     const default: F64 = 0.0[F64];
+@@ -48,6 +49,12 @@ pub mod F64 {
+     }
+   }
+ 
++  pub impl pow_f64: Pow[F64, F64, F64] {
++    fn pow(base: F64, exp: F64) -> F64 {
++      safe $ivy { ${base} = vi:ext#2[vi:f64:pow](${exp} ^) }
++    }
++  }
++
+   pub impl pow_n32: Pow[F64, N32, F64] {
+     fn pow(base: F64, exp: N32) -> F64 {
+       Pow::pow_by_squaring(base, exp)
+@@ -80,6 +87,14 @@ pub mod F64 {
+     safe $ivy { ${a} = vi:ext#1[vi:f64:sqrt](^) }
+   }
+ 
++  pub fn .sin(a: F64) -> F64 {
++    safe $ivy { ${a} = vi:ext#1[vi:f64:sin](^) }
++  }
++
++  pub fn .cos(a: F64) -> F64 {
++    safe $ivy { ${a} = vi:ext#1[vi:f64:cos](^) }
++  }
++
+   pub impl pos: Pos[F64, F64] {
+     fn pos(f: F64) -> F64 {
+       f
+diff --git a/util/src/arithmetic.rs b/util/src/arithmetic.rs
+index 19b09cfd..e6d3a7ca 100644
+--- a/util/src/arithmetic.rs
++++ b/util/src/arithmetic.rs
+@@ -149,7 +149,10 @@ where
+       Fn("vi:f64:mul", |(a, b): (f64, f64)| a * b),
+       Fn("vi:f64:div", |(a, b): (f64, f64)| a / b),
+       Fn("vi:f64:rem", |(a, b): (f64, f64)| a.rem_euclid(b)),
++      Fn("vi:f64:pow", |(a, b): (f64, f64)| a.powf(b)),
+       Fn("vi:f64:sqrt", |a: f64| a.sqrt()),
++      Fn("vi:f64:sin", |a: f64| a.sin()),
++      Fn("vi:f64:cos", |a: f64| a.cos()),
+     ),
+     (
+       Fn("vi:f64:eq", |(a, b): (f64, f64)| a == b),

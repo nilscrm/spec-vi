@@ -1,0 +1,19 @@
+{
+  "argv": [
+    "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+    "/Users/nils/repos/spec-vi/tools/vine_exec.py",
+    "run",
+    "--lib",
+    "sph=/Users/nils/repos/spec-vi/benchmarks/sph-exa/vine",
+    "--heap",
+    "2G",
+    "/Users/nils/repos/spec-vi/reports/vine/repin-20261014/physics/side16/driver.vi"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 2669445120,
+  "wall_seconds": 524.167525542,
+  "stdout": "/Users/nils/repos/spec-vi/reports/vine/repin-20261014/physics/side16/run.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/vine/repin-20261014/physics/side16/run.stderr"
+}

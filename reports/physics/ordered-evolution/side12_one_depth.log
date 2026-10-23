@@ -1,0 +1,76 @@
+{
+  "passed": true,
+  "physics_accepted": false,
+  "port_complete": false,
+  "side": 12,
+  "updates": 1,
+  "mode": "depth",
+  "policy": {
+    "scope": "Per-stage all-particle numerical checks and initial runtime density/EOS integration; full physics acceptance remains incomplete until every stage and multistep integration pass",
+    "sides": [
+      12,
+      16
+    ],
+    "updates": 3,
+    "atol": 1e-09,
+    "rtol": 5e-12,
+    "heap_limit_bytes": 2147483648,
+    "command_timeout_seconds": 600,
+    "depth_query_counts": [
+      1,
+      8,
+      32
+    ],
+    "performance_acceptance": "Existing neighbor/pilot gates remain required; new full-stage scaling acceptance is pending explicit review"
+  },
+  "script_sha256": "1f8ffe400d1d9151e3ab30d96d1cc5a8cad966fe5beaf2edd2f0f96c7dedbb9b",
+  "stats": {
+    "depth": 16636726,
+    "interactions": 2454904401,
+    "heap_bytes": 324075808,
+    "allocated_bytes": 59392911024
+  },
+  "process": {
+    "argv": [
+      "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+      "/Users/nils/repos/spec-vi/tools/vine_exec.py",
+      "run",
+      "--lib",
+      "sph=/Users/nils/repos/spec-vi/reports/physics/ordered-evolution/sph",
+      "--heap",
+      "2G",
+      "--depth",
+      "/Users/nils/repos/spec-vi/reports/physics/ordered-evolution/side12_one_depth/driver.vi"
+    ],
+    "cwd": "/Users/nils/repos/spec-vi",
+    "exit_code": 0,
+    "timed_out": false,
+    "peak_rss_bytes": 1688502272,
+    "wall_seconds": 192.41701283300063,
+    "stdout": "/Users/nils/repos/spec-vi/reports/physics/ordered-evolution/side12_one_depth/run.stdout",
+    "stderr": "/Users/nils/repos/spec-vi/reports/physics/ordered-evolution/side12_one_depth/run.stderr"
+  },
+  "forcing_checks": [
+    {
+      "actual": -54140461.31322509,
+      "expected": -54140461.3132251,
+      "absolute_error": 7.450580596923828e-09,
+      "accumulated_tolerance": 0.00032254230656612545,
+      "passed": true
+    },
+    {
+      "actual": 41379314817.72074,
+      "expected": 41379314817.720764,
+      "absolute_error": 2.288818359375e-05,
+      "accumulated_tolerance": 0.2068965840886038,
+      "passed": true
+    },
+    {
+      "actual": 41379943809.72074,
+      "expected": 41379943809.720764,
+      "absolute_error": 2.288818359375e-05,
+      "accumulated_tolerance": 0.2068997240486038,
+      "passed": true
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+control scaling_64 correctness passed
+control scaling_64 depth [{'variant': 'control', 'case': 'scaling_64', 'mode': 'depth', 'wall_seconds': 0.5713422499829903, 'peak_rss_bytes': 143114240, 'depth': 656, 'interactions': 1963403, 'heap_bytes': 9232240, 'allocated_bytes': 40785344}]
+control scaling_64 workers2 passed
+control scaling_256 correctness passed
+control scaling_256 depth [{'variant': 'control', 'case': 'scaling_256', 'mode': 'depth', 'wall_seconds': 1.1565443750005215, 'peak_rss_bytes': 193626112, 'depth': 794, 'interactions': 13640758, 'heap_bytes': 40113504, 'allocated_bytes': 282786960}]
+control scaling_256 workers2 passed
+filtered empty correctness passed
+filtered strict_boundary correctness passed
+filtered periodic correctness passed
+filtered clusters_shuffled correctness passed
+filtered scaling_64 correctness passed
+filtered scaling_64 depth [{'variant': 'filtered', 'case': 'scaling_64', 'mode': 'depth', 'wall_seconds': 0.6231458749971353, 'peak_rss_bytes': 143114240, 'depth': 634, 'interactions': 1695850, 'heap_bytes': 8851312, 'allocated_bytes': 34977504}]
+filtered scaling_64 workers2 passed
+filtered scaling_256 correctness passed
+filtered scaling_256 depth [{'variant': 'filtered', 'case': 'scaling_256', 'mode': 'depth', 'wall_seconds': 0.8731914170202799, 'peak_rss_bytes': 193544192, 'depth': 775, 'interactions': 7957961, 'heap_bytes': 38552928, 'allocated_bytes': 167548960}]
+filtered scaling_256 workers2 passed
+filtered upstream_12 correctness passed
+filtered upstream_16 correctness passed

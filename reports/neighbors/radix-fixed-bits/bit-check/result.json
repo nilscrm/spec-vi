@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "cases": 1118,
+  "coverage": "zero, max, every power-of-two and adjacent values, 1024 seeded random words",
+  "stats": {
+    "depth": 131,
+    "interactions": 40323,
+    "heap_bytes": 458912,
+    "allocated_bytes": 783696
+  }
+}

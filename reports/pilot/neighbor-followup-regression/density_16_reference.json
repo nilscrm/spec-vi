@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "/Users/nils/repos/spec-vi/work/build/pilot_reference",
+    "16",
+    "density"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 13713408,
+  "wall_seconds": 1.5651672500243876,
+  "stdout": "/Users/nils/repos/spec-vi/reports/pilot/neighbor-followup-regression/density_16_reference.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/pilot/neighbor-followup-regression/density_16_reference.stderr"
+}

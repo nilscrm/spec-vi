@@ -1,0 +1,22 @@
+{
+  "diagnostic_only": true,
+  "excluded_cost": "host spatial-key calculation and sort",
+  "accepted": false,
+  "correctness": true,
+  "metrics": [
+    {
+      "case": "scaling_64",
+      "depth": 835,
+      "interactions": 495573,
+      "heap_bytes": 1492528,
+      "allocated_bytes": 12153024
+    },
+    {
+      "case": "scaling_256",
+      "depth": 1360,
+      "interactions": 4820119,
+      "heap_bytes": 12100816,
+      "allocated_bytes": 119117872
+    }
+  ]
+}

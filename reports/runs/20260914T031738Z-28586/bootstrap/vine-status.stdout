@@ -1,0 +1,8 @@
+ M ivm/src/runtime/heap.rs
+ M root/numeric/F64/F64.vi
+ M util/src/arithmetic.rs
+?? .helix/
+?? package-lock.json
+?? tests/misc/f64_consts.vi
+?? tests/misc/f64_pow.vi
+?? tests/misc/f64_trig.vi

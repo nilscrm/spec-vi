@@ -1,0 +1,47 @@
+{
+  "status": "in_progress",
+  "promoted": false,
+  "cases": [
+    {
+      "case": "normal12",
+      "passed": false,
+      "resources": {
+        "heap_limit_bytes": 8589934592,
+        "heap_gib": 8
+      },
+      "stats": null,
+      "seconds": 26.40994312497787,
+      "peak_rss_bytes": 3588440064,
+      "failure": "Command failed: ['/Library/Frameworks/Python.framework/Versions/3.13/bin/python3', '/Users/nils/repos/spec-vi/tools/vine_exec.py', 'run', '--lib', 'sph=/Users/nils/repos/spec-vi/reports/physics/depth-first-20261006/candidate/sph', '--heap', '8G', '/Users/nils/repos/spec-vi/reports/physics/depth-first-20261006/normal12/driver.vi']; see /Users/nils/repos/spec-vi/reports/physics/depth-first-20261006/normal12/run.stderr"
+    },
+    {
+      "case": "depth12",
+      "passed": false,
+      "resources": {
+        "heap_limit_bytes": 8589934592,
+        "heap_gib": 8
+      },
+      "stats": null,
+      "seconds": 77.03525433299365,
+      "peak_rss_bytes": 7967604736,
+      "failure": "Command failed: ['/Library/Frameworks/Python.framework/Versions/3.13/bin/python3', '/Users/nils/repos/spec-vi/tools/vine_exec.py', 'run', '--lib', 'sph=/Users/nils/repos/spec-vi/reports/physics/depth-first-20261006/candidate/sph', '--heap', '8G', '--depth', '/Users/nils/repos/spec-vi/reports/physics/depth-first-20261006/depth12/driver.vi']; see /Users/nils/repos/spec-vi/reports/physics/depth-first-20261006/depth12/run.stderr"
+    },
+    {
+      "case": "normal12-16g",
+      "passed": true,
+      "resources": {
+        "heap_limit_bytes": 17179869184,
+        "heap_gib": 16
+      },
+      "stats": {
+        "interactions": 2384286962,
+        "heap_bytes": 10528499216,
+        "allocated_bytes": 57049191568,
+        "runtime_ms": 98782
+      },
+      "seconds": 110.7012742079678,
+      "peak_rss_bytes": 8654241792,
+      "failure": null
+    }
+  ]
+}

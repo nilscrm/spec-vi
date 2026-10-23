@@ -1,0 +1,88 @@
+{
+  "milestone": "neighbors",
+  "passed": false,
+  "port_complete": false,
+  "scope": "Exact unsaturated neighbor membership, index construction and batched query depth; order and timestep integration pending",
+  "correctness": [
+    {
+      "case": "empty",
+      "queries": 1,
+      "passed": true
+    },
+    {
+      "case": "strict_boundary",
+      "queries": 2,
+      "passed": true
+    },
+    {
+      "case": "periodic",
+      "queries": 4,
+      "passed": true
+    },
+    {
+      "case": "clusters_shuffled",
+      "queries": 16,
+      "passed": true
+    },
+    {
+      "case": "scaling_64",
+      "queries": 64,
+      "passed": true
+    },
+    {
+      "case": "scaling_256",
+      "queries": 256,
+      "passed": true
+    },
+    {
+      "case": "upstream_12",
+      "queries": 8,
+      "passed": true
+    },
+    {
+      "case": "upstream_16",
+      "queries": 8,
+      "passed": true
+    }
+  ],
+  "experiments": [
+    {
+      "count": 64,
+      "candidate": {
+        "depth": 2120,
+        "interactions": 1131885,
+        "heap_bytes": 1386496,
+        "allocated_bytes": 25019824,
+        "peak_rss_bytes": 832684032
+      },
+      "serial": {
+        "depth": 393,
+        "interactions": 993221,
+        "heap_bytes": 5626688,
+        "allocated_bytes": 23645728,
+        "peak_rss_bytes": 832569344
+      },
+      "parallel_process_seconds": 1.074319999985164,
+      "parallel_runtime_log": "/Users/nils/repos/spec-vi/reports/runs/20260920T180935Z-79500/neighbors/scaling_64_workers2.stderr"
+    },
+    {
+      "count": 256,
+      "candidate": {
+        "depth": 3453,
+        "interactions": 14576282,
+        "heap_bytes": 16318720,
+        "allocated_bytes": 313057984,
+        "peak_rss_bytes": 838041600
+      },
+      "serial": {
+        "depth": 516,
+        "interactions": 16012579,
+        "heap_bytes": 90138944,
+        "allocated_bytes": 381550768,
+        "peak_rss_bytes": 874397696
+      },
+      "parallel_process_seconds": 1.219866291998187,
+      "parallel_runtime_log": "/Users/nils/repos/spec-vi/reports/runs/20260920T180935Z-79500/neighbors/scaling_256_workers2.stderr"
+    }
+  ]
+}

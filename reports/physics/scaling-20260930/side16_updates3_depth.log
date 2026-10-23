@@ -1,0 +1,28 @@
+{
+  "passed": false,
+  "physics_accepted": false,
+  "port_complete": false,
+  "side": 16,
+  "updates": 3,
+  "mode": "depth",
+  "policy": {
+    "scope": "Per-stage all-particle numerical checks and initial runtime density/EOS integration; full physics acceptance remains incomplete until every stage and multistep integration pass",
+    "sides": [
+      12,
+      16
+    ],
+    "updates": 3,
+    "atol": 1e-09,
+    "rtol": 5e-12,
+    "heap_limit_bytes": 2147483648,
+    "command_timeout_seconds": 600,
+    "depth_query_counts": [
+      1,
+      8,
+      32
+    ],
+    "performance_acceptance": "Existing neighbor/pilot gates remain required; new full-stage scaling acceptance is pending explicit review"
+  },
+  "script_sha256": "4455511167eb673664b8503640b4e5535da940f02c97953e451c1962690627a4",
+  "error": "Command failed: ['/Library/Frameworks/Python.framework/Versions/3.13/bin/python3', '/Users/nils/repos/spec-vi/tools/vine_exec.py', 'run', '--lib', 'sph=/Users/nils/repos/spec-vi/benchmarks/sph-exa/vine', '--heap', '2G', '--depth', '/Users/nils/repos/spec-vi/reports/physics/scaling-20260930/side16_updates3_depth/driver.vi']; see /Users/nils/repos/spec-vi/reports/physics/scaling-20260930/side16_updates3_depth/run.stderr"
+}

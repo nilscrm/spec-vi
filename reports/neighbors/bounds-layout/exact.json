@@ -1,0 +1,32 @@
+[
+  {
+    "case": "scaling_64",
+    "mode": "bounds",
+    "passed": true
+  },
+  {
+    "case": "scaling_64",
+    "mode": "soa",
+    "passed": true
+  },
+  {
+    "case": "scaling_64",
+    "mode": "pairs",
+    "passed": true
+  },
+  {
+    "case": "scaling_256",
+    "mode": "bounds",
+    "passed": true
+  },
+  {
+    "case": "scaling_256",
+    "mode": "soa",
+    "passed": true
+  },
+  {
+    "case": "scaling_256",
+    "mode": "pairs",
+    "passed": true
+  }
+]

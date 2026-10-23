@@ -1,0 +1,19 @@
+{
+  "argv": [
+    "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+    "/Users/nils/repos/spec-vi/tools/vine_exec.py",
+    "run",
+    "--lib",
+    "sph=/Users/nils/repos/spec-vi/reports/physics/evolution/sph",
+    "--heap",
+    "2G",
+    "/Users/nils/repos/spec-vi/reports/physics/evolution/three_updates_16/driver.vi"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 101,
+  "timed_out": false,
+  "peak_rss_bytes": 2735341568,
+  "wall_seconds": 327.6647841660306,
+  "stdout": "/Users/nils/repos/spec-vi/reports/physics/evolution/three_updates_16/run.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/physics/evolution/three_updates_16/run.stderr"
+}

@@ -1,0 +1,21 @@
+use #sph::{neighbors,tree};
+use tree::Tree;
+fn sum(t: Tree[N32]) -> N32 {
+ match t { Tree::Empty() { 0 } Tree::Leaf(v) { v+1 } Tree::Branch(l,r) { sum(l)+sum(r) } }
+}
+fn dump(t: Tree[N32], &io: &IO) {
+ match t { Tree::Empty() {} Tree::Leaf(v) { io.print(" {v}"); } Tree::Branch(l,r) { dump(l,&io); dump(r,&io); } }
+}
+fn emit(t: Tree[(N32,Tree[N32])], &io: &IO) {
+ match t { Tree::Empty() {} Tree::Leaf((i,v)) { io.print("{i}"); dump(v,&io); io.println(""); } Tree::Branch(l,r) { emit(l,&io);emit(r,&io); } }
+}
+fn totals(t: Tree[N32]) -> N32 {
+ match t { Tree::Empty() {0} Tree::Leaf(v) {v} Tree::Branch(l,r) {totals(l)+totals(r)} }
+}
+pub fn main(&io: &IO) {
+let points=black_box(Tree::Empty());
+let queries=black_box(Tree::Leaf((0,{id:9,x:0.00000000000000000e+00[F64],y:0.00000000000000000e+00[F64],z:0.00000000000000000e+00[F64],radius:1.00000000000000000e+00[F64],period_z:0.00000000000000000e+00[F64]})));
+let index=neighbors::build(points);
+let output=tree::map(queries,fn* ((i,q)) {(i,neighbors::find(index,q))});
+emit(output,&io);
+}

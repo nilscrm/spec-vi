@@ -1,0 +1,26 @@
+warning: unused item
+     @ sph/pilot.vi:156:18
+ 156 | use #root::data::Lookup;
+
+warning: unused item
+   @ periodic_grid_single.vi:1:12
+ 1 | use #sph::{neighbors,tree};
+
+
+Interactions
+  Total              169_284
+  Annihilate          80_589
+  Commute                  0
+  Copy                 3_924
+  Erase               10_944
+  Graft               34_392
+  Extrinsic           39_435
+
+Memory
+  Heap               459_232 B
+  Allocated        3_356_720 B
+  Freed            3_356_720 B
+
+Performance
+  Time                     3 ms
+  Speed           53_258_397 IPS

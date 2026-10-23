@@ -1,0 +1,205 @@
+{
+  "passed": true,
+  "library": {
+    "sha256": "1a0b1ac22c770be574d880b1eaeaf49519652b7fa5959056c0427335909f1c32",
+    "files": {
+      "neighbors.vi": "6720b756af458baf5cdd2a27798272b70b0aa95a27c186d0876206bebf64c371",
+      "sph.vi": "4d53d62be57fe5faa97ccc5e0d296027d7623c8960c98021c1aac6a72af58b0d",
+      "tree.vi": "15a3c0b47bb30aecc34a828ef56695e81745535b22fe492c575eea760983508d"
+    }
+  },
+  "cases": [
+    {
+      "case": "empty_queries",
+      "api": "single",
+      "queries": 0,
+      "passed": true
+    },
+    {
+      "case": "empty_queries",
+      "api": "batch",
+      "queries": 0,
+      "passed": true
+    },
+    {
+      "case": "both_empty",
+      "api": "single",
+      "queries": 0,
+      "passed": true
+    },
+    {
+      "case": "both_empty",
+      "api": "batch",
+      "queries": 0,
+      "passed": true
+    },
+    {
+      "case": "coincident",
+      "api": "single",
+      "queries": 3,
+      "passed": true
+    },
+    {
+      "case": "coincident",
+      "api": "batch",
+      "queries": 3,
+      "passed": true
+    },
+    {
+      "case": "line0",
+      "api": "single",
+      "queries": 6,
+      "passed": true
+    },
+    {
+      "case": "line0",
+      "api": "batch",
+      "queries": 6,
+      "passed": true
+    },
+    {
+      "case": "line1",
+      "api": "single",
+      "queries": 6,
+      "passed": true
+    },
+    {
+      "case": "line1",
+      "api": "batch",
+      "queries": 6,
+      "passed": true
+    },
+    {
+      "case": "line2",
+      "api": "single",
+      "queries": 6,
+      "passed": true
+    },
+    {
+      "case": "line2",
+      "api": "batch",
+      "queries": 6,
+      "passed": true
+    },
+    {
+      "case": "cuts_and_radius_ulps",
+      "api": "single",
+      "queries": 33,
+      "passed": true
+    },
+    {
+      "case": "cuts_and_radius_ulps",
+      "api": "batch",
+      "queries": 33,
+      "passed": true
+    },
+    {
+      "case": "periodic_union",
+      "api": "single",
+      "queries": 21,
+      "passed": true
+    },
+    {
+      "case": "periodic_union",
+      "api": "batch",
+      "queries": 21,
+      "passed": true
+    },
+    {
+      "case": "random3d_0",
+      "api": "single",
+      "queries": 21,
+      "passed": true
+    },
+    {
+      "case": "random3d_0",
+      "api": "batch",
+      "queries": 21,
+      "passed": true
+    },
+    {
+      "case": "random3d_1",
+      "api": "single",
+      "queries": 24,
+      "passed": true
+    },
+    {
+      "case": "random3d_1",
+      "api": "batch",
+      "queries": 24,
+      "passed": true
+    },
+    {
+      "case": "random3d_2",
+      "api": "single",
+      "queries": 28,
+      "passed": true
+    },
+    {
+      "case": "random3d_2",
+      "api": "batch",
+      "queries": 28,
+      "passed": true
+    },
+    {
+      "case": "random3d_3",
+      "api": "single",
+      "queries": 31,
+      "passed": true
+    },
+    {
+      "case": "random3d_3",
+      "api": "batch",
+      "queries": 31,
+      "passed": true
+    },
+    {
+      "case": "random3d_4",
+      "api": "single",
+      "queries": 35,
+      "passed": true
+    },
+    {
+      "case": "random3d_4",
+      "api": "batch",
+      "queries": 35,
+      "passed": true
+    },
+    {
+      "case": "random3d_5",
+      "api": "single",
+      "queries": 38,
+      "passed": true
+    },
+    {
+      "case": "random3d_5",
+      "api": "batch",
+      "queries": 38,
+      "passed": true
+    },
+    {
+      "case": "random3d_6",
+      "api": "single",
+      "queries": 42,
+      "passed": true
+    },
+    {
+      "case": "random3d_6",
+      "api": "batch",
+      "queries": 42,
+      "passed": true
+    },
+    {
+      "case": "random3d_7",
+      "api": "single",
+      "queries": 45,
+      "passed": true
+    },
+    {
+      "case": "random3d_7",
+      "api": "batch",
+      "queries": 45,
+      "passed": true
+    }
+  ]
+}

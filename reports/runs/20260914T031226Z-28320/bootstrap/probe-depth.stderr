@@ -1,0 +1,8 @@
+error: cannot find `Array` in `#probe::main`
+   @ probe.vi:2:16
+ 2 |   let values = Array::new(64, 1);
+
+error: search limit reached when finding impl of trait `Cast[?23, String]`
+   @ probe.vi:4:38
+ 4 |   if total is Some(n) { io.println("{n}"); }
+

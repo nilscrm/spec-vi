@@ -1,0 +1,54 @@
+{
+  "semantic_cases": 1118,
+  "passed": true,
+  "measurements": [
+    {
+      "count": 1,
+      "mode": "old",
+      "depth": 238,
+      "interactions": 348,
+      "heap_bytes": 736,
+      "allocated_bytes": 6192
+    },
+    {
+      "count": 1,
+      "mode": "fast",
+      "depth": 74,
+      "interactions": 124,
+      "heap_bytes": 864,
+      "allocated_bytes": 2208
+    },
+    {
+      "count": 32,
+      "mode": "old",
+      "depth": 301,
+      "interactions": 8197,
+      "heap_bytes": 7888,
+      "allocated_bytes": 148192
+    },
+    {
+      "count": 32,
+      "mode": "fast",
+      "depth": 140,
+      "interactions": 1693,
+      "heap_bytes": 17280,
+      "allocated_bytes": 32400
+    },
+    {
+      "count": 1118,
+      "mode": "old",
+      "depth": 377,
+      "interactions": 286129,
+      "heap_bytes": 253488,
+      "allocated_bytes": 5172016
+    },
+    {
+      "count": 1118,
+      "mode": "fast",
+      "depth": 216,
+      "interactions": 56217,
+      "heap_bytes": 579584,
+      "allocated_bytes": 1084000
+    }
+  ]
+}

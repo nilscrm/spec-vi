@@ -1,0 +1,24 @@
+{
+  "retained": true,
+  "rationale": "49% less work and63% less heap for10 more depth rounds; fixed pilot criteria pass; no target-hardware speedup claim",
+  "before": {
+    "depth": 518,
+    "interactions": 4413315,
+    "heap_bytes": 51838960,
+    "allocated_bytes": 146614000
+  },
+  "candidate": {
+    "depth": 528,
+    "interactions": 2249937,
+    "heap_bytes": 19319280,
+    "allocated_bytes": 42024944
+  },
+  "same_output_dumps": true,
+  "production_sha256": "91cd6395b6c10bdbdc91b5d897bf0aac964ddd6c0afed741b2a7ecdd8584f8ef",
+  "normal_runner_validation": {
+    "run": "reports/runs/20260923T154358Z-6786",
+    "pilot_passed": true,
+    "neighbor_correctness_passed": true,
+    "neighbor_performance_passed": false
+  }
+}

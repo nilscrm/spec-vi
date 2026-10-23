@@ -1,0 +1,25 @@
+{
+  "date": "2026-10-14",
+  "vine_branch": "spec-vi/sph-support",
+  "vine_worktree": "work/vine (git worktree of /Users/nils/repos/vine)",
+  "base": "7cf26c3ee40eb6e431ec6cd284d0810a831f2ef6 (origin/lookup)",
+  "commits": {
+    "6553d078": "root: bounded binary-search N32.leading_zeros",
+    "1136083d": "root: Lookup sizes up to 32768 and index bounds check",
+    "fec2d8c8": "root: F64.pi and pure-Vine F64.sin_bounded"
+  },
+  "root_tree_identical_to_previous_pin": true,
+  "snapshot_corrections": {
+    "f32_roundabout/stats, f64_roundabout/stats, json/stats": "fewer interactions from faster leading_zeros; never updated in the staged set",
+    "lookup_oob/stats": "staged snapshot was produced with `vine run` (prints --debug hint); harness uses `ivm run`"
+  },
+  "snapshot_check": "tools/vine_snapcheck.py on each commit: all tests/programs match; 5 stdout-only artifacts (f32_ops, f64_ops, int_edges, nat_edges, regex) identical at base. Full nix flake check not run.",
+  "binary_sha256": "7b4719790a3b570a53dfce2fc4403dc1ebc1984663db8959caab20618a0bb855",
+  "previous_binary": "work/bin/vine.pre-20261014",
+  "gates": {
+    "pilot": "passed; 49 metric fields identical to run 20260930T135245Z-36163",
+    "neighbors_grid": "memberships pass; fails only depth_ratio heuristic (unchanged); 89 metric fields identical to 20260930 run",
+    "physics_full_stages": "passed, sides 12/16 x 3 updates, 2 GiB; 352 metric fields identical to scale-readiness-20261005"
+  },
+  "failed_attempt": "failed-sigkill-cp/: binary copied over existing file was SIGKILLed by macOS code-signature check (see L045)"
+}

@@ -1,0 +1,32 @@
+{
+  "passed": true,
+  "cases": 2420,
+  "matches_prototype_bits": true,
+  "max_observed_ulp": 1,
+  "special_cases": "both zeros, NaN, both infinities",
+  "out_of_domain_rejected": true,
+  "workers2": true,
+  "metrics": [
+    {
+      "count": 1,
+      "depth": 316,
+      "interactions": 566,
+      "heap_bytes": 2432,
+      "allocated_bytes": 13792
+    },
+    {
+      "count": 32,
+      "depth": 347,
+      "interactions": 6460,
+      "heap_bytes": 64064,
+      "allocated_bytes": 198432
+    },
+    {
+      "count": 256,
+      "depth": 365,
+      "interactions": 49992,
+      "heap_bytes": 522592,
+      "allocated_bytes": 1566528
+    }
+  ]
+}

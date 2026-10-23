@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+    "tools/evaluate.py",
+    "bootstrap",
+    "--output",
+    "/Users/nils/repos/spec-vi/reports/runs/20260920T184247Z-82053/bootstrap"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 138575872,
+  "wall_seconds": 2.9539877909992356,
+  "stdout": "/Users/nils/repos/spec-vi/reports/runs/20260920T184247Z-82053/bootstrap/gate.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/runs/20260920T184247Z-82053/bootstrap/gate.stderr"
+}

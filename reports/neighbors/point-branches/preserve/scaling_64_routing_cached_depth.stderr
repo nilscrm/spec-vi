@@ -1,0 +1,31 @@
+warning: unused item
+    @ sph/neighbors.vi:56:4
+ 56 | fn join(a: Tree[Point], b: Tree[Point]) -> Tree[Point] {
+
+warning: unused item
+   @ scaling_64_routing_cached_depth.vi:7:4
+ 7 | fn show(b:neighbors::Bounds,&io:&IO){
+
+
+Interactions
+  Total               23_458
+  Annihilate           5_631
+  Commute                  0
+  Copy                   545
+  Erase                6_107
+  Graft                1_317
+  Extrinsic            9_858
+
+Parallelism
+  Depth                  348
+  Breadth                 67
+  Speedup                183 cB
+
+Memory
+  Heap               244_480 B
+  Allocated          486_464 B
+  Freed              486_464 B
+
+Performance
+  Time                     0 ms
+  Speed           54_128_641 IPS

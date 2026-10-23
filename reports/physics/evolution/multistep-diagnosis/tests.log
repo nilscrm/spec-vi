@@ -1,0 +1,38 @@
+test_exact_and_tolerance (test_evaluation.EvaluationTests.test_exact_and_tolerance) ... ok
+test_gate_rejects_missing_false_or_wrong_report (test_evaluation.EvaluationTests.test_gate_rejects_missing_false_or_wrong_report) ... ok
+test_malformed_outputs_fail (test_evaluation.EvaluationTests.test_malformed_outputs_fail) ... ok
+test_metrics_are_section_aware (test_evaluation.EvaluationTests.test_metrics_are_section_aware) ... ok
+test_stale_running_status_is_not_completion (test_evaluation.EvaluationTests.test_stale_running_status_is_not_completion) ... ok
+test_timeout_is_failure_and_preserves_logs (test_evaluation.EvaluationTests.test_timeout_is_failure_and_preserves_logs) ... ok
+test_wrong_shape_and_invalid_tolerance (test_evaluation.EvaluationTests.test_wrong_shape_and_invalid_tolerance) ... ok
+test_all_stages_fields_and_scalars_are_checked (test_evolution_evaluator.EvolutionEvaluatorTests.test_all_stages_fields_and_scalars_are_checked) ... ok
+test_missing_changed_or_nonfinite_field_is_rejected (test_evolution_evaluator.EvolutionEvaluatorTests.test_missing_changed_or_nonfinite_field_is_rejected) ... ok
+test_missing_neighbors_and_wrong_total_are_rejected (test_evolution_evaluator.EvolutionEvaluatorTests.test_missing_neighbors_and_wrong_total_are_rejected) ... ok
+test_missing_reordered_or_duplicate_stage_is_rejected (test_evolution_evaluator.EvolutionEvaluatorTests.test_missing_reordered_or_duplicate_stage_is_rejected) ... ok
+test_batch_builds_runtime_index_once_and_passes_all_queries (test_neighbors.NeighborDriverTests.test_batch_builds_runtime_index_once_and_passes_all_queries) ... ok
+test_invalid_selection_fails_instead_of_silently_measuring_other_api (test_neighbors.NeighborDriverTests.test_invalid_selection_fails_instead_of_silently_measuring_other_api) ... ok
+test_measurement_forces_each_neighbor_and_each_query (test_neighbors.NeighborDriverTests.test_measurement_forces_each_neighbor_and_each_query) ... ok
+test_promoted_extra_fixtures_preserve_original_oracle (test_neighbors.NeighborDriverTests.test_promoted_extra_fixtures_preserve_original_oracle) ... ok
+test_repeated_queries_empty_rows_and_reordering (test_neighbors.NeighborDriverTests.test_repeated_queries_empty_rows_and_reordering) ... ok
+test_serial_control_is_identical_for_both_candidates (test_neighbors.NeighborDriverTests.test_serial_control_is_identical_for_both_candidates) ... ok
+test_single_query_paths_remain_available (test_neighbors.NeighborDriverTests.test_single_query_paths_remain_available) ... ok
+test_missing_duplicate_extra_and_wrong_identity_fail (test_neighbors.NeighborOracleTests.test_missing_duplicate_extra_and_wrong_identity_fail) ... ok
+test_periodic_z_only (test_neighbors.NeighborOracleTests.test_periodic_z_only) ... ok
+test_strict_radius_and_self (test_neighbors.NeighborOracleTests.test_strict_radius_and_self) ... ok
+test_agent_cannot_change_acceptance_inputs (test_runner.RunnerLifecycleTests.test_agent_cannot_change_acceptance_inputs) ... ok
+test_agent_claim_cannot_override_failed_gate (test_runner.RunnerLifecycleTests.test_agent_claim_cannot_override_failed_gate) ... ok
+test_complete_requires_every_gate (test_runner.RunnerLifecycleTests.test_complete_requires_every_gate) ... ok
+test_gate_failure_marks_failed (test_runner.RunnerLifecycleTests.test_gate_failure_marks_failed) ... ok
+test_interrupt_records_stopped (test_runner.RunnerLifecycleTests.test_interrupt_records_stopped) ... ok
+test_missing_gate_waits_and_never_starts_agent (test_runner.RunnerLifecycleTests.test_missing_gate_waits_and_never_starts_agent) ... ok
+test_removed_milestones_are_rejected (test_runner.RunnerLifecycleTests.test_removed_milestones_are_rejected) ... ok
+test_checksum_rejects_missing_state_and_nonfinite_result (test_stage_reference.StageSnapshotTests.test_checksum_rejects_missing_state_and_nonfinite_result) ... ok
+test_complete_state_and_identity_required (test_stage_reference.StageSnapshotTests.test_complete_state_and_identity_required) ... ok
+test_nonfinite_and_nonintegral_identity_rejected (test_stage_reference.StageSnapshotTests.test_nonfinite_and_nonintegral_identity_rejected) ... ok
+test_finite_binary64_values_round_trip_without_rounding (test_state_codec.StateCodecTests.test_finite_binary64_values_round_trip_without_rounding) ... ok
+test_rejects_partial_extra_out_of_range_and_nonfinite_fields (test_state_codec.StateCodecTests.test_rejects_partial_extra_out_of_range_and_nonfinite_fields) ... ok
+
+----------------------------------------------------------------------
+Ran 33 tests in 0.615s
+
+OK

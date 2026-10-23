@@ -1,0 +1,24 @@
+{
+  "passed": true,
+  "port_complete": false,
+  "scope": "Upstream serial CLI and output semantics; native decimal precision, no SPEC equivalence claim",
+  "policy": {
+    "scope": "Per-stage all-particle numerical checks and initial runtime density/EOS integration; full physics acceptance remains incomplete until every stage and multistep integration pass",
+    "sides": [
+      12,
+      16
+    ],
+    "updates": 3,
+    "atol": 1e-09,
+    "rtol": 5e-12,
+    "heap_limit_bytes": 2147483648,
+    "command_timeout_seconds": 600,
+    "depth_query_counts": [
+      1,
+      8,
+      32
+    ],
+    "performance_acceptance": "Existing neighbor/pilot gates remain required; new full-stage scaling acceptance is pending explicit review"
+  },
+  "driver_sha256": "f81ea5e068d05f434c754df1c7982085cb3a67fad2595d4c585f8c1c13633909"
+}

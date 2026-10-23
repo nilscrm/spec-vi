@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+    "/Users/nils/repos/spec-vi/tools/vine_exec.py",
+    "run",
+    "--lib",
+    "sph=/Users/nils/repos/spec-vi/reports/neighbors/explicit-prepare/diagnostic/sph",
+    "--depth",
+    "/Users/nils/repos/spec-vi/reports/neighbors/explicit-prepare/diagnostic/scaling_64_q64_ranges_depth.vi"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 130842624,
+  "wall_seconds": 0.5448181669926271,
+  "stdout": "/Users/nils/repos/spec-vi/reports/neighbors/explicit-prepare/diagnostic/scaling_64_q64_ranges_depth.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/neighbors/explicit-prepare/diagnostic/scaling_64_q64_ranges_depth.stderr"
+}

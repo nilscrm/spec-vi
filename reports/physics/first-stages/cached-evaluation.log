@@ -1,0 +1,130 @@
+{
+  "milestone": "initial_physics",
+  "passed": false,
+  "full_physics_accepted": false,
+  "port_complete": false,
+  "correctness": [
+    {
+      "case": "side12_init",
+      "passed": true,
+      "failures": 0,
+      "rows": 1728,
+      "columns": 31,
+      "max_absolute_error": 7.275957614183426e-11,
+      "atol": 1e-09,
+      "rtol": 5e-12
+    },
+    {
+      "case": "side12_density",
+      "passed": true,
+      "failures": 0,
+      "rows": 1728,
+      "columns": 31,
+      "max_absolute_error": 7.275957614183426e-11,
+      "atol": 1e-09,
+      "rtol": 5e-12
+    },
+    {
+      "case": "side12_rest",
+      "passed": true,
+      "failures": 0,
+      "rows": 1728,
+      "columns": 31,
+      "max_absolute_error": 7.275957614183426e-11,
+      "atol": 1e-09,
+      "rtol": 5e-12
+    },
+    {
+      "case": "side12_eos",
+      "passed": true,
+      "failures": 0,
+      "rows": 1728,
+      "columns": 31,
+      "max_absolute_error": 7.275957614183426e-11,
+      "atol": 1e-09,
+      "rtol": 5e-12
+    },
+    {
+      "case": "side12_eos_snapshot0",
+      "passed": true,
+      "failures": 0,
+      "rows": 1728,
+      "columns": 31,
+      "max_absolute_error": 0.0,
+      "atol": 1e-09,
+      "rtol": 5e-12
+    },
+    {
+      "case": "side12_eos_snapshot1",
+      "passed": true,
+      "failures": 0,
+      "rows": 1728,
+      "columns": 31,
+      "max_absolute_error": 1.964508555829525e-10,
+      "atol": 1e-09,
+      "rtol": 5e-12
+    },
+    {
+      "case": "side12_eos_snapshot2",
+      "passed": true,
+      "failures": 0,
+      "rows": 1728,
+      "columns": 31,
+      "max_absolute_error": 1.964508555829525e-10,
+      "atol": 1e-09,
+      "rtol": 5e-12
+    },
+    {
+      "case": "side16_init",
+      "passed": true,
+      "failures": 0,
+      "rows": 4096,
+      "columns": 31,
+      "max_absolute_error": 6.548361852765083e-11,
+      "atol": 1e-09,
+      "rtol": 5e-12
+    }
+  ],
+  "experiments": [
+    {
+      "side": 12,
+      "queries": 1,
+      "all_input_particles": 1728,
+      "depth": 14761,
+      "interactions": 27444046,
+      "heap_bytes": 86611456,
+      "allocated_bytes": 550395424,
+      "peak_rss_bytes": 1692549120
+    },
+    {
+      "side": 12,
+      "queries": 8,
+      "all_input_particles": 1728,
+      "depth": 28336,
+      "interactions": 30156225,
+      "heap_bytes": 86622432,
+      "allocated_bytes": 615040272,
+      "peak_rss_bytes": 1638088704
+    },
+    {
+      "side": 12,
+      "queries": 32,
+      "all_input_particles": 1728,
+      "depth": 81749,
+      "interactions": 41603361,
+      "heap_bytes": 86656336,
+      "allocated_bytes": 887840768,
+      "peak_rss_bytes": 1650933760
+    }
+  ],
+  "scope": "All particles initialization through EOS at iteration zero; isolated EOS from three upstream updates; no IAD or full Vine update validation",
+  "parallel_runs": [
+    {
+      "side": 12,
+      "queries": 32,
+      "process_seconds": 9.330744083039463,
+      "runtime_log": "/Users/nils/repos/spec-vi/reports/physics/first-stages/cached-evaluation/side12_workers2.stderr"
+    }
+  ],
+  "error": "Command failed: ['/Library/Frameworks/Python.framework/Versions/3.13/bin/python3', '/Users/nils/repos/spec-vi/tools/vine_exec.py', 'run', '--lib', 'sph=/Users/nils/repos/spec-vi/benchmarks/sph-exa/vine', '--heap', '2G', '/Users/nils/repos/spec-vi/reports/physics/first-stages/cached-evaluation/side16_density.vi']; see /Users/nils/repos/spec-vi/reports/physics/first-stages/cached-evaluation/side16_density.stderr"
+}

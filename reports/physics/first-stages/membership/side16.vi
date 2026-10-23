@@ -1,0 +1,4 @@
+use #sph::{physics,tree};use tree::Tree;
+fn ids(t:Tree[N32],&io:&IO){match t{Tree::Empty(){}Tree::Leaf(i){io.print(" {i}");}Tree::Branch(l,r){ids(l,&io);ids(r,&io);}}}
+fn dump(t:Tree[(N32,Tree[N32])],&io:&IO){match t{Tree::Empty(){}Tree::Leaf((i,ns)){io.print("{i}");ids(ns,&io);io.println("");}Tree::Branch(l,r){dump(l,&io);dump(r,&io);}}}
+pub fn main(&io:&IO){let side=black_box(16);let data=physics::initialize(side,0,4096);let period=physics::initial_period(data,side);let rows=physics::neighbor_rows(data,4096,0,4096,period);dump(rows,&io);}

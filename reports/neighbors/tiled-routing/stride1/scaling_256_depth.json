@@ -1,0 +1,20 @@
+{
+  "argv": [
+    "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+    "/Users/nils/repos/spec-vi/tools/vine_exec.py",
+    "run",
+    "--lib",
+    "sph=/Users/nils/repos/spec-vi/reports/neighbors/tiled-routing/stride1/sph",
+    "--heap",
+    "2G",
+    "--depth",
+    "/Users/nils/repos/spec-vi/reports/neighbors/tiled-routing/stride1/scaling_256_depth.vi"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 153436160,
+  "wall_seconds": 0.7359149170224555,
+  "stdout": "/Users/nils/repos/spec-vi/reports/neighbors/tiled-routing/stride1/scaling_256_depth.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/neighbors/tiled-routing/stride1/scaling_256_depth.stderr"
+}

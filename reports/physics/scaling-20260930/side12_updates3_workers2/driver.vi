@@ -1,0 +1,21 @@
+use #sph::{evolution,physics,tree};
+ pub fn main(&io:&IO){
+ let s=evolution::materialize(evolution::initialize(black_box(12)));let history=0.0[F64];
+ for iteration in 0..black_box(3){
+ let (prepared,rows)=evolution::prepare(s);s=prepared;let nn=evolution::neighbor_count(rows);
+ s=evolution::materialize(evolution::density(s,rows));
+ s=evolution::materialize(evolution::rest(s,iteration));
+ s=evolution::materialize(evolution::eos(s));
+ s=evolution::materialize(evolution::iad(s,rows));
+ s=evolution::materialize(evolution::momentum(s,rows));
+ s=evolution::materialize(evolution::timestep(s));
+ s=evolution::materialize(evolution::positions(s));
+ s=evolution::materialize(evolution::energy(s));
+ history+=s.ttot+s.etot+s.ecin+s.eint+nn as F64;
+ }
+ let total=tree::sum(tree::map(s.data,physics::particle_checksum));
+ let scalar=s.ttot+s.etot+s.ecin+s.eint+s.bounds.xmin+s.bounds.xmax+s.bounds.ymin+s.bounds.ymax+s.bounds.zmin+s.bounds.zmax;
+ let N64(lo,hi)=total.to_bits();io.println("{lo} {hi}");
+ let N64(lo,hi)=scalar.to_bits();io.println("{lo} {hi}");
+ let N64(lo,hi)=history.to_bits();io.println("{lo} {hi}");
+ }

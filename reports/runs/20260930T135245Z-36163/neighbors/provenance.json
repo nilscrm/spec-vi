@@ -1,0 +1,22 @@
+{
+  "policy_sha256": "9ce2f516204a0f398b94a78b78b0125914eaa33d23e27603888fdb8fca32dbba",
+  "candidate": {
+    "sha256": "061636a68f2e986400657cc8a92ea4b3e4fef21da8c2514def8f0514e27b4901",
+    "files": {
+      "evolution.vi": "b84f52421319fa5e0aa35f17306d36a1cd58b0ab05e5379dad1336fb09c38784",
+      "grid.vi": "6720b756af458baf5cdd2a27798272b70b0aa95a27c186d0876206bebf64c371",
+      "neighbors.vi": "77119c67cd5b666e8092a7f3baf08dd66437b3bb36e17ca37975f526a3ec0c5e",
+      "ordered.vi": "102c21c57cc54588571601271318f8af2d5b06bba808964613a15036cfda52a4",
+      "physics.vi": "970da1a3f1baef02e2cc0032df1046592889e5b137a62cb9f3d3ca8aea866bc2",
+      "pilot.vi": "a5fd130a8960d421a176d24468e6dc62ac6aaf7e513390c6482f63fb8ac54a3e",
+      "sph.vi": "522da366d67cb76a39a38ddd80ed13499fc4055789bbb9f62f4f214a9932127c",
+      "tables.vi": "f0bb91156ea97d960a937803967da21572601253137764fb8c4b3740d559dbad",
+      "tree.vi": "15a3c0b47bb30aecc34a828ef56695e81745535b22fe492c575eea760983508d"
+    }
+  },
+  "vine_binary": "959ca124332377b589dfc39d7dd15839209f90dc3aaa1026ee1af812a1dea728",
+  "selected_candidate": "grid",
+  "extra_fixtures_sha256": "1936166edf61673a72cb3e60e45c8a65adee872ae771debac0a2ad5f54cd2b60",
+  "gate_sha256": "f2518cb37a9affd1f37555e1d76426412415e53148e7d8531e117a4c5f39f3ec",
+  "api": "batch"
+}

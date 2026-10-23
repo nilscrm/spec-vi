@@ -1,0 +1,333 @@
+
+use ops::{
+  Cast,
+  arithmetic::{Add, Div, Mul, Neg, Pos, Pow, Rem, Sub},
+  bitwise::{BitAnd, BitOr, BitXor, Not, Shl, Shr},
+};
+use util::{duplicate, erase};
+
+/// Natural numbers represented with 32 bits of precision.
+/// ```vi
+/// let x = 12 + 34;
+/// x // 46
+/// ```
+/// `N32` values are always in the range `[0, 2^32) = [0, 4_294_967_296)`.
+#[builtin = "N32"]
+pub type N32;
+
+pub mod N32 {
+  /// The maximum `N32` value, `2^32 - 1`.
+  pub const maximum: N32 = 0xffffffff;
+
+  pub impl : Fork[N32] = safe duplicate;
+  pub impl : Drop[N32] = safe erase;
+
+  pub impl : Default[N32] {
+    const default: N32 = 0[N32];
+  }
+
+  pub impl : Add[N32, N32, N32] {
+    fn add(a: N32, b: N32) -> N32 {
+      safe $ivy { ${a} = vi:ext#2[vi:n32:add](${b} ^) }
+    }
+  }
+
+  pub impl : Sub[N32, N32, N32] {
+    fn sub(a: N32, b: N32) -> N32 {
+      safe $ivy { ${a} = vi:ext#2[vi:n32:sub](${b} ^) }
+    }
+  }
+
+  pub impl : Mul[N32, N32, N32] {
+    fn mul(a: N32, b: N32) -> N32 {
+      safe $ivy { ${a} = vi:ext#2[vi:n32:mul](${b} ^) }
+    }
+  }
+
+  pub impl : Pow[N32, N32, N32] {
+    fn pow(base: N32, exp: N32) -> N32 {
+      Pow::pow_by_squaring(base, exp)
+    }
+  }
+
+  pub impl : Div[N32, N32, N32] {
+    fn div(a: N32, b: N32) -> N32 {
+      if debug::enabled and b == 0 {
+        return debug::error("division by zero");
+      }
+
+      safe $ivy { ${a} = vi:ext#2[vi:n32:div](${b} ^) }
+    }
+  }
+
+  pub impl : Rem[N32, N32, N32] {
+    fn rem(a: N32, b: N32) -> N32 {
+      if debug::enabled and b == 0 {
+        return debug::error("division by zero");
+      }
+
+      safe $ivy { ${a} = vi:ext#2[vi:n32:rem](${b} ^) }
+    }
+  }
+
+  pub fn .div_rem(a: N32, b: N32) -> (N32, N32) {
+    (a / b, a % b)
+  }
+
+  pub impl : Pos[N32, I32] {
+    fn pos(a: N32) -> I32 {
+      a as I32
+    }
+  }
+
+  pub impl : Neg[N32, I32] {
+    fn neg(a: N32) -> I32 {
+      -(a as I32)
+    }
+  }
+
+  pub impl : BitAnd[N32, N32, N32] {
+    fn bit_and(a: N32, b: N32) -> N32 {
+      safe $ivy { ${a} = vi:ext#2[vi:n32:and](${b} ^) }
+    }
+  }
+
+  pub impl : BitOr[N32, N32, N32] {
+    fn bit_or(a: N32, b: N32) -> N32 {
+      safe $ivy { ${a} = vi:ext#2[vi:n32:or](${b} ^) }
+    }
+  }
+
+  pub impl : BitXor[N32, N32, N32] {
+    fn bit_xor(a: N32, b: N32) -> N32 {
+      safe $ivy { ${a} = vi:ext#2[vi:n32:xor](${b} ^) }
+    }
+  }
+
+  pub impl : Shl[N32, N32, N32] {
+    fn shl(a: N32, b: N32) -> N32 {
+      safe $ivy { ${a} = vi:ext#2[vi:n32:shl](${b} ^) }
+    }
+  }
+
+  pub impl : Shr[N32, N32, N32] {
+    fn shr(a: N32, b: N32) -> N32 {
+      safe $ivy { ${a} = vi:ext#2[vi:n32:shr](${b} ^) }
+    }
+  }
+
+  pub impl : Not[N32, N32] {
+    fn not(a: N32) -> N32 {
+      safe $ivy { ${a} = vi:ext#2[vi:n32:xor](${N32::maximum} ^) }
+    }
+  }
+
+  pub impl to_string: Cast[N32, String] {
+    fn cast(n: N32) -> String {
+      if n != 0 {
+        let chars = [];
+        while n != 0 {
+          chars.push_front('0' + n % 10);
+          n /= 10;
+        }
+        String(chars)
+      } else {
+        "0"
+      }
+    }
+  }
+
+  pub impl : Show[N32] {
+    fn show(&n: &N32) -> Show {
+      Show::Literal("{n}")
+    }
+  }
+
+  pub fn .to_binary_raw(n: N32) -> String {
+    let chars = [];
+    loop {
+      chars.push_front('0' + (n & 1));
+      n >>= 1;
+      if n != 0 {
+        continue;
+      }
+    }
+    String(chars)
+  }
+
+  pub fn .to_binary(n: N32) -> String {
+    "0b" ++ n.to_binary_raw()
+  }
+
+  pub fn .to_hex_fixed(n: N32, digits: N32) -> String {
+    let chars = [];
+    for _ in 0..digits {
+      let nibble = n & 15;
+      let nibble = if nibble < 10 { '0' + nibble } else { 'a' - 10 + nibble };
+      chars.push_front(nibble);
+      n >>= 4;
+    }
+    String(chars)
+  }
+
+  pub fn .to_hex_raw(n: N32) -> String {
+    let chars = [];
+    loop {
+      let nibble = n & 15;
+      let nibble = if nibble < 10 { '0' + nibble } else { 'a' - 10 + nibble };
+      chars.push_front(nibble);
+      n >>= 4;
+      if n != 0 {
+        continue;
+      }
+    }
+    String(chars)
+  }
+
+  pub fn .to_hex(n: N32) -> String {
+    "0x" ++ n.to_hex_raw()
+  }
+
+  pub fn parse(str: String) -> Option[N32] {
+    if str.len() == 0 {
+      return None();
+    }
+    let num = 0;
+    for digit in str {
+      if digit == '_' {
+        continue;
+      }
+      if !('0' <= digit <= '9') {
+        return None();
+      }
+      num *= 10;
+      num += digit - '0';
+    }
+    Some(num)
+  }
+
+  pub fn .rotate_left(a: N32, b: N32) -> N32 {
+    safe $ivy { ${a} = vi:ext#2[vi:n32:rotl](${b} ^) }
+  }
+
+  pub fn .rotate_right(a: N32, b: N32) -> N32 {
+    safe $ivy { ${a} = vi:ext#2[vi:n32:rotr](${b} ^) }
+  }
+
+  pub impl : Ord[N32] {
+    fn lt(&a: &N32, &b: &N32) -> Bool {
+      safe $ivy { ${a} = vi:ext#2[vi:n32:lt](${b} ^) }
+    }
+
+    fn le(&a: &N32, &b: &N32) -> Bool {
+      safe $ivy { ${a} = vi:ext#2[vi:n32:le](${b} ^) }
+    }
+
+    fn cmp(a: &N32, b: &N32) -> Ord {
+      Ord::cmp_from_lt(a, b)
+    }
+  }
+
+  pub impl : Eq[N32] {
+    fn eq(&a: &N32, &b: &N32) -> Bool {
+      safe $ivy { ${a} = vi:ext#2[vi:n32:eq](${b} ^) }
+    }
+
+    fn ne(&a: &N32, &b: &N32) -> Bool {
+      safe $ivy { ${a} = vi:ext#2[vi:n32:ne](${b} ^) }
+    }
+  }
+
+  pub fn .min(a: N32, b: N32) -> N32 {
+    if a < b {
+      a
+    } else {
+      b
+    }
+  }
+
+  pub fn .max(a: N32, b: N32) -> N32 {
+    if a > b {
+      a
+    } else {
+      b
+    }
+  }
+
+  pub fn .diff(a: N32, b: N32) -> N32 {
+    if a > b {
+      a - b
+    } else {
+      b - a
+    }
+  }
+
+  pub fn .gcd(a: N32, b: N32) -> N32 {
+    while a != 0 {
+      (a, b) = (b % a, a)
+    }
+    b
+  }
+
+  pub fn .sqrt(n: N32) -> N32 {
+    let r = 0x8000;
+    let s = 0;
+    while r != 0 {
+      let m = s + r;
+      if m * m <= n {
+        s = m;
+      }
+      r >>= 1;
+    }
+    s
+  }
+
+  pub fn .log(n: N32, b: N32) -> N32 {
+    let ~s = 0;
+    let r = ~s;
+    let e = 1;
+    let ~m = n;
+    while b < n {
+      let &m = &~m;
+      if b <= m {
+        ~s += e;
+        m /= b;
+      }
+      if b >= 65536 {
+        break;
+      }
+      b *= b;
+      e *= 2;
+    }
+    r
+  }
+
+  pub.numeric fn add_high(a: N32, b: N32) -> Bool {
+    safe $ivy { ${a} = vi:ext#2[vi:n32:add_high](${b} ^) }
+  }
+
+  pub.numeric fn mul_high(a: N32, b: N32) -> N32 {
+    safe $ivy { ${a} = vi:ext#2[vi:n32:mul_high](${b} ^) }
+  }
+
+  pub fn .leading_zeros(n: N32) -> N32 {
+    let zeros = 32;
+    while n != 0 {
+      zeros -= 1;
+      n >>= 1;
+    }
+    zeros
+  }
+
+  pub fn .trailing_zeros(n: N32) -> N32 {
+    if n == 0 {
+      return 32;
+    }
+    let zeros = 0;
+    while n & 1 == 0 {
+      zeros += 1;
+      n >>= 1;
+    }
+    zeros
+  }
+}

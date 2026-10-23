@@ -1,0 +1,8 @@
+warning: unused item
+     @ sph/pilot.vi:156:18
+ 156 | use #root::data::Lookup;
+
+
+thread 'main' (4638010) panicked at ivm/src/runtime/allocator.rs:90:44:
+OOM
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace

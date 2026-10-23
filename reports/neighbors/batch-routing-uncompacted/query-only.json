@@ -1,0 +1,38 @@
+{
+  "diagnostic_only": true,
+  "excludes_construction": true,
+  "metrics": [
+    {
+      "case": "scaling_64",
+      "mode": "single",
+      "depth": 473,
+      "interactions": 812465,
+      "heap_bytes": 2156912,
+      "allocated_bytes": 18449184
+    },
+    {
+      "case": "scaling_64",
+      "mode": "batch",
+      "depth": 426,
+      "interactions": 764422,
+      "heap_bytes": 2144048,
+      "allocated_bytes": 17485744
+    },
+    {
+      "case": "scaling_256",
+      "mode": "single",
+      "depth": 629,
+      "interactions": 11294563,
+      "heap_bytes": 28628512,
+      "allocated_bytes": 243400128
+    },
+    {
+      "case": "scaling_256",
+      "mode": "batch",
+      "depth": 558,
+      "interactions": 10398288,
+      "heap_bytes": 24481536,
+      "allocated_bytes": 225602896
+    }
+  ]
+}

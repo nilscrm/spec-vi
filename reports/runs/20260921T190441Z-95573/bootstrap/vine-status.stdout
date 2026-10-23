@@ -1,0 +1,5 @@
+?? .helix/
+?? package-lock.json
+?? tests/misc/f64_consts.vi
+?? tests/misc/f64_pow.vi
+?? tests/misc/f64_trig.vi

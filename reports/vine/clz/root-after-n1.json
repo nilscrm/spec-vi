@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+    "/Users/nils/repos/spec-vi/tools/vine_exec.py",
+    "run",
+    "--lib",
+    "sph=/Users/nils/repos/spec-vi/reports/vine/clz/sph",
+    "--depth",
+    "/Users/nils/repos/spec-vi/reports/vine/clz/n1_old.vi"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 116490240,
+  "wall_seconds": 0.4070767090015579,
+  "stdout": "/Users/nils/repos/spec-vi/reports/vine/clz/root-after-n1.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/vine/clz/root-after-n1.stderr"
+}

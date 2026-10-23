@@ -1,0 +1,17 @@
+{
+  "argv": [
+    "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+    "/Users/nils/repos/spec-vi/tools/vine_exec.py",
+    "run",
+    "--no-perf",
+    "-d",
+    "/Users/nils/repos/spec-vi/work/vine-lookup/tests/programs/tiny_f64.vi"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 117850112,
+  "wall_seconds": 0.3403855419892352,
+  "stdout": "/Users/nils/repos/spec-vi/reports/vine/sine-vine/regression_tiny_f64.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/vine/sine-vine/regression_tiny_f64.stderr"
+}

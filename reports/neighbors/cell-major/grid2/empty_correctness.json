@@ -1,0 +1,19 @@
+{
+  "argv": [
+    "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+    "/Users/nils/repos/spec-vi/tools/vine_exec.py",
+    "run",
+    "--lib",
+    "sph=/Users/nils/repos/spec-vi/reports/neighbors/cell-major/grid2/sph",
+    "--heap",
+    "2G",
+    "/Users/nils/repos/spec-vi/reports/neighbors/cell-major/grid2/empty_correctness.vi"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 125468672,
+  "wall_seconds": 0.4371553329983726,
+  "stdout": "/Users/nils/repos/spec-vi/reports/neighbors/cell-major/grid2/empty_correctness.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/neighbors/cell-major/grid2/empty_correctness.stderr"
+}

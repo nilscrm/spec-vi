@@ -1,0 +1,72 @@
+error: cannot find impl of trait `BitAnd[F64, F64, ?33]`
+    @ sph/ordered.vi:31:46
+ 31 | fn overlap(b:Bounds,q:Query)->Bool {q.x+q.r>=b.xmin & q.x-q.r<=b.xmax & q.y+q.r>=b.ymin & q.y-q.r<=b.ymax & q.z+q.r>=b.zmin & q.z-q.r<=b.zmax}
+
+error: cannot find impl of trait `BitAnd[F64, F64, ?44]`
+    @ sph/ordered.vi:31:64
+ 31 | fn overlap(b:Bounds,q:Query)->Bool {q.x+q.r>=b.xmin & q.x-q.r<=b.xmax & q.y+q.r>=b.ymin & q.y-q.r<=b.ymax & q.z+q.r>=b.zmin & q.z-q.r<=b.zmax}
+
+error: cannot find impl of trait `BitAnd[F64, F64, ?55]`
+    @ sph/ordered.vi:31:82
+ 31 | fn overlap(b:Bounds,q:Query)->Bool {q.x+q.r>=b.xmin & q.x-q.r<=b.xmax & q.y+q.r>=b.ymin & q.y-q.r<=b.ymax & q.z+q.r>=b.zmin & q.z-q.r<=b.zmax}
+
+error: cannot find impl of trait `BitAnd[F64, F64, ?66]`
+    @ sph/ordered.vi:31:100
+ 31 | fn overlap(b:Bounds,q:Query)->Bool {q.x+q.r>=b.xmin & q.x-q.r<=b.xmax & q.y+q.r>=b.ymin & q.y-q.r<=b.ymax & q.z+q.r>=b.zmin & q.z-q.r<=b.zmax}
+
+error: cannot find impl of trait `BitAnd[F64, F64, ?77]`
+    @ sph/ordered.vi:31:118
+ 31 | fn overlap(b:Bounds,q:Query)->Bool {q.x+q.r>=b.xmin & q.x-q.r<=b.xmax & q.y+q.r>=b.ymin & q.y-q.r<=b.ymax & q.z+q.r>=b.zmin & q.z-q.r<=b.zmax}
+
+error: expected type `&Tree[{ id: N32, x: F64, y: F64, z: F64 }]`; found `Tree[{ id: N32, x: F64, y: F64, z: F64 }]`
+    @ sph/ordered.vi:35:31
+ 35 |  &Tree::Branch(l,r){join(scan(l,q),scan(r,q))}
+
+error: expected type `&Tree[{ id: N32, x: F64, y: F64, z: F64 }]`; found `Tree[{ id: N32, x: F64, y: F64, z: F64 }]`
+    @ sph/ordered.vi:35:41
+ 35 |  &Tree::Branch(l,r){join(scan(l,q),scan(r,q))}
+
+error: expected type `&Tree[{ id: N32, x: F64, y: F64, z: F64 }]`; found `Tree[{ id: N32, x: F64, y: F64, z: F64 }]`
+    @ sph/ordered.vi:38:44
+ 38 |  &Index::Bucket(b,ps){if overlap(b,q){scan(ps,q)}else{Tree::Empty()}}
+
+error: expected type `&Tree[Index]`; found `Tree[Index]`
+    @ sph/ordered.vi:39:49
+ 39 |  &Index::Node(b,cs){if overlap(b,q){query_cells(cs,q)}else{Tree::Empty()}}
+
+error: expected type `&Index`; found `Index`
+    @ sph/ordered.vi:42:54
+ 42 |  &Tree::Empty(){Tree::Empty()}&Tree::Leaf(idx){query(idx,q)}&Tree::Branch(l,r){join(query_cells(l,q),query_cells(r,q))}
+
+error: expected type `&Tree[Index]`; found `Tree[Index]`
+    @ sph/ordered.vi:42:97
+ 42 |  &Tree::Empty(){Tree::Empty()}&Tree::Leaf(idx){query(idx,q)}&Tree::Branch(l,r){join(query_cells(l,q),query_cells(r,q))}
+
+error: expected type `&Tree[Index]`; found `Tree[Index]`
+    @ sph/ordered.vi:42:114
+ 42 |  &Tree::Empty(){Tree::Empty()}&Tree::Leaf(idx){query(idx,q)}&Tree::Branch(l,r){join(query_cells(l,q),query_cells(r,q))}
+
+error: expected type `&Index`; found `Index`
+    @ sph/ordered.vi:45:54
+ 45 |  &Tree::Empty(){Tree::Empty()}&Tree::Leaf(idx){query(idx,q)}&Tree::Branch(l,r){let h=n/2;if k<h{query_slot(l,k,h,q)}else{query_slot(r,k-h,n-h,q)}}
+
+error: expected type `&Tree[Index]`; found `Tree[Index]`
+    @ sph/ordered.vi:45:108
+ 45 |  &Tree::Empty(){Tree::Empty()}&Tree::Leaf(idx){query(idx,q)}&Tree::Branch(l,r){let h=n/2;if k<h{query_slot(l,k,h,q)}else{query_slot(r,k-h,n-h,q)}}
+
+error: expected type `&Tree[Index]`; found `Tree[Index]`
+    @ sph/ordered.vi:45:133
+ 45 |  &Tree::Empty(){Tree::Empty()}&Tree::Leaf(idx){query(idx,q)}&Tree::Branch(l,r){let h=n/2;if k<h{query_slot(l,k,h,q)}else{query_slot(r,k-h,n-h,q)}}
+
+error: expected type `&Tree[{ id: N32, x: F64, y: F64, z: F64 }]`; found `Tree[{ id: N32, x: F64, y: F64, z: F64 }]`
+    @ sph/ordered.vi:59:28
+ 59 |  &Index::Bucket(_,ps){scan(ps,q)}&Index::Node(b,cs){root_layers(cs,q,b.zmax-b.zmin,0)}
+
+error: expected type `&Tree[Index]`; found `Tree[Index]`
+    @ sph/ordered.vi:59:65
+ 59 |  &Index::Bucket(_,ps){scan(ps,q)}&Index::Node(b,cs){root_layers(cs,q,b.zmax-b.zmin,0)}
+
+warning: unused item
+     @ sph/pilot.vi:156:18
+ 156 | use #root::data::Lookup;
+

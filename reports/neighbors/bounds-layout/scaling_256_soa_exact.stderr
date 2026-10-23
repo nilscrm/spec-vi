@@ -1,0 +1,22 @@
+warning: unused item
+   @ scaling_256_soa_exact.vi:5:4
+ 5 | fn checksum(b:neighbors::Bounds)->N32 {((bits(b.xmin)+bits(b.xmax))+(bits(b.ymin)+bits(b.ymax)))+((bits(b.zmin)+bits(b.zmax))+b.n)}
+
+
+Interactions
+  Total              242_812
+  Annihilate         115_764
+  Commute                  0
+  Copy                 4_695
+  Erase               14_668
+  Graft               41_854
+  Extrinsic           65_831
+
+Memory
+  Heap                79_376 B
+  Allocated        5_119_488 B
+  Freed            5_119_488 B
+
+Performance
+  Time                     4 ms
+  Speed           50_326_338 IPS

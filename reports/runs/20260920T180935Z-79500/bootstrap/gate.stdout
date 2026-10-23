@@ -1,0 +1,242 @@
+{
+  "schema_version": 1,
+  "milestone": "bootstrap",
+  "passed": true,
+  "port_complete": false,
+  "reference_cases": [
+    {
+      "side": 12,
+      "iteration_label": 0,
+      "shape_and_finiteness": {
+        "passed": true,
+        "failures": 0,
+        "rows": 1728,
+        "columns": 16,
+        "max_absolute_error": 0.0,
+        "atol": 0,
+        "rtol": 0
+      },
+      "file": "/Users/nils/repos/spec-vi/reports/runs/20260920T180935Z-79500/bootstrap/reference-n12/dump0.txt",
+      "sha256": "91ce32136c61a431e66ec1d1d717ec4a5a176b07855581b49e1feeded0cde63a"
+    },
+    {
+      "side": 12,
+      "iteration_label": 1,
+      "shape_and_finiteness": {
+        "passed": true,
+        "failures": 0,
+        "rows": 1728,
+        "columns": 16,
+        "max_absolute_error": 0.0,
+        "atol": 0,
+        "rtol": 0
+      },
+      "file": "/Users/nils/repos/spec-vi/reports/runs/20260920T180935Z-79500/bootstrap/reference-n12/dump1.txt",
+      "sha256": "55f63d83bb644921ac0ad3d2a46f876420930434d093c726128bc2f0447cf099"
+    },
+    {
+      "side": 16,
+      "iteration_label": 0,
+      "shape_and_finiteness": {
+        "passed": true,
+        "failures": 0,
+        "rows": 4096,
+        "columns": 16,
+        "max_absolute_error": 0.0,
+        "atol": 0,
+        "rtol": 0
+      },
+      "file": "/Users/nils/repos/spec-vi/reports/runs/20260920T180935Z-79500/bootstrap/reference-n16/dump0.txt",
+      "sha256": "6797e88990a23b81fbeeebac24d945db7b68532310c74941e75d8e605dbcfa44"
+    },
+    {
+      "side": 16,
+      "iteration_label": 1,
+      "shape_and_finiteness": {
+        "passed": true,
+        "failures": 0,
+        "rows": 4096,
+        "columns": 16,
+        "max_absolute_error": 0.0,
+        "atol": 0,
+        "rtol": 0
+      },
+      "file": "/Users/nils/repos/spec-vi/reports/runs/20260920T180935Z-79500/bootstrap/reference-n16/dump1.txt",
+      "sha256": "b4a0beebdd8515dd3437e3d3da7d7924f7c0cfdbf653af7625292040176f7812"
+    }
+  ],
+  "depth_probe": {
+    "depth": 160,
+    "interactions": 2781,
+    "heap_bytes": 12560,
+    "allocated_bytes": 49024
+  },
+  "commands": [
+    {
+      "argv": [
+        "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "cwd": "/Users/nils/repos/spec-vi",
+      "exit_code": 0,
+      "timed_out": false,
+      "peak_rss_bytes": 32342016,
+      "wall_seconds": 0.5998813750047702,
+      "stdout": "/Users/nils/repos/spec-vi/reports/runs/20260920T180935Z-79500/bootstrap/tests.stdout",
+      "stderr": "/Users/nils/repos/spec-vi/reports/runs/20260920T180935Z-79500/bootstrap/tests.stderr"
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/Users/nils/repos/vine",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/Users/nils/repos/spec-vi",
+      "exit_code": 0,
+      "timed_out": false,
+      "peak_rss_bytes": 4390912,
+      "wall_seconds": 0.022606332990108058,
+      "stdout": "/Users/nils/repos/spec-vi/reports/runs/20260920T180935Z-79500/bootstrap/vine-head.stdout",
+      "stderr": "/Users/nils/repos/spec-vi/reports/runs/20260920T180935Z-79500/bootstrap/vine-head.stderr"
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/Users/nils/repos/vine",
+        "diff",
+        "HEAD",
+        "--binary"
+      ],
+      "cwd": "/Users/nils/repos/spec-vi",
+      "exit_code": 0,
+      "timed_out": false,
+      "peak_rss_bytes": 6078464,
+      "wall_seconds": 0.05121754197170958,
+      "stdout": "/Users/nils/repos/spec-vi/reports/runs/20260920T180935Z-79500/bootstrap/vine-diff.stdout",
+      "stderr": "/Users/nils/repos/spec-vi/reports/runs/20260920T180935Z-79500/bootstrap/vine-diff.stderr"
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "/Users/nils/repos/vine",
+        "status",
+        "--porcelain"
+      ],
+      "cwd": "/Users/nils/repos/spec-vi",
+      "exit_code": 0,
+      "timed_out": false,
+      "peak_rss_bytes": 6373376,
+      "wall_seconds": 0.04943654200178571,
+      "stdout": "/Users/nils/repos/spec-vi/reports/runs/20260920T180935Z-79500/bootstrap/vine-status.stdout",
+      "stderr": "/Users/nils/repos/spec-vi/reports/runs/20260920T180935Z-79500/bootstrap/vine-status.stderr"
+    },
+    {
+      "argv": [
+        "c++",
+        "--version"
+      ],
+      "cwd": "/Users/nils/repos/spec-vi",
+      "exit_code": 0,
+      "timed_out": false,
+      "peak_rss_bytes": 16302080,
+      "wall_seconds": 0.026553083007456735,
+      "stdout": "/Users/nils/repos/spec-vi/reports/runs/20260920T180935Z-79500/bootstrap/compiler-version.stdout",
+      "stderr": "/Users/nils/repos/spec-vi/reports/runs/20260920T180935Z-79500/bootstrap/compiler-version.stderr"
+    },
+    {
+      "argv": [
+        "make",
+        "sph-exa-build"
+      ],
+      "cwd": "/Users/nils/repos/spec-vi",
+      "exit_code": 0,
+      "timed_out": false,
+      "peak_rss_bytes": 138739712,
+      "wall_seconds": 0.788470833998872,
+      "stdout": "/Users/nils/repos/spec-vi/reports/runs/20260920T180935Z-79500/bootstrap/build.stdout",
+      "stderr": "/Users/nils/repos/spec-vi/reports/runs/20260920T180935Z-79500/bootstrap/build.stderr"
+    },
+    {
+      "argv": [
+        "/Users/nils/repos/spec-vi/work/build/sph-exa",
+        "-n",
+        "12",
+        "-s",
+        "1",
+        "-w",
+        "1"
+      ],
+      "cwd": "/Users/nils/repos/spec-vi/reports/runs/20260920T180935Z-79500/bootstrap/reference-n12",
+      "exit_code": 0,
+      "timed_out": false,
+      "peak_rss_bytes": 7176192,
+      "wall_seconds": 0.3849998749792576,
+      "stdout": "/Users/nils/repos/spec-vi/reports/runs/20260920T180935Z-79500/bootstrap/reference-n12/run.stdout",
+      "stderr": "/Users/nils/repos/spec-vi/reports/runs/20260920T180935Z-79500/bootstrap/reference-n12/run.stderr"
+    },
+    {
+      "argv": [
+        "/Users/nils/repos/spec-vi/work/build/sph-exa",
+        "-n",
+        "16",
+        "-s",
+        "1",
+        "-w",
+        "1"
+      ],
+      "cwd": "/Users/nils/repos/spec-vi/reports/runs/20260920T180935Z-79500/bootstrap/reference-n16",
+      "exit_code": 0,
+      "timed_out": false,
+      "peak_rss_bytes": 13959168,
+      "wall_seconds": 0.17439924998325296,
+      "stdout": "/Users/nils/repos/spec-vi/reports/runs/20260920T180935Z-79500/bootstrap/reference-n16/run.stdout",
+      "stderr": "/Users/nils/repos/spec-vi/reports/runs/20260920T180935Z-79500/bootstrap/reference-n16/run.stderr"
+    },
+    {
+      "argv": [
+        "/Users/nils/repos/vine/target/release/vine",
+        "run",
+        "--depth",
+        "/Users/nils/repos/spec-vi/reports/runs/20260920T180935Z-79500/bootstrap/probe.vi"
+      ],
+      "cwd": "/Users/nils/repos/spec-vi",
+      "exit_code": 0,
+      "timed_out": false,
+      "peak_rss_bytes": 114163712,
+      "wall_seconds": 0.3964788749872241,
+      "stdout": "/Users/nils/repos/spec-vi/reports/runs/20260920T180935Z-79500/bootstrap/probe-depth.stdout",
+      "stderr": "/Users/nils/repos/spec-vi/reports/runs/20260920T180935Z-79500/bootstrap/probe-depth.stderr"
+    },
+    {
+      "argv": [
+        "/Users/nils/repos/vine/target/release/vine",
+        "run",
+        "--workers",
+        "2",
+        "/Users/nils/repos/spec-vi/reports/runs/20260920T180935Z-79500/bootstrap/probe.vi"
+      ],
+      "cwd": "/Users/nils/repos/spec-vi",
+      "exit_code": 0,
+      "timed_out": false,
+      "peak_rss_bytes": 114163712,
+      "wall_seconds": 0.31642308400478214,
+      "stdout": "/Users/nils/repos/spec-vi/reports/runs/20260920T180935Z-79500/bootstrap/probe-workers.stdout",
+      "stderr": "/Users/nils/repos/spec-vi/reports/runs/20260920T180935Z-79500/bootstrap/probe-workers.stderr"
+    }
+  ],
+  "limitations": [
+    "Reference dumps have upstream default precision; numerical oracle instrumentation is pending.",
+    "The Vine probe is not SPH-EXA and does not establish port performance.",
+    "No process peak-memory measurement is implemented yet.",
+    "Existing Vine binary build provenance is not established."
+  ]
+}

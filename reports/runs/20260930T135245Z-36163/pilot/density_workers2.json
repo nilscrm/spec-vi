@@ -1,0 +1,21 @@
+{
+  "argv": [
+    "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+    "/Users/nils/repos/spec-vi/tools/vine_exec.py",
+    "run",
+    "--lib",
+    "sph=/Users/nils/repos/spec-vi/benchmarks/sph-exa/vine",
+    "--heap",
+    "2G",
+    "--workers",
+    "2",
+    "/Users/nils/repos/spec-vi/reports/runs/20260930T135245Z-36163/pilot/density_n16_balanced.vi"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 1902739456,
+  "wall_seconds": 11.993544208002277,
+  "stdout": "/Users/nils/repos/spec-vi/reports/runs/20260930T135245Z-36163/pilot/density_workers2.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/runs/20260930T135245Z-36163/pilot/density_workers2.stderr"
+}

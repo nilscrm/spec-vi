@@ -1,0 +1,27 @@
+[
+  {
+    "case": "coincident64",
+    "queries": 8,
+    "passed": true
+  },
+  {
+    "case": "collinear96",
+    "queries": 12,
+    "passed": true
+  },
+  {
+    "case": "cloud0",
+    "queries": 15,
+    "passed": true
+  },
+  {
+    "case": "cloud1",
+    "queries": 15,
+    "passed": true
+  },
+  {
+    "case": "cloud2",
+    "queries": 15,
+    "passed": true
+  }
+]

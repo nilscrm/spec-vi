@@ -1,0 +1,12 @@
+{
+  "type": "object",
+  "properties": {
+    "summary": {"type": "string"},
+    "evidence": {"type": "array", "items": {"type": "string"}},
+    "lessons": {"type": "array", "items": {"type": "string"}},
+    "markdown_updated": {"type": "array", "items": {"type": "string"}},
+    "blockers": {"type": "array", "items": {"type": "string"}}
+  },
+  "required": ["summary", "evidence", "lessons", "markdown_updated", "blockers"],
+  "additionalProperties": false
+}

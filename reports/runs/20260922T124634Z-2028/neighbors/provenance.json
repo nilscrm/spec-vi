@@ -1,0 +1,14 @@
+{
+  "policy_sha256": "9ce2f516204a0f398b94a78b78b0125914eaa33d23e27603888fdb8fca32dbba",
+  "candidate": {
+    "sha256": "520ea4b7e3477f3e3dc349fcd42fc29067c49714078e47afb5d5edeb208b1dc4",
+    "files": {
+      "neighbors.vi": "77119c67cd5b666e8092a7f3baf08dd66437b3bb36e17ca37975f526a3ec0c5e",
+      "pilot.vi": "691f552e4234a7d5cd459351149abcaa5433702544722dbb5e2084d7238b3d7b",
+      "sph.vi": "cf6c637361faedd3262023ab2be328564056a274a4ea1ed39a2ecb7ba81ebc1b",
+      "tables.vi": "f0bb91156ea97d960a937803967da21572601253137764fb8c4b3740d559dbad",
+      "tree.vi": "15a3c0b47bb30aecc34a828ef56695e81745535b22fe492c575eea760983508d"
+    }
+  },
+  "vine_binary": "959ca124332377b589dfc39d7dd15839209f90dc3aaa1026ee1af812a1dea728"
+}

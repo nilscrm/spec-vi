@@ -1,0 +1,66 @@
+#!/usr/bin/env python3
+"""Build and verify full-state upstream snapshots without editing upstream."""
+import argparse
+import json
+import math
+from pathlib import Path
+from evaluate import ROOT, run, write_json, sha, tree_hash
+
+FIELDS = 'x y z x_m1 y_m1 z_m1 vx vy vz ro ro_0 u p p_0 h m c grad_P_x grad_P_y grad_P_z du du_m1 dt dt_m1 c11 c12 c13 c22 c23 c33'.split()
+STAGES = ['geometry','density','rest','eos','iad','momentum','timestep','positions','energy']
+
+
+def load_fields(path, count):
+    rows = [[float(v) for v in line.split()] for line in Path(path).read_text().splitlines()]
+    if len(rows) != count or any(len(row) != 31 or row[0] != i or not all(map(math.isfinite,row)) for i,row in enumerate(rows)):
+        raise ValueError(f'Malformed particle snapshot: {path}')
+    return [r[1:] for r in rows]
+
+
+def generate(output):
+    output = Path(output).resolve(); output.mkdir(parents=True,exist_ok=True)
+    policy = json.loads((ROOT/'evaluations/sph-exa/physics-policy.json').read_text())
+    if tree_hash(ROOT/'upstream/sph-exa') != json.loads((ROOT/'evaluations/upstream-files.json').read_text()):
+        raise RuntimeError('Upstream source changed')
+    flags = ['c++','-std=c++14','-O2','-ffp-contract=off','-DNDEBUG','-Wno-unknown-pragmas',
+             '-I'+str(ROOT/'upstream/sph-exa/src'),'-I'+str(ROOT/'upstream/sph-exa/src/include')]
+    for name, source in [('stages',ROOT/'benchmarks/sph-exa/reference/stages.cpp'),('upstream',ROOT/'upstream/sph-exa/src/sqpatch.cpp')]:
+        run(flags+[str(source),'-o',str(output/name)],ROOT,output/('build-'+name))
+    report = {'reference_verified':False,'port_complete':False,'fields':FIELDS,'stages':STAGES,
+              'policy':policy,'source_sha256':sha(ROOT/'benchmarks/sph-exa/reference/stages.cpp'),'cases':[]}
+    for side in policy['sides']:
+        count = side**3; updates = policy['updates']
+        case = output/f'side{side}';case.mkdir(exist_ok=True)
+        original = output/f'upstream{side}';original.mkdir(exist_ok=True)
+        run([str(output/'stages'),str(side),str(updates),str(case)],ROOT,output/f'stages-{side}',600)
+        run([str(output/'upstream'),'-n',str(side),'-s',str(updates-1),'-w','1'],original,output/f'upstream-{side}',600)
+        for name in ['constants.txt']+[f'dump{i}.txt' for i in range(updates)]:
+            if (case/name).read_bytes() != (original/name).read_bytes():
+                raise ValueError('Instrumented reference differs from original output: '+name)
+        load_fields(case/'init.tsv',count)
+        maximum = 0
+        for i in range(updates):
+            snapshots = {stage:load_fields(case/f'i{i}-{stage}.tsv',count) for stage in STAGES}
+            for stage in STAGES:
+                meta=list(map(float,(case/f'i{i}-{stage}.meta').read_text().split()))
+                if len(meta)!=10 or not all(map(math.isfinite,meta)): raise ValueError('Malformed scalar snapshot')
+            rows=[list(map(int,line.split())) for line in (case/f'i{i}-neighbors.tsv').read_text().splitlines()]
+            if len(rows)!=count: raise ValueError('Missing neighbor rows')
+            for ident,row in enumerate(rows):
+                if not row or row[0]!=ident or len(row[1:])!=len(set(row[1:])) or ident in row[1:] or any(j<0 or j>=count for j in row[1:]):
+                    raise ValueError('Invalid neighbor IDs')
+                maximum=max(maximum,len(row)-1)
+            for particle,(density,rest,eos) in enumerate(zip(snapshots['density'],snapshots['rest'],snapshots['eos'])):
+                if rest[10] != (density[9] if i==0 else density[10]): raise ValueError('Rest-density transition differs')
+                if eos[11]!=1.0 or eos[16]!=3500.0: raise ValueError('EOS reset differs')
+        report['cases'].append({'side':side,'particles':count,'updates':updates,'all_snapshots_finite':True,
+                                'ordinary_outputs_identical':True,'max_neighbors':maximum,'unsaturated':maximum<650})
+        write_json(output/'progress.json',report)
+    report['reference_verified']=True
+    report['snapshots']={str(p.relative_to(output)):sha(p) for p in sorted(output.glob('side*/*')) if p.is_file()}
+    write_json(output/'result.json',report)
+    return report
+
+if __name__=='__main__':
+    ap=argparse.ArgumentParser();ap.add_argument('--output',required=True);args=ap.parse_args()
+    print(json.dumps(generate(args.output),indent=2))

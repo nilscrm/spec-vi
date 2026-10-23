@@ -1,0 +1,148 @@
+
+// Serial upstream square-patch driver. -s is inclusive, as in sqpatch.cpp.
+use #sph::{evolution, physics, tree};
+use tree::Tree;
+use #root::IO::File;
+
+fn number(text: String) -> N32 {
+  match N32::parse(text) {
+    Some(n) { n }
+    None() {
+      debug::error("expected a nonnegative integer");
+      0
+    }
+  }
+}
+fn required(&args: &List[String]) -> String {
+  match args.pop_front() {
+    Some(value) { value }
+    None() {
+      debug::error("missing option value");
+      ""
+    }
+  }
+}
+fn dump(data: Tree[physics::Particle], &file: &File, &io: &IO) {
+  match data {
+    Tree::Empty() {}
+    Tree::Leaf(p) {
+      let radius = (p.x * p.x + p.y * p.y + p.z * p.z).sqrt();
+      let radial_velocity = (p.vx * p.x + p.vy * p.y + p.vz * p.z) / radius;
+      file
+        .write_string(
+          &io,
+          "{
+            p.x
+          } {
+            p.y
+          } {
+            p.z
+          } {
+            p.vx
+          } {
+            p.vy
+          } {
+            p.vz
+          } {
+            p.h
+          } {
+            p.ro
+          } {
+            p.u
+          } {
+            p.p
+          } {
+            p.c
+          } {
+            p.grad_P_x
+          } {
+            p.grad_P_y
+          } {
+            p.grad_P_z
+          } {
+            radius
+          } {
+            radial_velocity
+          }\n",
+        )
+        .assume()
+      ;
+    }
+    Tree::Branch(l, r) {
+      dump(l, &file, &io);
+      dump(r, &file, &io);
+    }
+  }
+}
+pub fn main(&io: &IO) {
+  let args = io.args();
+  let side = 50;
+  let last_step = 10;
+  let frequency = 0;
+  while args.pop_front() is Some(option) {
+    if option == "--help" or option == "-h" {
+      io.println("square_patch [-n SIDE] [-s LAST_STEP] [-w FREQUENCY]");
+      io.println("Defaults: -n 50 -s 10 -w -1. -s 0 executes one update.");
+      return;
+    } else {
+      if option == "-n" {
+        side = number(required(&args));
+      } else {
+        if option == "-s" {
+          last_step = number(required(&args));
+        } else {
+          if option == "-w" {
+            let value = required(&args);
+            match I32::parse(value) {
+              Some(n) { frequency = if n > +0 { n as N32 } else { 0 }; }
+              None() { debug::error("invalid write frequency"); }
+            }
+          } else {
+            debug::error("unknown square-patch option");
+          }
+        }
+      }
+    }
+  }
+  if side < 10 or side > 1625 or last_step == N32::maximum {
+    debug::error("invalid side or step count");
+    return;
+  }
+  let s = evolution::materialize(evolution::initialize(side));
+  let constants = File::create(&io, "constants.txt").assume();
+  for iteration in 0..last_step + 1 {
+    let (prepared, rows) = evolution::prepare(s);
+    s = prepared;
+    let neighbors = evolution::neighbor_count(rows);
+    s = evolution::materialize(evolution::density(s, rows));
+    s = evolution::materialize(evolution::rest(s, iteration));
+    s = evolution::materialize(evolution::eos(s));
+    s = evolution::materialize(evolution::iad(s, rows));
+    s = evolution::materialize(evolution::momentum(s, rows));
+    s = evolution::materialize(evolution::timestep(s));
+    s = evolution::materialize(evolution::positions(s));
+    s = evolution::materialize(evolution::energy(s));
+    let dt = physics::at(&s.data, s.n, 0).dt;
+    constants
+      .write_string(&io, "{iteration} {s.ttot} {dt} {s.etot} {s.ecin} {s.eint} {neighbors}\n")
+      .assume()
+    ;
+    if frequency > 0 and iteration % frequency == 0 {
+      let file = File::create(&io, "dump{iteration}.txt").assume();
+      dump(s.data, &file, &io);
+      file.close(&io);
+    }
+    io.println("iteration {
+      iteration
+    }: particles {
+      s.n
+    }, neighbors {
+      neighbors
+    }, time {
+      s.ttot
+    }, energy {
+      s.etot
+    }");
+  }
+  constants.close(&io);
+}

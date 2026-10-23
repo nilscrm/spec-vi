@@ -1,0 +1,20 @@
+error: cannot find `neighbors` in `#sph`
+   @ empty.vi:1:12
+ 1 | use #sph::{neighbors,tree};
+
+warning: unused variable
+    @ empty.vi:19:38
+ 19 | let output=tree::map(queries,fn* ((i,q)) {(i,neighbors::find(index,q))});
+
+warning: unused variable
+    @ empty.vi:18:5
+ 18 | let index=neighbors::build(points);
+
+warning: unused variable
+    @ empty.vi:16:5
+ 16 | let points=black_box(Tree::Empty());
+
+warning: unused item
+    @ sph/pilot.vi:59:18
+ 59 | use #root::data::Lookup;
+

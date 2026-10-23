@@ -1,0 +1,12 @@
+clean empty correctness passed
+clean strict_boundary correctness passed
+clean periodic correctness passed
+clean clusters_shuffled correctness passed
+clean scaling_64 correctness passed
+clean scaling_64 depth [{'variant': 'clean', 'case': 'scaling_64', 'mode': 'depth', 'wall_seconds': 0.6505019580363296, 'peak_rss_bytes': 144310272, 'depth': 634, 'interactions': 1695850, 'heap_bytes': 8851312, 'allocated_bytes': 34977504}]
+clean scaling_64 workers2 passed
+clean scaling_256 correctness passed
+clean scaling_256 depth [{'variant': 'clean', 'case': 'scaling_256', 'mode': 'depth', 'wall_seconds': 0.8702427499811165, 'peak_rss_bytes': 191201280, 'depth': 775, 'interactions': 7957961, 'heap_bytes': 38552928, 'allocated_bytes': 167548960}]
+clean scaling_256 workers2 passed
+clean upstream_12 correctness passed
+clean upstream_16 correctness passed

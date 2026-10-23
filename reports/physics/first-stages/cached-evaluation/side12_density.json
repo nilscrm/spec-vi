@@ -1,0 +1,19 @@
+{
+  "argv": [
+    "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+    "/Users/nils/repos/spec-vi/tools/vine_exec.py",
+    "run",
+    "--lib",
+    "sph=/Users/nils/repos/spec-vi/benchmarks/sph-exa/vine",
+    "--heap",
+    "2G",
+    "/Users/nils/repos/spec-vi/reports/physics/first-stages/cached-evaluation/side12_density.vi"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 1814396928,
+  "wall_seconds": 44.435597333998885,
+  "stdout": "/Users/nils/repos/spec-vi/reports/physics/first-stages/cached-evaluation/side12_density.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/physics/first-stages/cached-evaluation/side12_density.stderr"
+}

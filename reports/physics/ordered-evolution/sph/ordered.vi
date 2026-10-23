@@ -1,0 +1,68 @@
+// Upstream128-particle octree bucket order, computed from runtime geometry.
+use #sph::{tree,physics};
+use tree::Tree;
+pub type Bounds={xmin:F64,xmax:F64,ymin:F64,ymax:F64,zmin:F64,zmax:F64};
+pub type Point={id:N32,x:F64,y:F64,z:F64};
+pub enum* Index {Bucket(Bounds,Tree[Point]),Node(Bounds,Tree[Index])}
+pub type Query={id:N32,x:F64,y:F64,z:F64,r:F64};
+fn points(t:Tree[physics::Particle],start:N32,n:N32)->Tree[Point]{match t{
+ Tree::Empty(){Tree::Empty()}Tree::Leaf(p){Tree::Leaf({id:start,x:p.x,y:p.y,z:p.z})}
+ Tree::Branch(l,r){let h=n/2;Tree::Branch(points(l,start,h),points(r,start+h,n-h))}
+}}
+fn cell(v:F64,lo:F64,hi:F64)->N32 {if (v-lo)/(hi-lo)*2.0[F64]<1.0[F64]{0}else{1}}
+fn slot(p:Point,b:Bounds)->N32 {cell(p.z,b.zmin,b.zmax)*4+cell(p.y,b.ymin,b.ymax)*2+cell(p.x,b.xmin,b.xmax)}
+fn join[T](l:Tree[T],r:Tree[T])->Tree[T]{match(l,r){(Tree::Empty(),r){r}(l,Tree::Empty()){l}(l,r){Tree::Branch(l,r)}}}
+fn filter(t:Tree[Point],b:Bounds,k:N32)->(N32,Tree[Point]){match t{
+ Tree::Empty(){(0,Tree::Empty())}Tree::Leaf(p){if slot(p,b)==k{(1,Tree::Leaf(p))}else{(0,Tree::Empty())}}
+ Tree::Branch(l,r){let(a,l)=filter(l,b,k);let(c,r)=filter(r,b,k);(a+c,join(l,r))}
+}}
+fn child(b:Bounds,k:N32)->Bounds{
+ let x=(k%2) as F64;let y=((k/2)%2) as F64;let z=(k/4) as F64;
+ {xmin:b.xmin+x*(b.xmax-b.xmin)/2.0[F64],xmax:b.xmin+(x+1.0[F64])*(b.xmax-b.xmin)/2.0[F64],
+ ymin:b.ymin+y*(b.ymax-b.ymin)/2.0[F64],ymax:b.ymin+(y+1.0[F64])*(b.ymax-b.ymin)/2.0[F64],
+ zmin:b.zmin+z*(b.zmax-b.zmin)/2.0[F64],zmax:b.zmin+(z+1.0[F64])*(b.zmax-b.zmin)/2.0[F64]}
+}
+fn build_cells(t:Tree[Point],b:Bounds,start:N32,n:N32)->Tree[Index]{
+ if n==1{let(count,ps)=filter(t,b,start);let cb=child(b,start);
+ Tree::Leaf(if count>128{Index::Node(cb,build_cells(ps,cb,0,8))}else{Index::Bucket(cb,ps)})}
+ else{let h=n/2;Tree::Branch(build_cells(t,b,start,h),build_cells(t,b,start+h,n-h))}
+}
+pub fn build(t:Tree[physics::Particle],n:N32,b:Bounds)->Index {Index::Node(b,build_cells(points(t,0,n),b,0,8))}
+fn overlap(b:Bounds,q:Query)->Bool {(q.x+q.r>=b.xmin) & (q.x-q.r<=b.xmax) & (q.y+q.r>=b.ymin) & (q.y-q.r<=b.ymax) & (q.z+q.r>=b.zmin) & (q.z-q.r<=b.zmax)}
+fn scan(&t:&Tree[Point],q:Query)->Tree[N32]{match &t{
+ &Tree::Empty(){Tree::Empty()}&Tree::Leaf(p){let dx=q.x-p.x;let dy=q.y-p.y;let dz=q.z-p.z;
+ if p.id!=q.id and dx*dx+dy*dy+dz*dz<q.r*q.r {Tree::Leaf(p.id)}else{Tree::Empty()}}
+ &Tree::Branch(l,r){join(scan(&l,q),scan(&r,q))}
+}}
+fn query(&idx:&Index,q:Query)->Tree[N32]{match &idx{
+ &Index::Bucket(b,ps){if overlap(b,q){scan(&ps,q)}else{Tree::Empty()}}
+ &Index::Node(b,cs){if overlap(b,q){query_cells(&cs,q)}else{Tree::Empty()}}
+}}
+fn query_cells(&cs:&Tree[Index],q:Query)->Tree[N32]{match &cs{
+ &Tree::Empty(){Tree::Empty()}&Tree::Leaf(idx){query(&idx,q)}&Tree::Branch(l,r){join(query_cells(&l,q),query_cells(&r,q))}
+}}
+fn query_slot(&cs:&Tree[Index],k:N32,n:N32,q:Query)->Tree[N32]{match &cs{
+ &Tree::Empty(){Tree::Empty()}&Tree::Leaf(idx){query(&idx,q)}&Tree::Branch(l,r){let h=n/2;if k<h{query_slot(&l,k,h,q)}else{query_slot(&r,k-h,n-h,q)}}
+}}
+// With z periodic, root traversal is by unwrapped z-cell then y then x.
+// Filtering all x/y cells preserves accepted-ID order; empty cells add no IDs.
+fn root_layers(&cs:&Tree[Index],q:Query,period:F64,layer:N32)->Tree[N32]{
+ if layer==4{Tree::Empty()}else{
+ let zcell=if layer==0{1}else{if layer==3{0}else{layer-1}};
+ let shifted=q;shifted.z+=if layer==0{period}else{if layer==3{-period}else{0.0[F64]}};
+ let a=query_slot(&cs,4*zcell,8,shifted);let b=query_slot(&cs,4*zcell+1,8,shifted);
+ let c=query_slot(&cs,4*zcell+2,8,shifted);let d=query_slot(&cs,4*zcell+3,8,shifted);
+ join(join(join(a,b),join(c,d)),root_layers(&cs,q,period,layer+1))
+ }
+}
+fn find(&idx:&Index,q:Query)->Tree[N32]{match &idx{
+ &Index::Bucket(_,ps){scan(&ps,q)}&Index::Node(b,cs){root_layers(&cs,q,b.zmax-b.zmin,0)}
+}}
+fn count(t:Tree[N32])->N32{match t{Tree::Empty(){0}Tree::Leaf(_){1}Tree::Branch(l,r){count(l)+count(r)}}}
+pub fn rows(&idx:&Index,t:Tree[physics::Particle],start:N32,n:N32)->Tree[(N32,Tree[N32])]{match t{
+ Tree::Empty(){Tree::Empty()}Tree::Leaf(p){let ns=find(&idx,{id:start,x:p.x,y:p.y,z:p.z,r:2.0[F64]*p.h});
+ if count(ns)<650{Tree::Leaf((start,ns))}else{debug::error("neighbor capacity/order compatibility unresolved");Tree::Empty()}}
+ Tree::Branch(l,r){let h=n/2;let left=rows(&idx,l,start,h);
+ if row_count(left)<650*h{Tree::Branch(left,rows(&idx,r,start+h,n-h))}else{debug::error("invalid neighbor count");Tree::Empty()}}
+}}
+pub fn row_count(t:Tree[(N32,Tree[N32])])->N32{match t{Tree::Empty(){0}Tree::Leaf((_,ns)){count(ns)}Tree::Branch(l,r){row_count(l)+row_count(r)}}}

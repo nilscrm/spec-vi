@@ -1,0 +1,27 @@
+warning: unused item
+   @ scaling_64_routing_deferred_depth.vi:7:4
+ 7 | fn show(b:neighbors::Bounds,&io:&IO){
+
+
+Interactions
+  Total               19_625
+  Annihilate           6_794
+  Commute                  0
+  Copy                   290
+  Erase                3_483
+  Graft                2_149
+  Extrinsic            6_909
+
+Parallelism
+  Depth                  521
+  Breadth                 37
+  Speedup                158 cB
+
+Memory
+  Heap                95_616 B
+  Allocated          413_616 B
+  Freed              413_616 B
+
+Performance
+  Time                     0 ms
+  Speed           51_912_221 IPS

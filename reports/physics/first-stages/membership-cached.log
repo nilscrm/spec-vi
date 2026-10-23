@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "port_complete": false,
+  "scope": "all initial particles; returned neighbor order remains different",
+  "cases": [
+    {
+      "side": 12,
+      "queries": 1728,
+      "passed": true,
+      "reference_sha256": "387a9c7ce8d4493f2026270233f15eda1836c81136d04ba62616dc3624241fb3"
+    },
+    {
+      "side": 16,
+      "queries": 4096,
+      "passed": true,
+      "reference_sha256": "c96e780c32fccc768055c6fa6bb0225fbc07d3e5e047babb639a01139a4c5258"
+    }
+  ]
+}

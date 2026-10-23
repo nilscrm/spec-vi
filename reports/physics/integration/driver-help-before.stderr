@@ -1,0 +1,22 @@
+error: type `&List[String]` has no method `pop_front`
+    @ square_patch.vi:17:9
+ 17 |   match args.pop_front() {
+
+error: cannot compare `I32` and `N32`
+    @ square_patch.vi:97:40
+ 97 |               Some(n) { frequency = if n > 0 { n as N32 } else { 0 }; }
+
+error: variable of type `String` read whilst uninitialized
+    @ square_patch.vi:17:3
+ 17 |   match args.pop_front() {
+ 18 |     Some(value) { value }
+ 19 |     None() {
+ 20 |       debug::error("missing option value");
+ 21 |       ""
+ 22 |     }
+ 23 |   }
+
+warning: unused item
+     @ sph/pilot.vi:156:18
+ 156 | use #root::data::Lookup;
+

@@ -1,0 +1,22 @@
+warning: unused item
+     @ sph/pilot.vi:156:18
+ 156 | use #root::data::Lookup;
+
+
+Interactions
+  Total                1_782
+  Annihilate             909
+  Commute                  0
+  Copy                   172
+  Erase                   95
+  Graft                  193
+  Extrinsic              413
+
+Memory
+  Heap                 1_648 B
+  Allocated           38_464 B
+  Freed               38_464 B
+
+Performance
+  Time                     6 ms
+  Speed              288_367 IPS

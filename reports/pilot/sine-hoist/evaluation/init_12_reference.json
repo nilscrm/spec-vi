@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "/Users/nils/repos/spec-vi/work/build/pilot_reference",
+    "12",
+    "init"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 6717440,
+  "wall_seconds": 0.19892416702350602,
+  "stdout": "/Users/nils/repos/spec-vi/reports/pilot/sine-hoist/evaluation/init_12_reference.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/pilot/sine-hoist/evaluation/init_12_reference.stderr"
+}

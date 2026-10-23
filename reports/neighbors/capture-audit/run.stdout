@@ -1,0 +1,24 @@
+single_map empty correctness passed
+single_map strict_boundary correctness passed
+single_map periodic correctness passed
+single_map clusters_shuffled correctness passed
+single_map scaling_64 correctness passed
+single_map scaling_64 depth [{'variant': 'single_map', 'case': 'scaling_64', 'mode': 'depth', 'wall_seconds': 0.48937879101140425, 'peak_rss_bytes': 130154496, 'depth': 1006, 'interactions': 892381, 'heap_bytes': 1948912, 'allocated_bytes': 20136480}]
+single_map scaling_64 workers2 passed
+single_map scaling_256 correctness passed
+single_map scaling_256 depth [{'variant': 'single_map', 'case': 'scaling_256', 'mode': 'depth', 'wall_seconds': 0.7270367920282297, 'peak_rss_bytes': 161333248, 'depth': 1587, 'interactions': 11793453, 'heap_bytes': 20311232, 'allocated_bytes': 253910048}]
+single_map scaling_256 workers2 passed
+single_map upstream_12 correctness passed
+single_map upstream_16 correctness passed
+single_rec empty correctness passed
+single_rec strict_boundary correctness passed
+single_rec periodic correctness passed
+single_rec clusters_shuffled correctness passed
+single_rec scaling_64 correctness passed
+single_rec scaling_64 depth [{'variant': 'single_rec', 'case': 'scaling_64', 'mode': 'depth', 'wall_seconds': 0.5221310420311056, 'peak_rss_bytes': 131170304, 'depth': 1006, 'interactions': 892379, 'heap_bytes': 1948912, 'allocated_bytes': 20136448}]
+single_rec scaling_64 workers2 passed
+single_rec scaling_256 correctness passed
+single_rec scaling_256 depth [{'variant': 'single_rec', 'case': 'scaling_256', 'mode': 'depth', 'wall_seconds': 0.7411524580093101, 'peak_rss_bytes': 162725888, 'depth': 1587, 'interactions': 11793451, 'heap_bytes': 20311232, 'allocated_bytes': 253910016}]
+single_rec scaling_256 workers2 passed
+single_rec upstream_12 correctness passed
+single_rec upstream_16 correctness passed

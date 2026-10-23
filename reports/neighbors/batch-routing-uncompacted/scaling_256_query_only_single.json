@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+    "/Users/nils/repos/spec-vi/tools/vine_exec.py",
+    "run",
+    "--lib",
+    "sph=/Users/nils/repos/spec-vi/reports/neighbors/batch-routing-uncompacted/sph",
+    "--depth",
+    "/Users/nils/repos/spec-vi/reports/neighbors/batch-routing-uncompacted/scaling_256_query_only_single.vi"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 173424640,
+  "wall_seconds": 0.9174001659848727,
+  "stdout": "/Users/nils/repos/spec-vi/reports/neighbors/batch-routing-uncompacted/scaling_256_query_only_single.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/neighbors/batch-routing-uncompacted/scaling_256_query_only_single.stderr"
+}

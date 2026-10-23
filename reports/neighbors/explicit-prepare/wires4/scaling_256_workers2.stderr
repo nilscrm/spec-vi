@@ -1,0 +1,28 @@
+
+Interactions
+  Total           13_640_755
+  Annihilate       5_323_359
+  Commute            145_152
+  Copy               749_737
+  Erase            1_681_474
+  Graft            1_960_194
+  Extrinsic        3_780_839
+
+Workload
+  Workers                  2
+  Active                   2
+  Minimum          6_791_496
+  Average          6_820_377
+  Maximum          6_849_259
+  Moved                7_285
+
+Memory
+  Heap            28_176_240 B
+  Allocated      282_551_904 B
+  Freed          282_551_904 B
+
+Performance
+  Time                   134 ms
+  Speed          101_786_012 IPS
+  Working                264 ms
+  Rate            51_525_261 IPS

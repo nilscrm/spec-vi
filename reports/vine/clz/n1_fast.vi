@@ -1,0 +1,3 @@
+use #sph::{tree,bits};use tree::Tree;
+fn sum(t:Tree[N32])->N32 {match t{Tree::Empty(){0}Tree::Leaf(x){bits::leading_zeros(x)}Tree::Branch(l,r){sum(l)+sum(r)}}}
+pub fn main(&io:&IO){let t=black_box(Tree::Leaf(4294967295));io.println("{sum(t)}");}

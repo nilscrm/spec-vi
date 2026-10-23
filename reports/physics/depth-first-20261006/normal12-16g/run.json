@@ -1,0 +1,19 @@
+{
+  "argv": [
+    "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+    "/Users/nils/repos/spec-vi/tools/vine_exec.py",
+    "run",
+    "--lib",
+    "sph=/Users/nils/repos/spec-vi/reports/physics/depth-first-20261006/candidate/sph",
+    "--heap",
+    "16G",
+    "/Users/nils/repos/spec-vi/reports/physics/depth-first-20261006/normal12-16g/driver.vi"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 8654241792,
+  "wall_seconds": 110.7012742079678,
+  "stdout": "/Users/nils/repos/spec-vi/reports/physics/depth-first-20261006/normal12-16g/run.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/physics/depth-first-20261006/normal12-16g/run.stderr"
+}

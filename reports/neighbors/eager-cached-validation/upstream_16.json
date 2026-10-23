@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "/Users/nils/repos/spec-vi/work/build/neighbors_reference",
+    "16",
+    "density"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 13680640,
+  "wall_seconds": 1.5653543329972308,
+  "stdout": "/Users/nils/repos/spec-vi/reports/neighbors/eager-cached-validation/upstream_16.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/neighbors/eager-cached-validation/upstream_16.stderr"
+}

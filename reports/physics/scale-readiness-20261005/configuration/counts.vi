@@ -1,0 +1,9 @@
+use #sph::ordered; pub fn main(&io:&IO){
+let v=ordered::row_capacity(black_box(0));io.println("{v}");
+let v=ordered::row_capacity(black_box(1));io.println("{v}");
+let v=ordered::row_capacity(black_box(6607641));io.println("{v}");
+let v=ordered::row_capacity(black_box(6607642));io.println("{v}");
+let v=ordered::row_capacity(black_box(9261000));io.println("{v}");
+let v=ordered::row_capacity(black_box(4291015625));io.println("{v}");
+let v=ordered::row_capacity(black_box(4294967295));io.println("{v}");
+}

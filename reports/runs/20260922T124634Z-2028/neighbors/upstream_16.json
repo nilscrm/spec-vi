@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "/Users/nils/repos/spec-vi/work/build/neighbors_reference",
+    "16",
+    "density"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 13697024,
+  "wall_seconds": 1.5707997079880442,
+  "stdout": "/Users/nils/repos/spec-vi/reports/runs/20260922T124634Z-2028/neighbors/upstream_16.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/runs/20260922T124634Z-2028/neighbors/upstream_16.stderr"
+}

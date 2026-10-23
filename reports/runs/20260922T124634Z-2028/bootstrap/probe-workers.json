@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "/Users/nils/repos/vine/target/release/vine",
+    "run",
+    "--workers",
+    "2",
+    "/Users/nils/repos/spec-vi/reports/runs/20260922T124634Z-2028/bootstrap/probe.vi"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 114278400,
+  "wall_seconds": 0.3141918750188779,
+  "stdout": "/Users/nils/repos/spec-vi/reports/runs/20260922T124634Z-2028/bootstrap/probe-workers.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/runs/20260922T124634Z-2028/bootstrap/probe-workers.stderr"
+}

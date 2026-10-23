@@ -1,0 +1,55 @@
+{
+  "measurements": [
+    {
+      "count": 64,
+      "mode": "compact",
+      "depth": 388,
+      "interactions": 23863,
+      "heap_bytes": 247584,
+      "allocated_bytes": 496384
+    },
+    {
+      "count": 256,
+      "mode": "compact",
+      "depth": 430,
+      "interactions": 94884,
+      "heap_bytes": 992544,
+      "allocated_bytes": 1973504
+    },
+    {
+      "count": 64,
+      "mode": "preserve",
+      "depth": 348,
+      "interactions": 23458,
+      "heap_bytes": 244480,
+      "allocated_bytes": 486464
+    },
+    {
+      "count": 256,
+      "mode": "preserve",
+      "depth": 374,
+      "interactions": 93154,
+      "heap_bytes": 980224,
+      "allocated_bytes": 1931344
+    }
+  ],
+  "exact_bounds_and_ids": true,
+  "libraries": {
+    "compact": {
+      "sha256": "27a5184ad799ce2c4e8128c15a5f1ffbd55b340b7296db939d686ff5ddbf839a",
+      "files": {
+        "neighbors.vi": "6285eb80a418ba828915d4f655af0f9afb3527ce23dfb40480db199bfaa65f0c",
+        "sph.vi": "4d53d62be57fe5faa97ccc5e0d296027d7623c8960c98021c1aac6a72af58b0d",
+        "tree.vi": "15a3c0b47bb30aecc34a828ef56695e81745535b22fe492c575eea760983508d"
+      }
+    },
+    "preserve": {
+      "sha256": "65da7e4f1a1eaac8910439911c7061fbe170db4e9dbbda54596c5c0df833ff17",
+      "files": {
+        "neighbors.vi": "88dbde499e1c6517bc0af73a482e519d227ccc62992a87bf62ac92328723fb07",
+        "sph.vi": "4d53d62be57fe5faa97ccc5e0d296027d7623c8960c98021c1aac6a72af58b0d",
+        "tree.vi": "15a3c0b47bb30aecc34a828ef56695e81745535b22fe492c575eea760983508d"
+      }
+    }
+  }
+}

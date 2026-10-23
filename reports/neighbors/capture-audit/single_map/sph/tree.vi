@@ -1,0 +1,40 @@
+
+// A balanced value tree exposes independent subcomputations without a shared builder.
+pub enum* Tree[T] {
+  Empty(),
+  Leaf(T),
+  Branch(Tree[T], Tree[T]),
+}
+
+pub fn map[T, U, F*; fn F(T) -> U](tree: Tree[T], f: F) -> Tree[U] {
+  match tree {
+    Tree::Empty() { Tree::Empty() }
+    Tree::Leaf(x) { Tree::Leaf(f(x)) }
+    Tree::Branch(l, r) { Tree::Branch(map(l, f), map(r, f)) }
+  }
+}
+
+pub fn sum(tree: Tree[F64]) -> F64 {
+  match tree {
+    Tree::Empty() { 0.0[F64] }
+    Tree::Leaf(x) { x }
+    Tree::Branch(l, r) { sum(l) + sum(r) }
+  }
+}
+
+// Deliberately ordered baseline for depth comparison; not the production reduction.
+pub fn fold(tree: Tree[F64], initial: F64) -> F64 {
+  match tree {
+    Tree::Empty() { initial }
+    Tree::Leaf(x) { initial + x }
+    Tree::Branch(l, r) { fold(r, fold(l, initial)) }
+  }
+}
+
+pub fn reduce(tree: Tree[F64], balanced: Bool) -> F64 {
+  if balanced {
+    sum(tree)
+  } else {
+    fold(tree, 0.0[F64])
+  }
+}

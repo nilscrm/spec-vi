@@ -1,0 +1,27 @@
+warning: unused item
+     @ sph/neighbors.vi:103:4
+ 103 | fn old_build(points: Tree[Point]) -> Index {
+
+
+Interactions
+  Total              495_573
+  Annihilate         136_645
+  Commute                  0
+  Copy                 9_443
+  Erase               85_557
+  Graft               39_513
+  Extrinsic          224_415
+
+Parallelism
+  Depth                  835
+  Breadth                593
+  Speedup                277 cB
+
+Memory
+  Heap             1_492_528 B
+  Allocated       12_153_024 B
+  Freed           12_153_024 B
+
+Performance
+  Time                     9 ms
+  Speed           52_943_949 IPS

@@ -1,0 +1,72 @@
+{
+  "experiment": "batched query routing",
+  "accepted_milestone": false,
+  "correctness": [
+    {
+      "case": "empty",
+      "passed": true
+    },
+    {
+      "case": "strict_boundary",
+      "passed": true
+    },
+    {
+      "case": "periodic",
+      "passed": true
+    },
+    {
+      "case": "clusters_shuffled",
+      "passed": true
+    },
+    {
+      "case": "scaling_64",
+      "passed": true
+    },
+    {
+      "case": "scaling_256",
+      "passed": true
+    },
+    {
+      "case": "upstream_12",
+      "passed": true
+    },
+    {
+      "case": "upstream_16",
+      "passed": true
+    }
+  ],
+  "metrics": [
+    {
+      "case": "scaling_64",
+      "mode": "depth",
+      "peak_rss_bytes": 131366912,
+      "process_wall_seconds": 0.5274730419914704,
+      "depth": 2091,
+      "interactions": 509505,
+      "heap_bytes": 735808,
+      "allocated_bytes": 12472176
+    },
+    {
+      "case": "scaling_64",
+      "mode": "workers2",
+      "peak_rss_bytes": 130629632,
+      "process_wall_seconds": 0.5260602079797536
+    },
+    {
+      "case": "scaling_256",
+      "mode": "depth",
+      "peak_rss_bytes": 148291584,
+      "process_wall_seconds": 0.6820624159881845,
+      "depth": 3056,
+      "interactions": 4819182,
+      "heap_bytes": 5704768,
+      "allocated_bytes": 118899024
+    },
+    {
+      "case": "scaling_256",
+      "mode": "workers2",
+      "peak_rss_bytes": 143589376,
+      "process_wall_seconds": 0.5886752090009395
+    }
+  ]
+}

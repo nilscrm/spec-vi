@@ -1,0 +1,27 @@
+warning: unused variable
+    @ sph/sine.vi:33:27
+ 33 |  let z=y*y;let z2=z*z;let z4=z2*z2;
+
+
+Interactions
+  Total                6_708
+  Annihilate           1_066
+  Commute                  0
+  Copy                   192
+  Erase                  327
+  Graft                  439
+  Extrinsic            4_684
+
+Parallelism
+  Depth                  346
+  Breadth                 19
+  Speedup                129 cB
+
+Memory
+  Heap                67_040 B
+  Allocated          205_872 B
+  Freed              205_872 B
+
+Performance
+  Time                     0 ms
+  Speed           29_233_980 IPS

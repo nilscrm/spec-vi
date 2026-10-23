@@ -1,0 +1,22 @@
+[
+  {
+    "test": "n64_div_rem",
+    "passed": true
+  },
+  {
+    "test": "nat_div",
+    "passed": true
+  },
+  {
+    "test": "nat_edges",
+    "passed": true
+  },
+  {
+    "test": "f64_ops",
+    "passed": true
+  },
+  {
+    "test": "f64_sin",
+    "passed": true
+  }
+]

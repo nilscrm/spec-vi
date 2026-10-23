@@ -1,0 +1,33 @@
+{
+  "milestone_accepted": false,
+  "policy_sha256": "9ce2f516204a0f398b94a78b78b0125914eaa33d23e27603888fdb8fca32dbba",
+  "baseline_report": "reports/neighbors/eager-cached-validation/result.json",
+  "experiments": {
+    "batch-routing": {
+      "work_growth": 7.90554658605778,
+      "depth": 1596,
+      "work": 4294285,
+      "heap_bytes": 7557088,
+      "fixed_budget_checks": {
+        "depth_ratio": false,
+        "work_ratio": true,
+        "work_growth": true,
+        "depth_growth": true,
+        "heap": true
+      }
+    },
+    "batch-routing-uncompacted": {
+      "work_growth": 12.90622205641126,
+      "depth": 1579,
+      "work": 10897175,
+      "heap_bytes": 20311232,
+      "fixed_budget_checks": {
+        "depth_ratio": false,
+        "work_ratio": true,
+        "work_growth": false,
+        "depth_growth": true,
+        "heap": true
+      }
+    }
+  }
+}

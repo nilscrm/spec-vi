@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "state": "waiting",
+  "port_complete": false,
+  "pid": null,
+  "updated_at": "2026-09-15T16:12:47+00:00",
+  "current": "neighbors",
+  "run_id": "20260915T161128Z-45040",
+  "message": "Implement independent neighbor-search acceptance checks.",
+  "milestones": [
+    {
+      "id": "bootstrap",
+      "title": "Runner, source integrity, reference smoke, depth instrumentation",
+      "state": "passed",
+      "report": "reports/runs/20260915T161128Z-45040/bootstrap/result.json"
+    },
+    {
+      "id": "pilot",
+      "title": "Numerical evaluator and initialization/density pilot",
+      "state": "passed",
+      "report": "reports/runs/20260915T161128Z-45040/pilot/result.json"
+    },
+    {
+      "id": "neighbors",
+      "title": "Octree and neighbor-search validation",
+      "state": "needs_acceptance_check"
+    },
+    {
+      "id": "physics",
+      "title": "All SPH physics stages",
+      "state": "pending"
+    },
+    {
+      "id": "integration",
+      "title": "Multiple timesteps and scaling",
+      "state": "pending"
+    },
+    {
+      "id": "workloads",
+      "title": "Full selected workloads and parallel hardware validation",
+      "state": "pending"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+warning: unused item
+   @ n1118_old.vi:1:17
+ 1 | use #sph::{tree,bits};use tree::Tree;
+
+
+Interactions
+  Total              286_129
+  Annihilate          74_640
+  Commute                  0
+  Copy                34_503
+  Erase                1_131
+  Graft               36_747
+  Extrinsic          139_108
+
+Parallelism
+  Depth                  377
+  Breadth                758
+  Speedup                288 cB
+
+Memory
+  Heap               253_488 B
+  Allocated        5_172_016 B
+  Freed            5_172_016 B
+
+Performance
+  Time                     4 ms
+  Speed           58_540_526 IPS

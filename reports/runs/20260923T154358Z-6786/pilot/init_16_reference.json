@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "/Users/nils/repos/spec-vi/work/build/pilot_reference",
+    "16",
+    "init"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 13418496,
+  "wall_seconds": 0.07702508301008493,
+  "stdout": "/Users/nils/repos/spec-vi/reports/runs/20260923T154358Z-6786/pilot/init_16_reference.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/runs/20260923T154358Z-6786/pilot/init_16_reference.stderr"
+}

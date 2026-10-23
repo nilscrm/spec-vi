@@ -1,0 +1,20 @@
+[
+  {
+    "mode": "tree_copy",
+    "passed": true,
+    "wall_seconds": 0.36379166701226495,
+    "peak_rss_bytes": 122847232
+  },
+  {
+    "mode": "array_copy",
+    "passed": true,
+    "wall_seconds": 0.3319003749929834,
+    "peak_rss_bytes": 120389632
+  },
+  {
+    "mode": "array_ref",
+    "passed": true,
+    "wall_seconds": 0.32438083400484174,
+    "peak_rss_bytes": 120602624
+  }
+]

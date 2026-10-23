@@ -1,0 +1,34 @@
+[
+  {
+    "axis": 2,
+    "case": "scaling_64",
+    "depth": 1331,
+    "interactions": 607305,
+    "heap_bytes": 1200272,
+    "allocated_bytes": 14652864
+  },
+  {
+    "axis": 2,
+    "case": "scaling_256",
+    "depth": 1685,
+    "interactions": 5622354,
+    "heap_bytes": 11898400,
+    "allocated_bytes": 137997984
+  },
+  {
+    "axis": 4,
+    "case": "scaling_64",
+    "depth": 1636,
+    "interactions": 1052976,
+    "heap_bytes": 2261856,
+    "allocated_bytes": 23666128
+  },
+  {
+    "axis": 4,
+    "case": "scaling_256",
+    "depth": 1954,
+    "interactions": 6349941,
+    "heap_bytes": 8688480,
+    "allocated_bytes": 147615840
+  }
+]

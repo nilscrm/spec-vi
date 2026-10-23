@@ -1,0 +1,19 @@
+[
+  {
+    "case": "f64_ops",
+    "passed": true,
+    "reference": "reports/vine/clz/f64_ops.stdout"
+  },
+  {
+    "case": "f64_no_inline",
+    "passed": true
+  },
+  {
+    "case": "f64_roundabout",
+    "passed": true
+  },
+  {
+    "case": "tiny_f64",
+    "passed": true
+  }
+]

@@ -1,0 +1,20 @@
+{
+  "argv": [
+    "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+    "/Users/nils/repos/spec-vi/tools/vine_exec.py",
+    "run",
+    "--lib",
+    "sph=/Users/nils/repos/spec-vi/reports/neighbors/query-groups/group8/sph",
+    "--heap",
+    "2G",
+    "--depth",
+    "/Users/nils/repos/spec-vi/reports/neighbors/query-groups/group8/scaling_256_depth.vi"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 148914176,
+  "wall_seconds": 0.9648242910043336,
+  "stdout": "/Users/nils/repos/spec-vi/reports/neighbors/query-groups/group8/scaling_256_depth.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/neighbors/query-groups/group8/scaling_256_depth.stderr"
+}

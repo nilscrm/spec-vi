@@ -1,0 +1,104 @@
+{
+  "scope": "Diagnostic only: original ordered IDs supplied, no runtime Vine ordering acceptance",
+  "commands": [
+    [
+      "/Users/nils/repos/spec-vi/reports/physics/evolution/multistep-diagnosis/replay",
+      "12",
+      "/Users/nils/repos/spec-vi/reports/physics/first-stages/reference/side12/i0-geometry.tsv",
+      "/Users/nils/repos/spec-vi/reports/physics/first-stages/reference/side12/i0-geometry.meta",
+      "/Users/nils/repos/spec-vi/reports/physics/first-stages/reference/side12/i0-neighbors.tsv",
+      "/Users/nils/repos/spec-vi/reports/physics/evolution/multistep-diagnosis/replayed_original_0.tsv"
+    ],
+    [
+      "/Users/nils/repos/spec-vi/reports/physics/evolution/multistep-diagnosis/replay",
+      "12",
+      "/Users/nils/repos/spec-vi/reports/physics/evolution/multistep-diagnosis/i0-geometry.tsv",
+      "/Users/nils/repos/spec-vi/reports/physics/first-stages/reference/side12/i0-geometry.meta",
+      "/Users/nils/repos/spec-vi/reports/physics/first-stages/reference/side12/i0-neighbors.tsv",
+      "/Users/nils/repos/spec-vi/reports/physics/evolution/multistep-diagnosis/replayed_vine_0.tsv"
+    ],
+    [
+      "/Users/nils/repos/spec-vi/reports/physics/evolution/multistep-diagnosis/replay",
+      "12",
+      "/Users/nils/repos/spec-vi/reports/physics/first-stages/reference/side12/i1-geometry.tsv",
+      "/Users/nils/repos/spec-vi/reports/physics/first-stages/reference/side12/i1-geometry.meta",
+      "/Users/nils/repos/spec-vi/reports/physics/first-stages/reference/side12/i1-neighbors.tsv",
+      "/Users/nils/repos/spec-vi/reports/physics/evolution/multistep-diagnosis/replayed_original_1.tsv"
+    ],
+    [
+      "/Users/nils/repos/spec-vi/reports/physics/evolution/multistep-diagnosis/replay",
+      "12",
+      "/Users/nils/repos/spec-vi/reports/physics/evolution/multistep-diagnosis/i1-geometry.tsv",
+      "/Users/nils/repos/spec-vi/reports/physics/first-stages/reference/side12/i1-geometry.meta",
+      "/Users/nils/repos/spec-vi/reports/physics/first-stages/reference/side12/i1-neighbors.tsv",
+      "/Users/nils/repos/spec-vi/reports/physics/evolution/multistep-diagnosis/replayed_vine_1.tsv"
+    ],
+    [
+      "/Users/nils/repos/spec-vi/reports/physics/evolution/multistep-diagnosis/replay",
+      "12",
+      "/Users/nils/repos/spec-vi/reports/physics/first-stages/reference/side12/i2-geometry.tsv",
+      "/Users/nils/repos/spec-vi/reports/physics/first-stages/reference/side12/i2-geometry.meta",
+      "/Users/nils/repos/spec-vi/reports/physics/first-stages/reference/side12/i2-neighbors.tsv",
+      "/Users/nils/repos/spec-vi/reports/physics/evolution/multistep-diagnosis/replayed_original_2.tsv"
+    ],
+    [
+      "/Users/nils/repos/spec-vi/reports/physics/evolution/multistep-diagnosis/replay",
+      "12",
+      "/Users/nils/repos/spec-vi/reports/physics/evolution/multistep-diagnosis/i2-geometry.tsv",
+      "/Users/nils/repos/spec-vi/reports/physics/first-stages/reference/side12/i2-geometry.meta",
+      "/Users/nils/repos/spec-vi/reports/physics/first-stages/reference/side12/i2-neighbors.tsv",
+      "/Users/nils/repos/spec-vi/reports/physics/evolution/multistep-diagnosis/replayed_vine_2.tsv"
+    ]
+  ],
+  "source_sha256": "f8f8695f9d8ae91f4753d3d884f6091808e2bf83e5012644488e138e0f80e3e2",
+  "density_checks": [
+    {
+      "iteration": 0,
+      "source_geometry": "original",
+      "max_density_error": 0.0,
+      "different_density_values": 0
+    },
+    {
+      "iteration": 0,
+      "source_geometry": "vine",
+      "max_density_error": 0.0,
+      "different_density_values": 0
+    },
+    {
+      "iteration": 1,
+      "source_geometry": "original",
+      "max_density_error": 0.0,
+      "different_density_values": 0
+    },
+    {
+      "iteration": 1,
+      "source_geometry": "vine",
+      "max_density_error": 0.0,
+      "different_density_values": 0
+    },
+    {
+      "iteration": 2,
+      "source_geometry": "original",
+      "max_density_error": 0.0,
+      "different_density_values": 0
+    },
+    {
+      "iteration": 2,
+      "source_geometry": "vine",
+      "max_density_error": 0.0,
+      "different_density_values": 0
+    }
+  ],
+  "eos_with_replayed_densities": [
+    {
+      "iteration": 1,
+      "failures": 0,
+      "max_pressure_error": 2.0372681319713593e-10
+    },
+    {
+      "iteration": 2,
+      "failures": 0,
+      "max_pressure_error": 2.1100277081131935e-10
+    }
+  ]
+}

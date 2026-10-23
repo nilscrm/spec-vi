@@ -1,0 +1,94 @@
+error: cannot drop `T`
+    @ sph/routed.vi:68:2
+ 68 |  match (a,b) {
+ 69 |   (Tree::Empty(),Tree::Empty()) { Tree::Empty() }
+ 70 |   (Tree::Leaf(a),Tree::Leaf(b)) { Tree::Leaf((a,b)) }
+ 71 |   (Tree::Branch(a,b),Tree::Branch(c,d)) { Tree::Branch(zip(a,c),zip(b,d)) }
+ 72 |   _ { debug::error("gather shape mismatch") }
+ 73 |  }
+
+error: cannot drop `(Tree[T], Tree[T])`
+    @ sph/routed.vi:68:2
+ 68 |  match (a,b) {
+ 69 |   (Tree::Empty(),Tree::Empty()) { Tree::Empty() }
+ 70 |   (Tree::Leaf(a),Tree::Leaf(b)) { Tree::Leaf((a,b)) }
+ 71 |   (Tree::Branch(a,b),Tree::Branch(c,d)) { Tree::Branch(zip(a,c),zip(b,d)) }
+ 72 |   _ { debug::error("gather shape mismatch") }
+ 73 |  }
+
+error: cannot drop `U`
+    @ sph/routed.vi:68:2
+ 68 |  match (a,b) {
+ 69 |   (Tree::Empty(),Tree::Empty()) { Tree::Empty() }
+ 70 |   (Tree::Leaf(a),Tree::Leaf(b)) { Tree::Leaf((a,b)) }
+ 71 |   (Tree::Branch(a,b),Tree::Branch(c,d)) { Tree::Branch(zip(a,c),zip(b,d)) }
+ 72 |   _ { debug::error("gather shape mismatch") }
+ 73 |  }
+
+error: cannot drop `U`
+    @ sph/routed.vi:68:2
+ 68 |  match (a,b) {
+ 69 |   (Tree::Empty(),Tree::Empty()) { Tree::Empty() }
+ 70 |   (Tree::Leaf(a),Tree::Leaf(b)) { Tree::Leaf((a,b)) }
+ 71 |   (Tree::Branch(a,b),Tree::Branch(c,d)) { Tree::Branch(zip(a,c),zip(b,d)) }
+ 72 |   _ { debug::error("gather shape mismatch") }
+ 73 |  }
+
+error: cannot drop `(Tree[T], Tree[T])`
+    @ sph/routed.vi:68:2
+ 68 |  match (a,b) {
+ 69 |   (Tree::Empty(),Tree::Empty()) { Tree::Empty() }
+ 70 |   (Tree::Leaf(a),Tree::Leaf(b)) { Tree::Leaf((a,b)) }
+ 71 |   (Tree::Branch(a,b),Tree::Branch(c,d)) { Tree::Branch(zip(a,c),zip(b,d)) }
+ 72 |   _ { debug::error("gather shape mismatch") }
+ 73 |  }
+
+error: cannot drop `Tree[U]`
+    @ sph/routed.vi:68:2
+ 68 |  match (a,b) {
+ 69 |   (Tree::Empty(),Tree::Empty()) { Tree::Empty() }
+ 70 |   (Tree::Leaf(a),Tree::Leaf(b)) { Tree::Leaf((a,b)) }
+ 71 |   (Tree::Branch(a,b),Tree::Branch(c,d)) { Tree::Branch(zip(a,c),zip(b,d)) }
+ 72 |   _ { debug::error("gather shape mismatch") }
+ 73 |  }
+
+error: cannot drop `Tree[U]`
+    @ sph/routed.vi:68:2
+ 68 |  match (a,b) {
+ 69 |   (Tree::Empty(),Tree::Empty()) { Tree::Empty() }
+ 70 |   (Tree::Leaf(a),Tree::Leaf(b)) { Tree::Leaf((a,b)) }
+ 71 |   (Tree::Branch(a,b),Tree::Branch(c,d)) { Tree::Branch(zip(a,c),zip(b,d)) }
+ 72 |   _ { debug::error("gather shape mismatch") }
+ 73 |  }
+
+error: cannot drop `Tree[U]`
+    @ sph/routed.vi:68:2
+ 68 |  match (a,b) {
+ 69 |   (Tree::Empty(),Tree::Empty()) { Tree::Empty() }
+ 70 |   (Tree::Leaf(a),Tree::Leaf(b)) { Tree::Leaf((a,b)) }
+ 71 |   (Tree::Branch(a,b),Tree::Branch(c,d)) { Tree::Branch(zip(a,c),zip(b,d)) }
+ 72 |   _ { debug::error("gather shape mismatch") }
+ 73 |  }
+
+error: cannot drop `Tree[U]`
+    @ sph/routed.vi:68:2
+ 68 |  match (a,b) {
+ 69 |   (Tree::Empty(),Tree::Empty()) { Tree::Empty() }
+ 70 |   (Tree::Leaf(a),Tree::Leaf(b)) { Tree::Leaf((a,b)) }
+ 71 |   (Tree::Branch(a,b),Tree::Branch(c,d)) { Tree::Branch(zip(a,c),zip(b,d)) }
+ 72 |   _ { debug::error("gather shape mismatch") }
+ 73 |  }
+
+error: cannot drop `T`
+    @ sph/routed.vi:68:2
+ 68 |  match (a,b) {
+ 69 |   (Tree::Empty(),Tree::Empty()) { Tree::Empty() }
+ 70 |   (Tree::Leaf(a),Tree::Leaf(b)) { Tree::Leaf((a,b)) }
+ 71 |   (Tree::Branch(a,b),Tree::Branch(c,d)) { Tree::Branch(zip(a,c),zip(b,d)) }
+ 72 |   _ { debug::error("gather shape mismatch") }
+ 73 |  }
+
+warning: unused item
+     @ sph/pilot.vi:156:18
+ 156 | use #root::data::Lookup;
+

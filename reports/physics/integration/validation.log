@@ -1,0 +1,27 @@
+{
+  "passed": false,
+  "physics_accepted": false,
+  "port_complete": false,
+  "scope": "All fields/scalars and exact neighbor order after every stage, both full domains, three updates; no performance acceptance",
+  "policy": {
+    "scope": "Per-stage all-particle numerical checks and initial runtime density/EOS integration; full physics acceptance remains incomplete until every stage and multistep integration pass",
+    "sides": [
+      12,
+      16
+    ],
+    "updates": 3,
+    "atol": 1e-09,
+    "rtol": 5e-12,
+    "heap_limit_bytes": 2147483648,
+    "command_timeout_seconds": 600,
+    "depth_query_counts": [
+      1,
+      8,
+      32
+    ],
+    "performance_acceptance": "Existing neighbor/pilot gates remain required; new full-stage scaling acceptance is pending explicit review"
+  },
+  "evaluator_sha256": "f306626964aa6a0ed52ce949df34d9714738c5985767a890302086259b04af04",
+  "reference_report_sha256": "2691c52ecc4a8ca285797016b32c4c334f1f6c35bed50cde066ca08a06d9ca3c",
+  "error": "Missing runtime metric: depth"
+}

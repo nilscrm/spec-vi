@@ -1,0 +1,29 @@
+{
+  "compact": {
+    "depth256": 1596,
+    "work256": 4294285,
+    "work_growth": 7.90554658605778,
+    "depth_limit": 361.2,
+    "depth_pass": false,
+    "work_growth_pass": true,
+    "accepted": false
+  },
+  "preserve": {
+    "depth256": 1681,
+    "work256": 51193939,
+    "work_growth": 26.996765278049505,
+    "depth_limit": 361.2,
+    "depth_pass": false,
+    "work_growth_pass": false,
+    "accepted": false
+  },
+  "counted": {
+    "depth256": 1626,
+    "work256": 4448977,
+    "work_growth": 7.858370205512722,
+    "depth_limit": 361.2,
+    "depth_pass": false,
+    "work_growth_pass": true,
+    "accepted": false
+  }
+}

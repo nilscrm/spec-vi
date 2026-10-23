@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "/Users/nils/repos/spec-vi/reports/physics/first-stages/reference/upstream",
+    "-n",
+    "12",
+    "-s",
+    "2",
+    "-w",
+    "1"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi/reports/physics/first-stages/reference/upstream12",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 7208960,
+  "wall_seconds": 0.4121545000234619,
+  "stdout": "/Users/nils/repos/spec-vi/reports/physics/first-stages/reference/upstream-12.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/physics/first-stages/reference/upstream-12.stderr"
+}

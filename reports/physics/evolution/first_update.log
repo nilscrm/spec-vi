@@ -1,0 +1,26 @@
+{
+  "passed": false,
+  "port_complete": false,
+  "physics_accepted": false,
+  "side": 12,
+  "updates": 1,
+  "policy": {
+    "scope": "Per-stage all-particle numerical checks and initial runtime density/EOS integration; full physics acceptance remains incomplete until every stage and multistep integration pass",
+    "sides": [
+      12,
+      16
+    ],
+    "updates": 3,
+    "atol": 1e-09,
+    "rtol": 5e-12,
+    "heap_limit_bytes": 2147483648,
+    "command_timeout_seconds": 600,
+    "depth_query_counts": [
+      1,
+      8,
+      32
+    ],
+    "performance_acceptance": "Existing neighbor/pilot gates remain required; new full-stage scaling acceptance is pending explicit review"
+  },
+  "error": "Command failed: ['/Library/Frameworks/Python.framework/Versions/3.13/bin/python3', '/Users/nils/repos/spec-vi/tools/vine_exec.py', 'run', '--lib', 'sph=/Users/nils/repos/spec-vi/reports/physics/evolution/sph', '--heap', '2G', '/Users/nils/repos/spec-vi/reports/physics/evolution/first_update/driver.vi']; see /Users/nils/repos/spec-vi/reports/physics/evolution/first_update/run.stderr"
+}

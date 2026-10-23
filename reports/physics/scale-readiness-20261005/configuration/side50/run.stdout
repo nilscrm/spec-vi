@@ -1,0 +1,7 @@
+profile: unchanged upstream square-patch; SPEC adaptation unverified
+particles: 125000
+updates: 8
+write_frequency: 5
+neighbor_capacity_bound: 81250000
+particle_field_bytes_lower_bound: 30000000
+No simulation allocated; tree, neighbor, runtime and temporary memory excluded.

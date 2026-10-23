@@ -1,0 +1,8 @@
+error: type `F64` has no method `is_finite`
+     @ sph/evolution.vi:159:5
+ 159 |  if total.is_finite() {s}else{debug::error("nonfinite full state");s}
+
+warning: unused item
+     @ sph/pilot.vi:156:18
+ 156 | use #root::data::Lookup;
+

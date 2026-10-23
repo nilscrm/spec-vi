@@ -1,0 +1,19 @@
+{
+  "argv": [
+    "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+    "/Users/nils/repos/spec-vi/tools/vine_exec.py",
+    "run",
+    "--lib",
+    "sph=/Users/nils/repos/spec-vi/benchmarks/sph-exa/vine",
+    "--heap",
+    "2G",
+    "/Users/nils/repos/spec-vi/reports/physics/integration/validation/side12/driver.vi"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 1657503744,
+  "wall_seconds": 196.54361745796632,
+  "stdout": "/Users/nils/repos/spec-vi/reports/physics/integration/validation/side12/run.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/physics/integration/validation/side12/run.stderr"
+}

@@ -1,0 +1,3 @@
+ERROR: sin_bounded requires |x| <= 128
+  @ #root::numeric::F64::sin_bounded (root/numeric/F64/sin_bounded.vi:21:33)
+  @ #outside::main (outside.vi:1:35)

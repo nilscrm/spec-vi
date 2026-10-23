@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "/Users/nils/repos/spec-vi/work/build/pilot_reference",
+    "12",
+    "density"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 6864896,
+  "wall_seconds": 0.9827689160010777,
+  "stdout": "/Users/nils/repos/spec-vi/reports/runs/20260920T182738Z-80749/pilot/density_12_reference.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/runs/20260920T182738Z-80749/pilot/density_12_reference.stderr"
+}

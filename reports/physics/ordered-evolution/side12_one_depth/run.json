@@ -1,0 +1,20 @@
+{
+  "argv": [
+    "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+    "/Users/nils/repos/spec-vi/tools/vine_exec.py",
+    "run",
+    "--lib",
+    "sph=/Users/nils/repos/spec-vi/reports/physics/ordered-evolution/sph",
+    "--heap",
+    "2G",
+    "--depth",
+    "/Users/nils/repos/spec-vi/reports/physics/ordered-evolution/side12_one_depth/driver.vi"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 1688502272,
+  "wall_seconds": 192.41701283300063,
+  "stdout": "/Users/nils/repos/spec-vi/reports/physics/ordered-evolution/side12_one_depth/run.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/physics/ordered-evolution/side12_one_depth/run.stderr"
+}

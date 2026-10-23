@@ -1,0 +1,17 @@
+{
+  "argv": [
+    "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+    "/Users/nils/repos/spec-vi/tools/vine_exec.py",
+    "run",
+    "--lib",
+    "sph=/Users/nils/repos/spec-vi/reports/neighbors/bounds-layout/sph",
+    "/Users/nils/repos/spec-vi/reports/neighbors/bounds-layout/scaling_256_pairs_exact.vi"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 129531904,
+  "wall_seconds": 0.4400599579967093,
+  "stdout": "/Users/nils/repos/spec-vi/reports/neighbors/bounds-layout/scaling_256_pairs_exact.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/neighbors/bounds-layout/scaling_256_pairs_exact.stderr"
+}

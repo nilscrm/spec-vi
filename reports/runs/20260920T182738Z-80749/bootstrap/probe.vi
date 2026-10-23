@@ -1,0 +1,6 @@
+use #root::data::Array;
+pub fn main(&io: &IO) {
+  let values = Array::new(64, 1);
+  let total = values.reduce_unordered(fn* (a: N32, b: N32) { a + b });
+  if total is Some(n) { io.println("{n}"); }
+}

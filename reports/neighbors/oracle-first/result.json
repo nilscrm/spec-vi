@@ -1,0 +1,9 @@
+{
+  "milestone": "neighbors",
+  "passed": false,
+  "port_complete": false,
+  "scope": "Exact unsaturated neighbor membership, index construction and batched query depth; order and timestep integration pending",
+  "correctness": [],
+  "experiments": [],
+  "error": "Command failed: ['/Library/Frameworks/Python.framework/Versions/3.13/bin/python3', '/Users/nils/repos/spec-vi/tools/vine_exec.py', 'run', '--lib', 'sph=/Users/nils/repos/spec-vi/benchmarks/sph-exa/vine', '--heap', '2G', '/Users/nils/repos/spec-vi/reports/neighbors/oracle-first/empty.vi']; see /Users/nils/repos/spec-vi/reports/neighbors/oracle-first/empty_correctness.stderr"
+}

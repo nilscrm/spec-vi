@@ -1,0 +1,24 @@
+wires2 empty correctness passed
+wires2 strict_boundary correctness passed
+wires2 periodic correctness passed
+wires2 clusters_shuffled correctness passed
+wires2 scaling_64 correctness passed
+wires2 scaling_64 depth [{'variant': 'wires2', 'case': 'scaling_64', 'mode': 'depth', 'wall_seconds': 0.5586330829537474, 'peak_rss_bytes': 132956160, 'depth': 776, 'interactions': 879486, 'heap_bytes': 1716992, 'allocated_bytes': 19611632}]
+wires2 scaling_64 workers2 passed
+wires2 scaling_256 correctness passed
+wires2 scaling_256 depth [{'variant': 'wires2', 'case': 'scaling_256', 'mode': 'depth', 'wall_seconds': 0.7975596250034869, 'peak_rss_bytes': 163610624, 'depth': 2043, 'interactions': 11129039, 'heap_bytes': 18628464, 'allocated_bytes': 245022528}]
+wires2 scaling_256 workers2 passed
+wires2 upstream_12 correctness passed
+wires2 upstream_16 correctness passed
+wires4 empty correctness passed
+wires4 strict_boundary correctness passed
+wires4 periodic correctness passed
+wires4 clusters_shuffled correctness passed
+wires4 scaling_64 correctness passed
+wires4 scaling_64 depth [{'variant': 'wires4', 'case': 'scaling_64', 'mode': 'depth', 'wall_seconds': 0.5889845000347123, 'peak_rss_bytes': 143458304, 'depth': 770, 'interactions': 1961523, 'heap_bytes': 9598208, 'allocated_bytes': 40752192}]
+wires4 scaling_64 workers2 passed
+wires4 scaling_256 correctness passed
+wires4 scaling_256 depth [{'variant': 'wires4', 'case': 'scaling_256', 'mode': 'depth', 'wall_seconds': 1.0910647920100018, 'peak_rss_bytes': 192888832, 'depth': 2029, 'interactions': 13633118, 'heap_bytes': 41506816, 'allocated_bytes': 282663840}]
+wires4 scaling_256 workers2 passed
+wires4 upstream_12 correctness passed
+wires4 upstream_16 correctness passed

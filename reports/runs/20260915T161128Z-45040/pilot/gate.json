@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+    "tools/pilot_gate.py",
+    "--output",
+    "/Users/nils/repos/spec-vi/reports/runs/20260915T161128Z-45040/pilot"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 1755250688,
+  "wall_seconds": 75.84646370800328,
+  "stdout": "/Users/nils/repos/spec-vi/reports/runs/20260915T161128Z-45040/pilot/gate.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/runs/20260915T161128Z-45040/pilot/gate.stderr"
+}

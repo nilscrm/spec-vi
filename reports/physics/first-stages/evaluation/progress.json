@@ -1,0 +1,111 @@
+{
+  "milestone": "initial_physics",
+  "passed": false,
+  "full_physics_accepted": false,
+  "port_complete": false,
+  "correctness": [
+    {
+      "case": "side12_init",
+      "passed": true,
+      "failures": 0,
+      "rows": 1728,
+      "columns": 31,
+      "max_absolute_error": 7.275957614183426e-11,
+      "atol": 1e-09,
+      "rtol": 5e-12
+    },
+    {
+      "case": "side12_density",
+      "passed": true,
+      "failures": 0,
+      "rows": 1728,
+      "columns": 31,
+      "max_absolute_error": 7.275957614183426e-11,
+      "atol": 1e-09,
+      "rtol": 5e-12
+    },
+    {
+      "case": "side12_rest",
+      "passed": true,
+      "failures": 0,
+      "rows": 1728,
+      "columns": 31,
+      "max_absolute_error": 7.275957614183426e-11,
+      "atol": 1e-09,
+      "rtol": 5e-12
+    },
+    {
+      "case": "side12_eos",
+      "passed": true,
+      "failures": 0,
+      "rows": 1728,
+      "columns": 31,
+      "max_absolute_error": 7.275957614183426e-11,
+      "atol": 1e-09,
+      "rtol": 5e-12
+    },
+    {
+      "case": "side12_eos_snapshot0",
+      "passed": true,
+      "failures": 0,
+      "rows": 1728,
+      "columns": 31,
+      "max_absolute_error": 0.0,
+      "atol": 1e-09,
+      "rtol": 5e-12
+    },
+    {
+      "case": "side12_eos_snapshot1",
+      "passed": true,
+      "failures": 0,
+      "rows": 1728,
+      "columns": 31,
+      "max_absolute_error": 1.964508555829525e-10,
+      "atol": 1e-09,
+      "rtol": 5e-12
+    },
+    {
+      "case": "side12_eos_snapshot2",
+      "passed": true,
+      "failures": 0,
+      "rows": 1728,
+      "columns": 31,
+      "max_absolute_error": 1.964508555829525e-10,
+      "atol": 1e-09,
+      "rtol": 5e-12
+    }
+  ],
+  "experiments": [
+    {
+      "side": 12,
+      "queries": 1,
+      "all_input_particles": 1728,
+      "depth": 2603,
+      "interactions": 137952831,
+      "heap_bytes": 1046623712,
+      "allocated_bytes": 2607725936,
+      "peak_rss_bytes": 2832531456
+    },
+    {
+      "side": 12,
+      "queries": 8,
+      "all_input_particles": 1728,
+      "depth": 16178,
+      "interactions": 140665010,
+      "heap_bytes": 1046631984,
+      "allocated_bytes": 2672377952,
+      "peak_rss_bytes": 2590048256
+    },
+    {
+      "side": 12,
+      "queries": 32,
+      "all_input_particles": 1728,
+      "depth": 69625,
+      "interactions": 152112146,
+      "heap_bytes": 1046668048,
+      "allocated_bytes": 2945201936,
+      "peak_rss_bytes": 2655895552
+    }
+  ],
+  "scope": "All particles initialization through EOS at iteration zero; isolated EOS from three upstream updates; no IAD or full Vine update validation"
+}

@@ -1,0 +1,19 @@
+{
+  "policy_sha256": "9ce2f516204a0f398b94a78b78b0125914eaa33d23e27603888fdb8fca32dbba",
+  "candidate": {
+    "sha256": "aebac0f39413426c55a54955c47624b74264b0c80237425314f440144d1ea72e",
+    "files": {
+      "grid.vi": "6720b756af458baf5cdd2a27798272b70b0aa95a27c186d0876206bebf64c371",
+      "neighbors.vi": "77119c67cd5b666e8092a7f3baf08dd66437b3bb36e17ca37975f526a3ec0c5e",
+      "pilot.vi": "91cd6395b6c10bdbdc91b5d897bf0aac964ddd6c0afed741b2a7ecdd8584f8ef",
+      "sph.vi": "e2999736010f76b8dd0091fb7a201f6c74fe502cd9d39f7be625d6cc1aa9762b",
+      "tables.vi": "f0bb91156ea97d960a937803967da21572601253137764fb8c4b3740d559dbad",
+      "tree.vi": "15a3c0b47bb30aecc34a828ef56695e81745535b22fe492c575eea760983508d"
+    }
+  },
+  "vine_binary": "959ca124332377b589dfc39d7dd15839209f90dc3aaa1026ee1af812a1dea728",
+  "selected_candidate": "grid",
+  "extra_fixtures_sha256": "1936166edf61673a72cb3e60e45c8a65adee872ae771debac0a2ad5f54cd2b60",
+  "gate_sha256": "f2518cb37a9affd1f37555e1d76426412415e53148e7d8531e117a4c5f39f3ec",
+  "api": "batch"
+}

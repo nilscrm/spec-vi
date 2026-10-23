@@ -1,0 +1,12 @@
+local4 empty correctness passed
+local4 strict_boundary correctness passed
+local4 periodic correctness passed
+local4 clusters_shuffled correctness passed
+local4 scaling_64 correctness passed
+local4 scaling_64 depth [{'variant': 'local4', 'case': 'scaling_64', 'mode': 'depth', 'wall_seconds': 0.7339237919659354, 'peak_rss_bytes': 141950976, 'depth': 656, 'interactions': 1963403, 'heap_bytes': 9232240, 'allocated_bytes': 40785344}]
+local4 scaling_64 workers2 passed
+local4 scaling_256 correctness passed
+local4 scaling_256 depth [{'variant': 'local4', 'case': 'scaling_256', 'mode': 'depth', 'wall_seconds': 1.316792749974411, 'peak_rss_bytes': 194936832, 'depth': 794, 'interactions': 13640758, 'heap_bytes': 40113504, 'allocated_bytes': 282786960}]
+local4 scaling_256 workers2 passed
+local4 upstream_12 correctness passed
+local4 upstream_16 correctness passed

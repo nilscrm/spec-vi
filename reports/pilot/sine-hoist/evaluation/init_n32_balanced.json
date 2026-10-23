@@ -1,0 +1,20 @@
+{
+  "argv": [
+    "/Library/Frameworks/Python.framework/Versions/3.13/bin/python3",
+    "/Users/nils/repos/spec-vi/tools/vine_exec.py",
+    "run",
+    "--lib",
+    "sph=/Users/nils/repos/spec-vi/reports/pilot/sine-hoist/sph",
+    "--heap",
+    "2G",
+    "--depth",
+    "/Users/nils/repos/spec-vi/reports/pilot/sine-hoist/evaluation/init_n32_balanced.vi"
+  ],
+  "cwd": "/Users/nils/repos/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 836747264,
+  "wall_seconds": 1.4951540000038221,
+  "stdout": "/Users/nils/repos/spec-vi/reports/pilot/sine-hoist/evaluation/init_n32_balanced.stdout",
+  "stderr": "/Users/nils/repos/spec-vi/reports/pilot/sine-hoist/evaluation/init_n32_balanced.stderr"
+}

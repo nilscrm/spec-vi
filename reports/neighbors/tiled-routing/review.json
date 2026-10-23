@@ -1,0 +1,39 @@
+{
+  "milestone_accepted": false,
+  "production_unchanged": true,
+  "policy_sha256": "9ce2f516204a0f398b94a78b78b0125914eaa33d23e27603888fdb8fca32dbba",
+  "variants": [
+    {
+      "stride": 1,
+      "depth": 1629,
+      "work": 7270948,
+      "work_growth": 9.671977801248813,
+      "depth_passed": false,
+      "growth_passed": true
+    },
+    {
+      "stride": 2,
+      "depth": 1593,
+      "work": 8276168,
+      "work_growth": 10.28954356929014,
+      "depth_passed": false,
+      "growth_passed": false
+    },
+    {
+      "stride": 3,
+      "depth": 1584,
+      "work": 8346762,
+      "work_growth": 9.772261300413989,
+      "depth_passed": false,
+      "growth_passed": true
+    },
+    {
+      "stride": 4,
+      "depth": 1579,
+      "work": 10700502,
+      "work_growth": 13.307360739406842,
+      "depth_passed": false,
+      "growth_passed": false
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "correctness": true,
+  "measurements": [
+    {
+      "case": "scaling_64",
+      "mode": "cached",
+      "depth": 388,
+      "interactions": 23863,
+      "heap_bytes": 247584,
+      "allocated_bytes": 496384
+    },
+    {
+      "case": "scaling_64",
+      "mode": "deferred",
+      "depth": 521,
+      "interactions": 19625,
+      "heap_bytes": 95616,
+      "allocated_bytes": 413616
+    },
+    {
+      "case": "scaling_256",
+      "mode": "cached",
+      "depth": 430,
+      "interactions": 94884,
+      "heap_bytes": 992544,
+      "allocated_bytes": 1973504
+    },
+    {
+      "case": "scaling_256",
+      "mode": "deferred",
+      "depth": 600,
+      "interactions": 78166,
+      "heap_bytes": 398096,
+      "allocated_bytes": 1647088
+    }
+  ],
+  "library": {
+    "sha256": "f481f1e497f2091aad05543ee09f2110c4075e37e9a98e61b3e37e9ca7754776",
+    "files": {
+      "neighbors.vi": "55f07cdc6df55114cfb958930c5a288bc5f59b1351fc7f368b27f5a6698e070e",
+      "sph.vi": "835c73d495a8d2e602cfef92954d4edc8dd6ac104d66b4efb77e24e729332704",
+      "tree.vi": "15a3c0b47bb30aecc34a828ef56695e81745535b22fe492c575eea760983508d"
+    }
+  }
+}

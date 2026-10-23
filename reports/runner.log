@@ -1,0 +1,216 @@
+# SPH-EXA runner status
+
+**Runner: failed**
+**Full port complete: no**
+
+Command failed: ['/Library/Frameworks/Python.framework/Versions/3.13/bin/python3', 'tools/evaluate.py', 'bootstrap', '--output', '/Users/nils/repos/spec-vi/reports/runs/20260914T031226Z-28320/bootstrap']; see /Users/nils/repos/spec-vi/reports/runs/20260914T031226Z-28320/bootstrap/gate.stderr
+
+Updated: 2026-09-14T03:12:29+00:00
+Run: 20260914T031226Z-28320
+
+| Milestone | State |
+|---|---|
+| Runner, source integrity, reference smoke, depth instrumentation | failed |
+| Numerical evaluator and initialization/density pilot | pending |
+| Octree and neighbor-search validation | pending |
+| All SPH physics stages | pending |
+| Multiple timesteps and scaling | pending |
+| Full selected workloads and parallel hardware validation | pending |
+
+Live status: `make status` or `make watch`.
+Reports and raw logs: `reports/runs/<run-id>/`.
+STATUS.md is a snapshot; the status command also detects a crashed runner.
+No Codex chat notification or unattended code-writing worker is currently installed.
+
+# SPH-EXA runner status
+
+**Runner: waiting**
+**Full port complete: no**
+
+Build high-precision stage snapshots and fixed numerical/depth acceptance checks for the initialization/density pilot. No autonomous porting worker has been started.
+
+Updated: 2026-09-14T03:13:05+00:00
+Run: 20260914T031302Z-28405
+
+| Milestone | State |
+|---|---|
+| Runner, source integrity, reference smoke, depth instrumentation | passed |
+| Numerical evaluator and initialization/density pilot | needs_acceptance_check |
+| Octree and neighbor-search validation | pending |
+| All SPH physics stages | pending |
+| Multiple timesteps and scaling | pending |
+| Full selected workloads and parallel hardware validation | pending |
+
+Live status: `make status` or `make watch`.
+Reports and raw logs: `reports/runs/<run-id>/`.
+STATUS.md is a snapshot; the status command also detects a crashed runner.
+No Codex chat notification or unattended code-writing worker is currently installed.
+
+# SPH-EXA runner status
+
+**Runner: waiting**
+**Full port complete: no**
+
+Build high-precision stage snapshots and fixed numerical/depth acceptance checks for the initialization/density pilot. No autonomous porting worker has been started.
+
+Updated: 2026-09-14T03:17:41+00:00
+Run: 20260914T031738Z-28586
+
+| Milestone | State |
+|---|---|
+| Runner, source integrity, reference smoke, depth instrumentation | passed |
+| Numerical evaluator and initialization/density pilot | needs_acceptance_check |
+| Octree and neighbor-search validation | pending |
+| All SPH physics stages | pending |
+| Multiple timesteps and scaling | pending |
+| Full selected workloads and parallel hardware validation | pending |
+
+Live status: `make status` or `make watch`.
+Reports and raw logs: `reports/runs/<run-id>/`.
+STATUS.md is a snapshot; the status command also detects a crashed runner.
+Completion notifications are local status/log updates; no chat monitor is installed.
+
+# SPH-EXA runner status
+
+**Runner: failed**
+**Full port complete: no**
+
+Command failed: ['/Library/Frameworks/Python.framework/Versions/3.13/bin/python3', 'tools/pilot_gate.py', '--output', '/Users/nils/repos/spec-vi/reports/runs/20260915T160819Z-44575/pilot']; see /Users/nils/repos/spec-vi/reports/runs/20260915T160819Z-44575/pilot/gate.stderr
+
+Updated: 2026-09-15T16:08:24+00:00
+Run: 20260915T160819Z-44575
+
+| Milestone | State |
+|---|---|
+| Runner, source integrity, reference smoke, depth instrumentation | passed |
+| Numerical evaluator and initialization/density pilot | failed |
+| Octree and neighbor-search validation | pending |
+| All SPH physics stages | pending |
+| Multiple timesteps and scaling | pending |
+| Full selected workloads and parallel hardware validation | pending |
+
+Live status: `make status` or `make watch`.
+Reports and raw logs: `reports/runs/<run-id>/`.
+STATUS.md is a snapshot; the status command also detects a crashed runner.
+Completion notifications are local status/log updates; no chat monitor is installed.
+
+# SPH-EXA runner status
+
+**Runner: failed**
+**Full port complete: no**
+
+Command failed: ['/Library/Frameworks/Python.framework/Versions/3.13/bin/python3', 'tools/pilot_gate.py', '--output', '/Users/nils/repos/spec-vi/reports/runs/20260915T160910Z-44685/pilot']; see /Users/nils/repos/spec-vi/reports/runs/20260915T160910Z-44685/pilot/gate.stderr
+
+Updated: 2026-09-15T16:09:25+00:00
+Run: 20260915T160910Z-44685
+
+| Milestone | State |
+|---|---|
+| Runner, source integrity, reference smoke, depth instrumentation | passed |
+| Numerical evaluator and initialization/density pilot | failed |
+| Octree and neighbor-search validation | pending |
+| All SPH physics stages | pending |
+| Multiple timesteps and scaling | pending |
+| Full selected workloads and parallel hardware validation | pending |
+
+Live status: `make status` or `make watch`.
+Reports and raw logs: `reports/runs/<run-id>/`.
+STATUS.md is a snapshot; the status command also detects a crashed runner.
+Completion notifications are local status/log updates; no chat monitor is installed.
+
+# SPH-EXA runner status
+
+**Runner: failed**
+**Full port complete: no**
+
+Command failed: ['/Library/Frameworks/Python.framework/Versions/3.13/bin/python3', 'tools/pilot_gate.py', '--output', '/Users/nils/repos/spec-vi/reports/runs/20260915T161021Z-44812/pilot']; see /Users/nils/repos/spec-vi/reports/runs/20260915T161021Z-44812/pilot/gate.stderr
+
+Updated: 2026-09-15T16:10:36+00:00
+Run: 20260915T161021Z-44812
+
+| Milestone | State |
+|---|---|
+| Runner, source integrity, reference smoke, depth instrumentation | passed |
+| Numerical evaluator and initialization/density pilot | failed |
+| Octree and neighbor-search validation | pending |
+| All SPH physics stages | pending |
+| Multiple timesteps and scaling | pending |
+| Full selected workloads and parallel hardware validation | pending |
+
+Live status: `make status` or `make watch`.
+Reports and raw logs: `reports/runs/<run-id>/`.
+STATUS.md is a snapshot; the status command also detects a crashed runner.
+Completion notifications are local status/log updates; no chat monitor is installed.
+
+# SPH-EXA runner status
+
+**Runner: waiting**
+**Full port complete: no**
+
+Implement independent neighbor-search acceptance checks.
+
+Updated: 2026-09-15T16:12:47+00:00
+Run: 20260915T161128Z-45040
+
+| Milestone | State |
+|---|---|
+| Runner, source integrity, reference smoke, depth instrumentation | passed |
+| Numerical evaluator and initialization/density pilot | passed |
+| Octree and neighbor-search validation | needs_acceptance_check |
+| All SPH physics stages | pending |
+| Multiple timesteps and scaling | pending |
+| Full selected workloads and parallel hardware validation | pending |
+
+Live status: `make status` or `make watch`.
+Reports and raw logs: `reports/runs/<run-id>/`.
+STATUS.md is a snapshot; the status command also detects a crashed runner.
+Completion notifications are local status/log updates; no chat monitor is installed.
+
+# SPH-EXA runner status
+
+**Runner: failed**
+**Full port complete: no**
+
+Command failed: ['codex', 'exec', '--sandbox', 'workspace-write', '--skip-git-repo-check', '-C', '/Users/nils/repos/spec-vi', '--json', '--output-schema', '/Users/nils/repos/spec-vi/evaluations/agent-report.schema.json', '-o', '/Users/nils/repos/spec-vi/reports/runs/20260920T180935Z-79500/neighbors/attempt-1/agent-report.json', "Optimize and finish the SPH-EXA neighbor milestone. Follow AGENTS.md and read all required project guidance. The existing candidate passes exact membership but FAILS depth and work scaling: reports/neighbors/second-candidate/result.json. Do not accept correctness alone.\n\nImplement the public API in benchmarks/sph-exa/vine/neighbors.vi:\n- Point = {id:N32,x:F64,y:F64,z:F64}; unique ids, finite coordinates.\n- Query = {id:N32,x:F64,y:F64,z:F64,radius:F64,period_z:F64}; nonnegative radius; period_z=0 disables periodicity, otherwise coordinates occupy one period and radius<period_z/2.\n- build(Tree[Point]) -> Index (your representation).\n- find(Index, Query) -> Tree[N32]. Return each qualifying id exactly once, exclude self, strict squared distance < radius squared, only z periodic. Use shifted-query arithmetic as the oracle does. Return order is flexible; downstream reassociation remains subject to integrated numerical checks.\n- General implementation, no fixture-specific branches, ids, geometry shortcuts, cached expected answers, or native whole-kernel extrinsics.\n\nRun `python3 tools/neighbors_gate.py --output reports/neighbors/<unique-experiment>` for independent verification. The gate includes construction, query batch, duplication, cleanup and output consumption. Expected membership comes from an independent Python brute-force implementation and unchanged upstream C++ on sides12/16. Empty, exact-radius, coincident, periodic, shuffled and clustered cases are included. Growth tests use64/256 points with all points queried. The gate's serial scan is faster in depth than its source structure suggests; do not assume textbook depth without measurement. Current partition recursion, repeated bounding reductions, and broad index duplication are suspect. Try simpler representations and targeted microbenchmarks before adding complexity. Preserve all failed evidence.\n\nYou may change benchmark Vine code and Markdown and add candidate probes under work/ or reports/. Do NOT edit tools/, evaluations/, upstream/, benchmarks/sph-exa/reference/, dependencies/, or the pinned Vine checkout/binary. Those inputs are fingerprinted. If a legitimate root-library change is needed, describe the smallest API/semantics/tests and stop for the supervising task to implement it. Do not use --depth as a proxy for wall-clock parallel performance; the gate separately runs two workers.\n\nAfter a change passes neighbor acceptance, rerun the pilot gate because shared tree/library changes can regress it. Update LESSONS.md, PORTING.md, design.md, COMPATIBILITY.md and plan.md in the same cycle as new learning. A complete milestone requires correctness, depth, work, memory, documentation and an independent supervisor rerun. Do not declare the entire port complete. Do not launch additional workers or modify /Users/nils/repos/vine or stashes.\n\nActive milestone: neighbors.\nFailure evidence: /Users/nils/repos/spec-vi/reports/runs/20260920T180935Z-79500/neighbors/attempt-1.\nRead AGENTS.md and the active plan. Complete this milestone with measured evidence. Update the Markdown guidance for every useful lesson. Do not change upstream, evaluations/, tools/, reference instrumentation, pinned Vine, or acceptance requirements. Your final report is informational: an independent gate decides acceptance. If those fixed checks need legitimate changes, report the issue and stop."]; see /Users/nils/repos/spec-vi/reports/runs/20260920T180935Z-79500/neighbors/attempt-1/agent.stderr
+
+Updated: 2026-09-20T18:11:14+00:00
+Run: 20260920T180935Z-79500
+
+| Milestone | State |
+|---|---|
+| Runner, source integrity, reference smoke, depth instrumentation | passed |
+| Numerical evaluator and initialization/density pilot | passed |
+| Octree and neighbor-search validation | failed |
+| All SPH physics stages | pending |
+| Multiple timesteps and scaling | pending |
+| Full selected workloads and parallel hardware validation | pending |
+
+Live status: `make status` or `make watch`.
+Reports and raw logs: `reports/runs/<run-id>/`.
+STATUS.md is a snapshot; the status command also detects a crashed runner.
+Completion notifications are local status/log updates; no chat monitor is installed.
+
+# SPH-EXA runner status
+
+**Runner: failed**
+**Full port complete: no**
+
+Command failed: ['/Library/Frameworks/Python.framework/Versions/3.13/bin/python3', 'tools/neighbors_gate.py', '--output', '/Users/nils/repos/spec-vi/reports/runs/20260920T182738Z-80749/neighbors']; see /Users/nils/repos/spec-vi/reports/runs/20260920T182738Z-80749/neighbors/gate.stderr
+
+Updated: 2026-09-20T18:29:14+00:00
+Run: 20260920T182738Z-80749
+
+| Milestone | State |
+|---|---|
+| Runner, source integrity, reference smoke, depth instrumentation | passed |
+| Numerical evaluator and initialization/density pilot | passed |
+| Octree and neighbor-search validation | failed |
+| All SPH physics stages | pending |
+| Multiple timesteps and scaling | pending |
+| Full selected workloads and parallel hardware validation | pending |
+
+Live status: `make status` or `make watch`.
+Reports and raw logs: `reports/runs/<run-id>/`.
+STATUS.md is a snapshot; the status command also detects a crashed runner.
+A 30-minute follow-up in the Codex task continues the port; inspect its automation card for schedule/state.
+

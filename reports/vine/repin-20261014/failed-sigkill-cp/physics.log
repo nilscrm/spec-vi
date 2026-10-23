@@ -1,0 +1,32 @@
+{
+  "passed": false,
+  "physics_accepted": false,
+  "port_complete": false,
+  "scope": "All fields/scalars and exact neighbor order after every stage, both full domains, three updates; no performance acceptance",
+  "resources": {
+    "heap_limit_bytes": 2147483648,
+    "heap_gib": 2
+  },
+  "policy": {
+    "scope": "Per-stage all-particle numerical checks and initial runtime density/EOS integration; full physics acceptance remains incomplete until every stage and multistep integration pass",
+    "sides": [
+      12,
+      16
+    ],
+    "updates": 3,
+    "atol": 1e-09,
+    "rtol": 5e-12,
+    "heap_limit_bytes": 2147483648,
+    "command_timeout_seconds": 600,
+    "depth_query_counts": [
+      1,
+      8,
+      32
+    ],
+    "performance_acceptance": "Existing neighbor/pilot gates remain required; new full-stage scaling acceptance is pending explicit review"
+  },
+  "evaluator_sha256": "b43ad4c97e5f76e909c9ba756c287339ccbd26da7a6106a2067030f7bfad8ed5",
+  "reference_report_sha256": "2691c52ecc4a8ca285797016b32c4c334f1f6c35bed50cde066ca08a06d9ca3c",
+  "error": "Command failed: ['/Applications/Xcode.app/Contents/Developer/usr/bin/python3', '/Users/nils/repos/spec-vi/tools/vine_exec.py', 'run', '--lib', 'sph=/Users/nils/repos/spec-vi/benchmarks/sph-exa/vine', '--heap', '2G', '/Users/nils/repos/spec-vi/reports/vine/repin-20261014/physics/side12/driver.vi']; see /Users/nils/repos/spec-vi/reports/vine/repin-20261014/physics/side12/run.stderr"
+}
+physics exit 1

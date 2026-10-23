@@ -1,0 +1,2 @@
+square_patch [-n SIDE] [-s LAST_STEP] [-w FREQUENCY]
+Defaults: -n 50 -s 10 -w -1. -s 0 executes one update.
