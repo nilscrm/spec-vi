@@ -750,3 +750,14 @@ full 30-field neighbor copies) sets the constant; projecting gathered payloads a
 hoisting per-particle terms out of `force` could cut it without adding dependencies.
 Decision: do not reintroduce gates (L043). Side 16 validation needs a host with more
 memory, or a lower per-pair footprint.
+
+## L048: Small-to-medium inputs first; large SPEC inputs deferred
+
+Status: user direction, 2026-10-24. Goal: port every algorithm, compare it with the
+reference in Vine and later on the team's hardware, starting with small-to-medium
+inputs. Large SPEC reference inputs are not required for now.
+Consequence for SPH-EXA: side 16 (4,096 particles) is itself a small input. It fails
+only because the ungated candidate holds ~5.7 MB of heap per particle (L047), which
+would rule out medium inputs too (side 30, 27,000 particles, extrapolates to ~150 GB).
+This extrapolation is a hypothesis. So per-pair memory, not input size, is the
+blocker. Updated: AGENTS.md (input sizes).

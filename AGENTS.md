@@ -63,6 +63,11 @@ A workload is wrapped up when it passes correctness on several sizes, has a dept
 memory table across those sizes, has a parameterized native driver, and lists its known
 gaps in plan.md. Full-scale SPEC runs and hardware timing are separate, deferred claims.
 
+Input sizes (user direction 2026-10-24, L048): port every algorithm and compare Vine
+against the reference, then on our hardware, on small-to-medium inputs first. SPEC's
+large reference inputs are out of scope for now. Medium inputs must still fit on the
+development machine, so per-element memory is a practical constraint.
+
 ## Vine changes
 
 Changing the Vine standard library and implementing missing language/runtime features
