@@ -691,3 +691,73 @@ Status: observed 2026-10-14 while migrating work/vine-lookup to branch spec-vi/s
    leading_zeros change, and lookup_oob was produced with `vine run` (which prints a
    --debug hint) instead of the harness's `ivm run`. Per-commit snapshot checks
    (tools/vine_snapcheck.py) caught both problems. No numerical or source changes.
+
+## L046: A second host reproduces metrics but not every generated file
+
+Status: measured 2026-10-23 on Linux x86_64 (4 cores, 15 GiB RAM, glibc, clang/gcc),
+fresh clone, Vine worktree at the pinned fec2d8c8 (root tree and all checkout files match
+the pin; binary sha256 d26ba8f4…, differs as expected, L045).
+1. `tools/vine_exec.py` needed /bin/zsh. It now uses `setrlimit` off macOS.
+2. `generate_tables.cpp` on glibc differs from the committed table (f0bb9115…) in
+   1787 of 40000 values, at most 1.4e-13 relative. The checkpoint copy was used, so
+   Vine runs read the same table as the Mac runs.
+3. The stage oracle is missing 31 gitignored snapshots. A Linux-regenerated oracle
+   (`tools/stage_reference.py`) differs from the Mac files in 59 of 126 hashes. Every
+   comparable file is within the fixed atol/rtol (max abs 1.1e-11). Every `.meta` file
+   is identical. Linux validation used this host oracle
+   (reports/physics/routed-20261023/linux-oracle/result.json), and the decoded side-12
+   outputs were also compared with the 56 Mac files present: 0 failures.
+4. Pilot and neighbor gates on this host pass, and all 48 + 16 depth/work/heap figures
+   equal the 2026-09-30 Mac run (reports/runs/20260930T135245Z-36163) exactly. So depth
+   is host-independent for the same Vine source; only the binary hash differs.
+   Evidence: reports/runs/linux-20261023/.
+Decision: oracles generated on another host are host-local evidence; the Mac oracle
+stays canonical. Same-source metrics may be compared across hosts, binaries may not
+be assumed identical.
+
+## L047: Routed gather removes particle serialization; live heap is the cost
+
+Status: measured 2026-10-23, same host as L046. Candidate:
+reports/physics/depth-first-20261006/routed/sph (unchanged; plus tables.vi), the
+routed-gather design from that EXPERIMENT.md. No equations, order or tolerances changed.
+Correctness: physics_gate at side 12, 3 updates, 12 GiB heap, passes all 28 stage
+snapshots with exact neighbor order (max field error 2.1100277081131935e-10, equal to
+the gated candidate). W 9,250,333,305, heap 9,600,894,416 B, 996 s including full
+dumps. Side 16 exhausted the 12 GiB heap after 156 s; this host cannot give more.
+Evidence: reports/physics/routed-20261023/.
+Whole-update depth (1 update, all final fields plus neighbor count forced, identical
+checksum bits for both libraries; stage-heap/depth.log):
+
+| side | N | gated D | routed D | gated W | routed W | gated heap | routed heap |
+|---|---|---|---|---|---|---|---|
+| 6 | 216 | 1,434,639 | 31,404 | 173,771,058 | 186,880,553 | 26.0 MB | 0.80 GB |
+| 8 | 512 | 4,014,659 | 69,877 | 539,058,794 | 583,985,222 | 77.0 MB | 2.48 GB |
+| 10 | 1000 | 8,763,517 | 132,966 | 1,287,697,961 | 1,400,817,003 | 168 MB | 5.20 GB |
+| 12 | 1728 | 16,653,836 | 226,706 | 2,455,015,925 | 2,697,571,526 | 324 MB | 9.92 GB |
+
+Sides 6-10 use the stage-heap drivers. Side 12 uses tools/physics_measure.py
+(depth mode, forcing checks against the host oracle pass for both, heap 4/13 GiB;
+depth12-1update-*.json, compared with `--baseline` semantics: same_toolchain true).
+Depth drops 46-73x for 7-10% more work. Routed depth still grows about linearly in N
+at these sizes. Hypothesis: the ordered per-particle density fold, which is O(K), dominates, and K
+is close to N on such small domains. Not yet tested.
+Heap: normal-mode stage cut-offs at side 8 (stage-heap/e_routed_8_*.txt) give
+prepare 21 MB, +density 260 MB, through IAD 782 MB, +momentum 2.16 GB. The ungated
+reference-gather candidate uses 2.45 GB and the gated library 36 MB on the same cut.
+So the heap comes from all particle-pair computations being live at once once the
+gates are gone, not from routing. Hypothesis: per-pair net size (two kernel lookups,
+full 30-field neighbor copies) sets the constant; projecting gathered payloads and
+hoisting per-particle terms out of `force` could cut it without adding dependencies.
+Decision: do not reintroduce gates (L043). Side 16 validation needs a host with more
+memory, or a lower per-pair footprint.
+
+## L048: Small-to-medium inputs first; large SPEC inputs deferred
+
+Status: user direction, 2026-10-24. Goal: port every algorithm, compare it with the
+reference in Vine and later on the team's hardware, starting with small-to-medium
+inputs. Large SPEC reference inputs are not required for now.
+Consequence for SPH-EXA: side 16 (4,096 particles) is itself a small input. It fails
+only because the ungated candidate holds ~5.7 MB of heap per particle (L047), which
+would rule out medium inputs too (side 30, 27,000 particles, extrapolates to ~150 GB).
+This extrapolation is a hypothesis. So per-pair memory, not input size, is the
+blocker. Updated: AGENTS.md (input sizes).

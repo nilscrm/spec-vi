@@ -1,0 +1,191 @@
+{
+  "milestone": "pilot",
+  "passed": true,
+  "port_complete": false,
+  "scope": "Initialization fields and density with upstream-provided neighbor lists on initial square-patch states; not tree search or time integration",
+  "resources": {
+    "heap_gib": 2,
+    "heap_limit_bytes": 2147483648,
+    "command_timeout_seconds": 180
+  },
+  "correctness": [
+    {
+      "case": "init_12",
+      "passed": true,
+      "failures": 0,
+      "rows": 32,
+      "columns": 30,
+      "max_absolute_error": 4.3655745685100555e-11,
+      "atol": 1e-09,
+      "rtol": 5e-12
+    },
+    {
+      "case": "density_12",
+      "passed": true,
+      "failures": 0,
+      "rows": 16,
+      "columns": 1,
+      "max_absolute_error": 1.1102230246251565e-15,
+      "atol": 1e-09,
+      "rtol": 5e-12
+    },
+    {
+      "case": "init_16",
+      "passed": true,
+      "failures": 0,
+      "rows": 32,
+      "columns": 30,
+      "max_absolute_error": 4.3655745685100555e-11,
+      "atol": 1e-09,
+      "rtol": 5e-12
+    },
+    {
+      "case": "density_16",
+      "passed": true,
+      "failures": 0,
+      "rows": 16,
+      "columns": 1,
+      "max_absolute_error": 8.881784197001252e-16,
+      "atol": 1e-09,
+      "rtol": 5e-12
+    }
+  ],
+  "experiments": [
+    {
+      "kind": "init",
+      "count": 1,
+      "balanced": {
+        "depth": 524,
+        "interactions": 71009,
+        "heap_bytes": 604208,
+        "allocated_bytes": 1328064
+      },
+      "serial": {
+        "depth": 904,
+        "interactions": 71011,
+        "heap_bytes": 604224,
+        "allocated_bytes": 1322960
+      }
+    },
+    {
+      "kind": "init",
+      "count": 8,
+      "balanced": {
+        "depth": 529,
+        "interactions": 563006,
+        "heap_bytes": 4830192,
+        "allocated_bytes": 10517200
+      },
+      "serial": {
+        "depth": 909,
+        "interactions": 563022,
+        "heap_bytes": 4830320,
+        "allocated_bytes": 10476384
+      }
+    },
+    {
+      "kind": "init",
+      "count": 32,
+      "balanced": {
+        "depth": 528,
+        "interactions": 2249937,
+        "heap_bytes": 19319280,
+        "allocated_bytes": 42024944
+      },
+      "serial": {
+        "depth": 908,
+        "interactions": 2250001,
+        "heap_bytes": 19319792,
+        "allocated_bytes": 41861504
+      }
+    },
+    {
+      "kind": "density",
+      "count": 1,
+      "balanced": {
+        "depth": 628,
+        "interactions": 56774,
+        "heap_bytes": 310336,
+        "allocated_bytes": 1258384
+      },
+      "serial": {
+        "depth": 955,
+        "interactions": 57117,
+        "heap_bytes": 314464,
+        "allocated_bytes": 1270048
+      }
+    },
+    {
+      "kind": "density",
+      "count": 4,
+      "balanced": {
+        "depth": 632,
+        "interactions": 471097,
+        "heap_bytes": 2768800,
+        "allocated_bytes": 10411136
+      },
+      "serial": {
+        "depth": 1482,
+        "interactions": 474025,
+        "heap_bytes": 2798928,
+        "allocated_bytes": 10513824
+      }
+    },
+    {
+      "kind": "density",
+      "count": 16,
+      "balanced": {
+        "depth": 644,
+        "interactions": 1869960,
+        "heap_bytes": 11070160,
+        "allocated_bytes": 41206032
+      },
+      "serial": {
+        "depth": 1497,
+        "interactions": 1881668,
+        "heap_bytes": 11190608,
+        "allocated_bytes": 41616656
+      }
+    }
+  ],
+  "scaling": {
+    "init": {
+      "counts": [
+        1,
+        32
+      ],
+      "depth_vs_serial": 0.5814977973568282,
+      "work_vs_serial": 0.9999715555681975,
+      "depth_growth": 1.0076335877862594
+    },
+    "density": {
+      "counts": [
+        1,
+        16
+      ],
+      "depth_vs_serial": 0.4301937207748831,
+      "work_vs_serial": 0.993777860919142,
+      "depth_growth": 1.0254777070063694
+    }
+  },
+  "toolchain": {
+    "commit": "fec2d8c89eeb0c7322a064d6b45d4f577ee3fb12",
+    "binary_sha256": "d26ba8f42da27bf579f07e44990ba9d777746bcec65be528b8c1e70b8d74db2c"
+  },
+  "parallel_runs": [
+    {
+      "kind": "init",
+      "workers": 2,
+      "process_wall_seconds": 11.180193533999955,
+      "peak_rss_bytes": 806514688,
+      "runtime_stats": "/workspace/spec-vi/work/runs/pilot/init_workers2.stderr"
+    },
+    {
+      "kind": "density",
+      "workers": 2,
+      "process_wall_seconds": 23.048005138999997,
+      "peak_rss_bytes": 1640525824,
+      "runtime_stats": "/workspace/spec-vi/work/runs/pilot/density_workers2.stderr"
+    }
+  ]
+}

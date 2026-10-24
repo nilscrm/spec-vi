@@ -1,0 +1,7 @@
+use #sph::{evolution,physics,tree};
+pub fn main(&io:&IO){
+ let s=evolution::materialize(evolution::initialize(black_box(SIDE)));
+ let (prepared,rows)=evolution::prepare(s);s=prepared;let nn=evolution::neighbor_count(rows);
+ let total=tree::sum(tree::map(s.data,physics::particle_checksum))+nn as F64;
+ let N64(lo,hi)=total.to_bits();io.println("{lo} {hi}");
+}

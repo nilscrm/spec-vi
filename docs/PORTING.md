@@ -26,7 +26,7 @@ These are candidate strategies, not measured performance conclusions. The local 
 
 ## Learning and continuation
 
-Apply the mandatory learning loop in AGENTS.md after each useful discovery. Maintain evidence in LESSONS.md, general techniques here, and benchmark-specific decisions beside the port. The runner in tools/runner.py independently reruns registered acceptance gates, preserves reports, and refuses completion when any required gate is absent or fails. See RUNNER.md. Numerical comparison, high-precision pilot snapshots, pilot depth/work/heap gates, and per-process peak-memory recording are implemented. Full-stage snapshots and hardware acceptance budgets remain pending.
+Apply the mandatory learning loop in AGENTS.md after each useful discovery. Maintain evidence in LESSONS.md, general techniques here, and benchmark-specific decisions beside the port. The runner in tools/runner.py independently reruns registered acceptance gates, preserves reports, and refuses completion when any required gate is absent or fails. See RUNNER.md. Numerical comparison, high-precision pilot snapshots, full-stage snapshots, reported depth/work/heap scaling with optional `--baseline` comparison, and per-process peak-memory recording are implemented. Heap and timeout are recorded run parameters (L044).
 
 ## Construction belongs in the cost model
 

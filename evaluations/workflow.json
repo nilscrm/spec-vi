@@ -20,9 +20,13 @@
         "{python}",
         "tools/pilot_gate.py",
         "--output",
-        "{output}"
+        "{output}",
+        "--heap-gib",
+        "2",
+        "--timeout",
+        "180"
       ],
-      "next_action": "Pilot has a real gate; resolve reported numerical/depth failures without changing acceptance budgets.",
+      "next_action": "Pilot correctness passes; depth/work comparisons are reported in result.json.",
       "prompt": "docs/WORKER_PROMPT.md",
       "timeout_seconds": 1800
     },
@@ -35,9 +39,13 @@
         "--output",
         "{output}",
         "--candidate",
-        "grid"
+        "grid",
+        "--heap-gib",
+        "2",
+        "--timeout",
+        "180"
       ],
-      "next_action": "Retain the reported neighbor performance failure. Batch integration is evaluated explicitly; prioritize full physics and timestep coverage per plan.md before further neighbor tuning. Do not weaken the gate.",
+      "next_action": "Neighbor membership correctness passes; depth/work scaling is reported in result.json, not gated (L044).",
       "prompt": "docs/NEIGHBOR_WORKER.md",
       "timeout_seconds": 1800
     },
@@ -45,21 +53,21 @@
       "id": "physics",
       "title": "All SPH physics stages",
       "gate": null,
-      "next_action": "Build per-stage C++ snapshots and Vine density/EOS/IAD/momentum/timestep/update/energy coverage, then validate complete and multiple updates; retain unresolved neighbor and hardware gates.",
+      "next_action": "Register tools/physics_gate.py once the ungated depth-first candidate passes all 56 stage snapshots (benchmarks/sph-exa/plan.md task 3).",
       "prompt": "docs/WORKER_PROMPT.md"
     },
     {
       "id": "integration",
       "title": "Multiple timesteps and scaling",
       "gate": null,
-      "next_action": "Implement integrated acceptance checks.",
+      "next_action": "Record the whole-update depth/work/heap table across sides (plan.md task 4).",
       "prompt": "docs/WORKER_PROMPT.md"
     },
     {
       "id": "workloads",
       "title": "SPEC-like workload readiness; full-scale execution deferred",
       "gate": null,
-      "next_action": "N64 aggregate/preflight changes pass fixed physics, native outputs and independent review in reports/physics/scale-readiness-20261005. Obtain actual stabilization source before a separate verified adaptation; validate longer small trajectories and explicit error propagation. Keep full-scale runs deferred and existing performance failures visible.",
+      "next_action": "Full-scale SPEC runs and hardware timing are deferred (plan.md).",
       "prompt": "docs/WORKER_PROMPT.md"
     }
   ]

@@ -135,6 +135,57 @@ def parse_stats(text, require_depth=True):
     return result
 
 
+def positive_int(text):
+    value = int(text)
+    if value <= 0:
+        raise argparse.ArgumentTypeError('must be a positive integer')
+    return value
+
+
+def add_resource_args(parser, timeout):
+    """Heap and timeout are run parameters recorded with each result, never acceptance budgets."""
+    parser.add_argument('--heap-gib', type=positive_int, default=2, help='Vine heap size in GiB')
+    parser.add_argument('--timeout', type=positive_int, default=timeout, help='per-command timeout in seconds')
+
+
+def resources(args):
+    return {'heap_gib': args.heap_gib, 'heap_limit_bytes': args.heap_gib*1024**3,
+            'command_timeout_seconds': args.timeout}
+
+
+METRICS = ('depth', 'interactions', 'heap_bytes', 'allocated_bytes', 'runtime_ms')
+
+
+def metrics(value, path=''):
+    """Flatten every depth/work/memory figure in a report section to {path: number}."""
+    if isinstance(value, dict):
+        items = value.items()
+    elif isinstance(value, list):
+        items = enumerate(value)
+    else:
+        return {}
+    found = {}
+    for key, item in items:
+        name = f'{path}/{key}' if path else str(key)
+        if key in METRICS and isinstance(item, (int, float)):
+            found[name] = item
+        else:
+            found.update(metrics(item, name))
+    return found
+
+
+def compare_baseline(report, baseline_path, sections):
+    """Ratios current/baseline for matching metrics. A measurement, not a pass/fail gate."""
+    baseline = json.loads(Path(baseline_path).read_text())
+    current = {s: metrics(report.get(s)) for s in sections}
+    previous = {s: metrics(baseline.get(s)) for s in sections}
+    ratios = {f'{s}/{k}': v/previous[s][k] for s in sections for k, v in current[s].items()
+              if previous[s].get(k)}
+    return {'baseline': str(Path(baseline_path).resolve()),
+            'same_toolchain': report.get('toolchain') is not None and report.get('toolchain') == baseline.get('toolchain'),
+            'ratios': ratios}
+
+
 def bootstrap(output):
     """Validate infrastructure and upstream smoke cases, NOT a Vine SPH port."""
     output = Path(output).resolve()
@@ -144,8 +195,9 @@ def bootstrap(output):
     actual = tree_hash(ROOT/'upstream/sph-exa')
     if actual != pinned:
         raise RuntimeError('Upstream source changed relative to the pinned file manifest')
-    vine = Path(manifest['vine_checkout'])
-    binary = Path(os.environ.get('VINE_BIN', str(vine/'target/release/vine')))
+    # The pinned worktree and installed binary are what every later gate runs.
+    vine = ROOT/json.loads((ROOT/'evaluations/vine-pin.json').read_text())['checkout']
+    binary = Path(os.environ.get('VINE_BIN', str(ROOT/'work/bin/vine')))
     records = []
     records.append(run([sys.executable, '-m', 'unittest', 'discover', '-s', 'tests', '-v'], ROOT, output/'tests'))
     for label, argv in [('vine-head', ['git', '-C', str(vine), 'rev-parse', 'HEAD']),

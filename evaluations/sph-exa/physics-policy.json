@@ -4,8 +4,6 @@
   "updates": 3,
   "atol": 1e-9,
   "rtol": 5e-12,
-  "heap_limit_bytes": 2147483648,
-  "command_timeout_seconds": 600,
   "depth_query_counts": [1, 8, 32],
-  "performance_acceptance": "Existing neighbor/pilot gates remain required; new full-stage scaling acceptance is pending explicit review"
+  "note": "sides/updates/atol/rtol define the stage oracle and must match reports/physics/first-stages/reference/result.json. Heap and timeout are evaluator arguments recorded in each result (L044)."
 }

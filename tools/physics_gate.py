@@ -2,8 +2,8 @@
 """Complete square-patch stage correctness. Performance/full-port acceptance is separate."""
 import argparse,json,sys
 from pathlib import Path
-from evaluate import ROOT,run,compare,write_json,tree_hash,sha,parse_stats
-from stage_reference import STAGES
+from evaluate import ROOT,run,compare,write_json,tree_hash,sha,parse_stats,add_resource_args,resources
+from stage_reference import STAGES,verify_reference
 from state_codec import decode_values,vine_state_dump
 from neighbors_gate import validate_rows
 from toolchain import verify
@@ -81,26 +81,21 @@ def main():
  ap.add_argument('--output',required=True)
  ap.add_argument('--reference',required=True)
  ap.add_argument('--library',type=Path,default=LIB)
- ap.add_argument('--heap-gib',type=int,choices=range(2,17),default=2)
+ add_resource_args(ap,600)
  args=ap.parse_args();LIB=args.library.resolve();out=Path(args.output).resolve();ref=Path(args.reference).resolve()
  out.mkdir(parents=True,exist_ok=True)
  report={'passed':False,'physics_accepted':False,'port_complete':False,
          'scope':'All fields/scalars and exact neighbor order after every stage, both full domains, three updates; no performance acceptance',
-         'resources':{'heap_limit_bytes':args.heap_gib*1024**3,'heap_gib':args.heap_gib},'policy':policy,'pin':verify(),'library':tree_hash(LIB),'evaluator_sha256':sha(Path(__file__)),'cases':[]}
+         'resources':resources(args),'policy':policy,'pin':verify(),'library':tree_hash(LIB),'evaluator_sha256':sha(Path(__file__)),'cases':[]}
  try:
-  original=json.loads((ref/'result.json').read_text())
-  if not original['reference_verified'] or original['policy']!=policy or original['source_sha256']!=sha(ROOT/'benchmarks/sph-exa/reference/stages.cpp'):
-   raise ValueError('Reference provenance mismatch')
+  verify_reference(ref,policy)
   if tree_hash(ROOT/'upstream/sph-exa')!=json.loads((ROOT/'evaluations/upstream-files.json').read_text()):raise ValueError('Upstream changed')
-  for name,digest in original['snapshots'].items():
-   if sha(ref/name)!=digest:raise ValueError('Oracle changed')
   report['reference_report_sha256']=sha(ref/'result.json')
   for side in policy['sides']:
    target=out/f'side{side}';target.mkdir();src=target/'driver.vi';src.write_text(source(side,policy['updates']))
-   r=run([sys.executable,str(ROOT/'tools/vine_exec.py'),'run','--lib','sph='+str(LIB),'--heap',f'{args.heap_gib}G',str(src)],ROOT,target/'run',policy['command_timeout_seconds'])
+   r=run([sys.executable,str(ROOT/'tools/vine_exec.py'),'run','--lib','sph='+str(LIB),'--heap',f'{args.heap_gib}G',str(src)],ROOT,target/'run',args.timeout)
    checks=validate(r['stdout'],side,policy['updates'],target/'decoded')
    stats=parse_stats(Path(r['stderr']).read_text(),require_depth=False)
-   if stats['heap_bytes']>args.heap_gib*1024**3:raise ValueError('Heap budget exceeded')
    report['cases'].append({'side':side,'checks':checks,'stats_including_full_dump':stats,'process':r})
    write_json(out/'progress.json',report)
   if tree_hash(LIB)!=report['library']:raise ValueError('Library changed during validation')

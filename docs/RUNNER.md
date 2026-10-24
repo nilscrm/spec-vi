@@ -4,7 +4,26 @@
 
 `tools/runner.py` is a local background milestone supervisor. It executes acceptance gates in order and updates `STATUS.md`, `reports/status.json`, and `reports/runs/<run-id>/status.json`. Each gate preserves argv, working directory, exit status, duration, stdout, stderr, and an evaluation report. The bootstrap gate verifies unchanged upstream sources, runs infrastructure tests and C++ smoke cases, and checks Vine depth and worker execution separately.
 
-This bootstrap is not a SPH-EXA Vine implementation. The pilot gate passes; the registered neighbor gate currently rejects the spatial-tree candidate on depth/work scaling. Do not register a passing placeholder to advance it.
+This bootstrap is not a SPH-EXA Vine implementation. Do not register a passing placeholder to advance a milestone.
+
+## Correctness gates, reported measurements (L044)
+
+Gates pass or fail on numerical correctness only (fixed tolerances, exact neighbor
+membership/order, checksum consumers). Depth, work and heap are measurements:
+
+- `pilot_gate.py` and `neighbors_gate.py` write a `scaling` section (candidate vs the
+  serial control at the largest size, and growth across sizes). The retired budgets
+  (`max_depth_ratio`, `max_depth_growth`, ..., fixed 2 GiB heap) are no longer read.
+- Every gate and measurement tool takes `--heap-gib` and `--timeout` and records them
+  under `resources` in result.json. workflow.json passes them explicitly. A run that
+  exhausts its heap or hits the timeout fails as a command failure; rerun it with a
+  larger profile and record the profile used (AGENTS.md).
+- `--baseline <earlier result.json>` (pilot, neighbors, physics_measure) adds a
+  `comparison` section with current/baseline ratios for every depth/work/heap figure.
+  `same_toolchain` is true only when both reports carry the same `toolchain` identity
+  (Vine commit and binary hash); otherwise the ratios are not an improvement claim.
+- The physics-stage oracle is matched on sides/updates/atol/rtol only
+  (`stage_reference.verify_reference`), so resource changes do not invalidate it.
 
 ## Commands
 
@@ -41,19 +60,16 @@ Porting work happens in interactive agent sessions that follow AGENTS.md.
 
 Completion and failure update the local status and runner log. `make watch` exits visibly with the final status. There is no scheduled follow-up task.
 
-Bootstrap uses the existing Vine release binary and records its hash plus checkout evidence; a matching build from the dirty checkout is not established. The scalar diagnostic exercises the metrics pipeline, not a SPH kernel. Reference smoke dumps use upstream's default output precision. High-precision pilot snapshots, complete pilot output consumption, and process RSS are implemented. Full evolution and target-hardware timings remain unvalidated. Vine support changes are committed on branch spec-vi/sph-support and pinned in evaluations/vine-pin.json (docs/VINE_CHANGES.md).
+Bootstrap probes the pinned worktree (`work/vine`) and installed binary (`work/bin/vine`, overridable with `VINE_BIN`) and records the binary hash plus checkout status; later gates verify both against evaluations/vine-pin.json. The scalar diagnostic exercises the metrics pipeline, not a SPH kernel. Reference smoke dumps use upstream's default output precision. High-precision pilot snapshots, complete pilot output consumption, and process RSS are implemented. Full evolution and target-hardware timings remain unvalidated. Vine support changes are committed on branch spec-vi/sph-support and pinned in evaluations/vine-pin.json (docs/VINE_CHANGES.md).
 
-## Batch neighbor integration and implementation priority
+## Batch neighbor integration
 
-The registered neighbor command now selects `--candidate grid` explicitly. The gate
-also checks the retained tree single-query path and both grid APIs on the fixed and
-extra cases; the default standalone candidate remains `tree`. Each report identifies
-the selected representation/API and records the full pinned toolchain. Depth/work
-budgets are reported separately, without changing their values or overall acceptance.
+The registered neighbor command selects `--candidate grid` explicitly. The gate also
+checks the retained tree single-query path and both grid APIs on the fixed and extra
+cases; the default standalone candidate remains `tree`. Each report identifies the
+selected representation/API and records the full pinned toolchain.
 
-Per the 2026-09-26 user direction, after verifying this integration the active plan
-prioritizes complete physics and timestep coverage. The ordinary runner still stops
-at a failed neighbor gate and cannot declare completion. That acceptance status does
-not instruct the implementation task to repeat neighbor optimization indefinitely;
-continue dependency-ready physics directly according to plan.md, retain failed
-reports, and add the missing physics/integration gates before claiming validation.
+Physics, integration and workload milestones have no registered gate yet, so a run
+ends in `waiting` after the neighbor milestone. tools/physics_gate.py is the physics
+correctness check; register it once the depth-first candidate passes
+(benchmarks/sph-exa/plan.md).

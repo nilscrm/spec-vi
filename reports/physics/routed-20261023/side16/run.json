@@ -1,0 +1,19 @@
+{
+  "argv": [
+    "/usr/local/bin/python3",
+    "/workspace/spec-vi/tools/vine_exec.py",
+    "run",
+    "--lib",
+    "sph=/workspace/spec-vi/work/routed-check/sph",
+    "--heap",
+    "12G",
+    "/workspace/spec-vi/work/runs/routed-physics/side16/driver.vi"
+  ],
+  "cwd": "/workspace/spec-vi",
+  "exit_code": 101,
+  "timed_out": false,
+  "peak_rss_bytes": 14112489472,
+  "wall_seconds": 156.35637632199996,
+  "stdout": "/workspace/spec-vi/work/runs/routed-physics/side16/run.stdout",
+  "stderr": "/workspace/spec-vi/work/runs/routed-physics/side16/run.stderr"
+}

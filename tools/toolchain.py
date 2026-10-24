@@ -18,3 +18,8 @@ def verify():
     if tree_hash(checkout/'root') != pin['source'] or source_hash(checkout) != pin['checkout_files']:
         raise RuntimeError('Pinned Vine source changed; rebuild/review before acceptance')
     return pin
+
+
+def identity(pin):
+    """What a baseline comparison must match before calling a change an improvement."""
+    return {'commit': pin['commit'], 'binary_sha256': pin['binary_sha256']}
