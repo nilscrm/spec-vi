@@ -1,0 +1,170 @@
+
+// Three-dimensional grids as nested Arrays (z -> y -> x) and the structural operations the
+// LBM kernel needs: element-wise map/zip and shifts in the upstream linear cell order.
+//
+// Upstream addresses cell (x, y, z) at linear index x + y*SX + z*SX*SY, so a streaming step
+// in direction (dx, dy, dz) moves every value by dx + dy*SX + dz*SX*SY linear places,
+// wrapping across row and plane ends. The shifts below reproduce exactly that: an x shift
+// carries the value leaving one row into the next row, a y shift carries a row into the
+// next plane. Array push/pop at either end is O(log n), so a shift costs O(rows * log SX)
+// work and O(log) depth per level instead of rebuilding the grid.
+
+use #root::data::Array;
+
+pub type Plane[T] = Array[Array[T]];
+pub type Grid[T] = Array[Array[Array[T]]];
+
+pub mod Grid {
+  pub fn map[T, U, F*; fn F(T) -> U](g: Grid[T], f: F) -> Grid[U] {
+    g.map_unordered(fn* (plane: Plane[T]) {
+      plane.map_unordered(fn* (row: Array[T]) { row.map_unordered(f) })
+    })
+  }
+
+  pub fn zip[T, U, V, F*; fn F(T, U) -> V](a: Grid[T], b: Grid[U], f: F) -> Grid[V] {
+    a.zip_with(b, fn* (pa: Plane[T], pb: Plane[U]) { Plane::zip(pa, pb, f) })
+  }
+
+  pub fn unzip[T, U, V, F*; fn F(T) -> (U, V)](g: Grid[T], f: F) -> (Grid[U], Grid[V]) {
+    g.unzip_with(fn* (plane: Plane[T]) { Plane::unzip(plane, f) })
+  }
+
+  // Balanced reduction over every cell.
+  pub fn reduce[T, F*; fn F(T, T) -> T](g: Grid[T], f: F) -> T {
+    g
+      .map_unordered(fn* (plane: Plane[T]) {
+        plane
+          .map_unordered(fn* (row: Array[T]) { row.reduce_unordered(f).assume() })
+          .reduce_unordered(f)
+          .assume()
+      })
+      .reduce_unordered(f)
+      .assume()
+  }
+
+  // Move every value one cell towards higher linear index; `fill` enters at index 0.
+  // Returns the value pushed out of the last cell.
+  pub fn shift_x_up[T](g: Grid[T], fill: T) -> (Grid[T], T) {
+    let (g, outs) = g.unzip_with(fn* (plane: Plane[T]) {
+      plane.unzip_with(fn* (row: Array[T]) {
+        let x = row.pop_back().assume();
+        (row, x)
+      })
+    });
+    let (ins, out) = Plane::shift_up(outs, fill);
+    let g = g.zip_with(
+      ins,
+      fn* (plane: Plane[T], ip: Array[T]) {
+        plane.zip_with(ip, fn* (row: Array[T], x: T) {
+          row.push_front(x);
+          row
+        })
+      },
+    );
+    (g, out)
+  }
+
+  // Move every value one cell towards lower linear index; `fill` enters at the last index.
+  pub fn shift_x_down[T](g: Grid[T], fill: T) -> (Grid[T], T) {
+    let (g, outs) = g.unzip_with(fn* (plane: Plane[T]) {
+      plane.unzip_with(fn* (row: Array[T]) {
+        let x = row.pop_front().assume();
+        (row, x)
+      })
+    });
+    let (ins, out) = Plane::shift_down(outs, fill);
+    let g = g.zip_with(
+      ins,
+      fn* (plane: Plane[T], ip: Array[T]) {
+        plane.zip_with(ip, fn* (row: Array[T], x: T) {
+          row.push_back(x);
+          row
+        })
+      },
+    );
+    (g, out)
+  }
+
+  // Shift by one row (SX linear places), carrying rows across plane boundaries.
+  pub fn shift_y_up[T](g: Grid[T], fill: Array[T]) -> (Grid[T], Array[T]) {
+    Plane::shift_up(g, fill)
+  }
+
+  pub fn shift_y_down[T](g: Grid[T], fill: Array[T]) -> (Grid[T], Array[T]) {
+    Plane::shift_down(g, fill)
+  }
+
+  // Shift by one plane (SX*SY linear places).
+  pub fn shift_z_up[T](g: Grid[T], fill: Plane[T]) -> (Grid[T], Plane[T]) {
+    Row::shift_up(g, fill)
+  }
+
+  pub fn shift_z_down[T](g: Grid[T], fill: Plane[T]) -> (Grid[T], Plane[T]) {
+    Row::shift_down(g, fill)
+  }
+}
+
+pub mod Plane {
+  pub fn zip[T, U, V, F*; fn F(T, U) -> V](a: Plane[T], b: Plane[U], f: F) -> Plane[V] {
+    a.zip_with(b, fn* (ra: Array[T], rb: Array[U]) { ra.zip_with(rb, f) })
+  }
+
+  pub fn unzip[T, U, V, F*; fn F(T) -> (U, V)](p: Plane[T], f: F) -> (Plane[U], Plane[V]) {
+    p.unzip_with(fn* (row: Array[T]) { row.unzip_with(f) })
+  }
+
+  pub fn map[T, U, F*; fn F(T) -> U](p: Plane[T], f: F) -> Plane[U] {
+    p.map_unordered(fn* (row: Array[T]) { row.map_unordered(f) })
+  }
+
+  // Linear shift of a row-major plane by one element, carrying across rows.
+  pub fn shift_up[T](p: Plane[T], fill: T) -> (Plane[T], T) {
+    let (p, outs) = p.unzip_with(fn* (row: Array[T]) {
+      let x = row.pop_back().assume();
+      (row, x)
+    });
+    let (ins, out) = Row::shift_up(outs, fill);
+    let p = p.zip_with(ins, fn* (row: Array[T], x: T) {
+      row.push_front(x);
+      row
+    });
+    (p, out)
+  }
+
+  pub fn shift_down[T](p: Plane[T], fill: T) -> (Plane[T], T) {
+    let (p, outs) = p.unzip_with(fn* (row: Array[T]) {
+      let x = row.pop_front().assume();
+      (row, x)
+    });
+    let (ins, out) = Row::shift_down(outs, fill);
+    let p = p.zip_with(ins, fn* (row: Array[T], x: T) {
+      row.push_back(x);
+      row
+    });
+    (p, out)
+  }
+}
+
+pub mod Row {
+  pub fn shift_up[T](row: Array[T], fill: T) -> (Array[T], T) {
+    row.push_front(fill);
+    let out = row.pop_back().assume();
+    (row, out)
+  }
+
+  pub fn shift_down[T](row: Array[T], fill: T) -> (Array[T], T) {
+    row.push_back(fill);
+    let out = row.pop_front().assume();
+    (row, out)
+  }
+
+  // [0, 1, ..., len - 1]. Sequential (O(len) depth); used only for setup.
+  pub fn range(len: N32) -> Array[N32] {
+    let i = 0;
+    Array::from_fn(len, fn* () {
+      let v = i;
+      i += 1;
+      v
+    })
+  }
+}

@@ -1,0 +1,197 @@
+
+// Native LBM driver (782.lbm_r port). Options:
+//   -x SX -y SY -z SZ     grid size (upstream fixes it at compile time; default 100x100x130)
+//   -n STEPS              time steps (default 10)
+//   --channel             channel flow instead of the lid-driven cavity
+//   --obstacles FILE      obstacle file in the upstream format
+//   --sphere              generate the gen_obstacles.py `sphere` pattern in Vine instead
+//   --result FILE         write the velocity field like LBM_storeVelocityField (binary)
+//   --dump                print flags and every state as binary64 bit halves (validation)
+//   --checksum            print the sum of all distribution values (forces every output)
+use #root::data::Array;
+use #root::IO::File;
+use #lbm::cell::{Cell, moments};
+use #lbm::grid::{Grid, Plane};
+use #lbm::obstacles;
+use #lbm::sim::{Size, checksum, new, step};
+
+pub fn main(&io: &IO) {
+  let args = io.args();
+  let sx = 100;
+  let sy = 100;
+  let sz = 130;
+  let steps = 10;
+  let channel = false;
+  let obstacle_file = None();
+  let sphere = false;
+  let result_file = None();
+  let dump = false;
+  let want_checksum = false;
+  while args.pop_front() is Some(option) {
+    when {
+      option == "--channel" { channel = true; }
+      option == "--sphere" { sphere = true; }
+      option == "--dump" { dump = true; }
+      option == "--checksum" { want_checksum = true; }
+      option == "--obstacles" { obstacle_file = args.pop_front(); }
+      option == "--result" { result_file = args.pop_front(); }
+      option == "-x" or option == "-y" or option == "-z" or option == "-n" {
+        match args.pop_front().flat_map(N32::parse) {
+          Some(v) {
+            when {
+              option == "-x" { sx = v; }
+              option == "-y" { sy = v; }
+              option == "-z" { sz = v; }
+              _ { steps = v; }
+            }
+          }
+          None() {
+            io.println("ERROR: {option} needs a number");
+            return;
+          }
+        }
+      }
+      _ {
+        io.println("ERROR: unknown option {option}");
+        return;
+      }
+    }
+  }
+  if sx < 4 or sy < 4 or sz < 4 {
+    io.println("ERROR: every grid dimension must be at least 4");
+    return;
+  }
+  let size = { sx, sy, sz };
+  let obstacles = match obstacle_file {
+    Some(path) {
+      match read_obstacles(path, size, &io) {
+        Some(g) { g }
+        None() { return; }
+      }
+    }
+    None() {
+      if sphere {
+        obstacles::sphere(size)
+      } else {
+        obstacles::none(size)
+      }
+    }
+  };
+  let state = new(size, channel, obstacles);
+  if dump {
+    dump_flags(state.flags, &io);
+    dump_cells(state.cells, &io);
+  }
+  let t = 0;
+  while t < steps {
+    state = step(state);
+    if dump {
+      dump_cells(state.cells, &io);
+    }
+    t += 1;
+  }
+  if want_checksum {
+    let sum = checksum(state.cells);
+    let N64(lo, hi) = sum.to_bits();
+    io.println("checksum {sum} {lo} {hi}");
+  }
+  if result_file is Some(path) {
+    write_velocity(state.cells, path, &io);
+  }
+}
+
+// Upstream LBM_loadObstacleFile: any character other than '.' is an obstacle; every row
+// and every plane is followed by one separator character.
+fn read_obstacles(path: String, size: Size, &io: &IO) -> Option[Grid[Bool]] {
+  let { sx, sy, sz } = size;
+  let bytes = match File::open(&io, path) {
+    Ok(file) {
+      let bytes = file.read_bytes(&io);
+      file.close(&io);
+      bytes
+    }
+    Err(_) {
+      io.println("ERROR: cannot open obstacle file");
+      return None();
+    }
+  };
+  let bytes = match bytes {
+    Ok(b) { b }
+    Err(_) {
+      io.println("ERROR: cannot read obstacle file");
+      return None();
+    }
+  };
+  if bytes.len() != sx * sy * sz + (sy + 1) * sz {
+    io.println("ERROR: obstacle file has {
+      bytes.len()
+    } bytes, expected {
+      sx * sy * sz + (sy + 1) * sz
+    }");
+    return None();
+  }
+  let dot = 46;
+  Some(Array::from_fn(sz, fn* () {
+    let plane = Array::from_fn(sy, fn* () {
+      let row = Array::from_fn(sx, fn* () { bytes.pop_front().assume() != dot });
+      _ = bytes.pop_front();
+      row
+    });
+    _ = bytes.pop_front();
+    plane
+  }))
+}
+
+fn dump_flags(flags: Grid[N32], &io: &IO) {
+  io.print("F");
+  flags.for_each(fn* (p: Plane[N32]) {
+    p.for_each(fn* (r: Array[N32]) { r.for_each(fn* (v: N32) { io.print(" {v}"); }); });
+  });
+  io.println("");
+}
+
+fn dump_cells(cells: Grid[Cell], &io: &IO) {
+  io.println("S");
+  cells.for_each(fn* (p: Plane[Cell]) {
+    p.for_each(fn* (r: Array[Cell]) {
+      r.for_each(fn* (f: Cell) {
+        let { c, n, s, e, w, t, b, ne, nw, se, sw, nt, nb, st, sb, et, eb, wt, wb } = f;
+        for v in [c, n, s, e, w, t, b, ne, nw, se, sw, nt, nb, st, sb, et, eb, wt, wb] {
+          let N64(lo, hi) = v.to_bits();
+          io.print(" {lo} {hi}");
+        }
+        io.println("");
+      });
+    });
+  });
+}
+
+// LBM_storeVelocityField with binary output: ux, uy, uz per cell as little-endian binary32,
+// z/y/x order.
+fn write_velocity(cells: Grid[Cell], path: String, &io: &IO) {
+  let file = match File::create(&io, path) {
+    Ok(f) { f }
+    Err(_) {
+      io.println("ERROR: cannot create result file");
+      return;
+    }
+  };
+  cells.for_each(fn* (p: Plane[Cell]) {
+    p.for_each(fn* (r: Array[Cell]) {
+      r.for_each(fn* (f: Cell) {
+        // Upstream stores rho and the momentum in OUTPUT_PRECISION (float) variables and
+        // divides in float.
+        let (rho, ux, uy, uz) = moments(f);
+        let rho = rho as F32;
+        for v in [ux as F32 / rho, uy as F32 / rho, uz as F32 / rho] {
+          let bits = v.to_bits();
+          file.write_byte(&io, bits & 255).assume();
+          file.write_byte(&io, (bits >> 8) & 255).assume();
+          file.write_byte(&io, (bits >> 16) & 255).assume();
+          file.write_byte(&io, bits >> 24).assume();
+        }
+      });
+    });
+  });
+  file.close(&io);
+}

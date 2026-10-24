@@ -1,0 +1,2143 @@
+{
+ "tool": "tools/lbm_gate.py",
+ "tolerances": {
+  "atol": 1e-13,
+  "rtol": 1e-12,
+  "velocity_atol": 0.0
+ },
+ "resources": {
+  "heap_gib": 4,
+  "timeout_s": 1800
+ },
+ "host": {
+  "platform": "Linux-6.18.44-fc-v153-x86_64-with-glibc2.39",
+  "cc": "cc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+ },
+ "toolchain": {
+  "vine_commit": "fec2d8c89eeb0c7322a064d6b45d4f577ee3fb12",
+  "vine_pin_commit": "fec2d8c89eeb0c7322a064d6b45d4f577ee3fb12",
+  "vine_root_tree": "e452fe7ec02367c9b6ee8191b755ded68ef33af65a5aa4b15a82bf394b1c6b84",
+  "vine_root_tree_matches_pin": true,
+  "vine_binary_sha256": "d26ba8f42da27bf579f07e44990ba9d777746bcec65be528b8c1e70b8d74db2c",
+  "vine_build": "cargo build -r --bin vine --bin ivm (binary hash differs from the pin because the build path is embedded; root tree checked instead, README)"
+ },
+ "sources": {
+  "library": "cd5642b29edd71c39e413a44970e8d237a76ff48a44b805a8e4cb3d89819c2d0",
+  "app": "32bc47e387a715ba9450b075991a21f0f436c436859906550c4f6feb62b3e28b",
+  "upstream": "ee253d71fbf507ae11f8b27ca66c41439e6ccf55e446745c19dc8f49f92d7046",
+  "patch": "5a13e2964b438aeadfeda3805cd43f2d45ebe54885e241524a01f806c0c5c057",
+  "reference_main": "9decaef8a1e78390574dee0a04f3ffb3276a2047be17930d251a736aa92acf9f"
+ },
+ "cases": [
+  {
+   "case": "ldc-8",
+   "size": [
+    8,
+    8,
+    8
+   ],
+   "steps": 4,
+   "channel": false,
+   "obstacles": "none",
+   "passed": true,
+   "flags_identical": true,
+   "states": [
+    {
+     "step": 0,
+     "values": 9728,
+     "bit_identical": 9728,
+     "failures": 0,
+     "max_abs_error": 0.0,
+     "first_failures": []
+    },
+    {
+     "step": 1,
+     "values": 9728,
+     "bit_identical": 9728,
+     "failures": 0,
+     "max_abs_error": 0.0,
+     "first_failures": []
+    },
+    {
+     "step": 2,
+     "values": 9728,
+     "bit_identical": 9728,
+     "failures": 0,
+     "max_abs_error": 0.0,
+     "first_failures": []
+    },
+    {
+     "step": 3,
+     "values": 9728,
+     "bit_identical": 9728,
+     "failures": 0,
+     "max_abs_error": 0.0,
+     "first_failures": []
+    },
+    {
+     "step": 4,
+     "values": 9728,
+     "bit_identical": 9728,
+     "failures": 0,
+     "max_abs_error": 0.0,
+     "first_failures": []
+    }
+   ],
+   "velocity": {
+    "values": 1536,
+    "size_matches": true,
+    "bit_identical": true,
+    "max_abs_error": 0.0,
+    "passed": true
+   },
+   "commands": {
+    "build": [
+     "cc",
+     "-std=c99",
+     "-O2",
+     "-ffp-contract=off",
+     "-DSIZE_X=8",
+     "-DSIZE_Y=8",
+     "-DSIZE_Z=8",
+     "-I/workspace/spec-vi/work/lbm/src",
+     "/workspace/spec-vi/work/lbm/src/lbm.c",
+     "/workspace/spec-vi/benchmarks/lbm/reference/ref_main.c",
+     "-lm",
+     "-o",
+     "/workspace/spec-vi/work/lbm/build/8x8x8/lbm_ref"
+    ],
+    "reference": {
+     "argv": [
+      "/workspace/spec-vi/work/lbm/build/8x8x8/lbm_ref",
+      "4",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-8/reference.dat",
+      "2",
+      "0",
+      "-",
+      "--dump",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-8/reference.bin"
+     ],
+     "cwd": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-8",
+     "returncode": 0,
+     "seconds": 0.002,
+     "log": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-8/reference",
+     "dump_sha256": "0a5ef042ef15d8e9bdc39c568eb5ebdf7fd3f72e003ab2ee1c30411080de5ef7"
+    },
+    "candidate": {
+     "argv": [
+      "/usr/local/bin/python3",
+      "/workspace/spec-vi/tools/vine_exec.py",
+      "run",
+      "--lib",
+      "lbm=/workspace/spec-vi/benchmarks/lbm/vine",
+      "--heap",
+      "4G",
+      "/workspace/spec-vi/benchmarks/lbm/app/lbm_app.vi",
+      "--",
+      "-x",
+      "8",
+      "-y",
+      "8",
+      "-z",
+      "8",
+      "-n",
+      "4",
+      "--dump",
+      "--result",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-8/candidate.dat"
+     ],
+     "cwd": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-8",
+     "returncode": 0,
+     "seconds": 4.388,
+     "log": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-8/candidate",
+     "stdout_sha256": "df2b031a68f9d1d021473e5e1dac9ec4640cdb66bdef040c6fa9523fc5edfc09"
+    }
+   }
+  },
+  {
+   "case": "ldc-12x10x16-sphere",
+   "size": [
+    12,
+    10,
+    16
+   ],
+   "steps": 3,
+   "channel": false,
+   "obstacles": "sphere",
+   "passed": true,
+   "flags_identical": true,
+   "states": [
+    {
+     "step": 0,
+     "values": 36480,
+     "bit_identical": 36480,
+     "failures": 0,
+     "max_abs_error": 0.0,
+     "first_failures": []
+    },
+    {
+     "step": 1,
+     "values": 36480,
+     "bit_identical": 36480,
+     "failures": 0,
+     "max_abs_error": 0.0,
+     "first_failures": []
+    },
+    {
+     "step": 2,
+     "values": 36480,
+     "bit_identical": 36480,
+     "failures": 0,
+     "max_abs_error": 0.0,
+     "first_failures": []
+    },
+    {
+     "step": 3,
+     "values": 36480,
+     "bit_identical": 36480,
+     "failures": 0,
+     "max_abs_error": 0.0,
+     "first_failures": []
+    }
+   ],
+   "velocity": {
+    "values": 5760,
+    "size_matches": true,
+    "bit_identical": true,
+    "max_abs_error": 0.0,
+    "passed": true
+   },
+   "commands": {
+    "build": [
+     "cc",
+     "-std=c99",
+     "-O2",
+     "-ffp-contract=off",
+     "-DSIZE_X=12",
+     "-DSIZE_Y=10",
+     "-DSIZE_Z=16",
+     "-I/workspace/spec-vi/work/lbm/src",
+     "/workspace/spec-vi/work/lbm/src/lbm.c",
+     "/workspace/spec-vi/benchmarks/lbm/reference/ref_main.c",
+     "-lm",
+     "-o",
+     "/workspace/spec-vi/work/lbm/build/12x10x16/lbm_ref"
+    ],
+    "reference": {
+     "argv": [
+      "/workspace/spec-vi/work/lbm/build/12x10x16/lbm_ref",
+      "3",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-12x10x16-sphere/reference.dat",
+      "2",
+      "0",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-12x10x16-sphere/sphere.of",
+      "--dump",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-12x10x16-sphere/reference.bin"
+     ],
+     "cwd": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-12x10x16-sphere",
+     "returncode": 0,
+     "seconds": 0.003,
+     "log": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-12x10x16-sphere/reference",
+     "dump_sha256": "83c36fcccc926b592d652af734acba579882b9ee587e6f4a328d41c06952e364"
+    },
+    "candidate": {
+     "argv": [
+      "/usr/local/bin/python3",
+      "/workspace/spec-vi/tools/vine_exec.py",
+      "run",
+      "--lib",
+      "lbm=/workspace/spec-vi/benchmarks/lbm/vine",
+      "--heap",
+      "4G",
+      "/workspace/spec-vi/benchmarks/lbm/app/lbm_app.vi",
+      "--",
+      "-x",
+      "12",
+      "-y",
+      "10",
+      "-z",
+      "16",
+      "-n",
+      "3",
+      "--obstacles",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-12x10x16-sphere/sphere.of",
+      "--dump",
+      "--result",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-12x10x16-sphere/candidate.dat"
+     ],
+     "cwd": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-12x10x16-sphere",
+     "returncode": 0,
+     "seconds": 9.608,
+     "log": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-12x10x16-sphere/candidate",
+     "stdout_sha256": "d2811b2375bcd3c58a42fba2278c86da640afda829b37f48df2e2992877020a1"
+    }
+   }
+  },
+  {
+   "case": "channel-8x8x12-random",
+   "size": [
+    8,
+    8,
+    12
+   ],
+   "steps": 4,
+   "channel": true,
+   "obstacles": "random",
+   "passed": true,
+   "flags_identical": true,
+   "states": [
+    {
+     "step": 0,
+     "values": 14592,
+     "bit_identical": 14592,
+     "failures": 0,
+     "max_abs_error": 0.0,
+     "first_failures": []
+    },
+    {
+     "step": 1,
+     "values": 14592,
+     "bit_identical": 14592,
+     "failures": 0,
+     "max_abs_error": 0.0,
+     "first_failures": []
+    },
+    {
+     "step": 2,
+     "values": 14592,
+     "bit_identical": 14592,
+     "failures": 0,
+     "max_abs_error": 0.0,
+     "first_failures": []
+    },
+    {
+     "step": 3,
+     "values": 14592,
+     "bit_identical": 14592,
+     "failures": 0,
+     "max_abs_error": 0.0,
+     "first_failures": []
+    },
+    {
+     "step": 4,
+     "values": 14592,
+     "bit_identical": 14592,
+     "failures": 0,
+     "max_abs_error": 0.0,
+     "first_failures": []
+    }
+   ],
+   "velocity": {
+    "values": 2304,
+    "size_matches": true,
+    "bit_identical": true,
+    "max_abs_error": 0.0,
+    "passed": true
+   },
+   "commands": {
+    "build": [
+     "cc",
+     "-std=c99",
+     "-O2",
+     "-ffp-contract=off",
+     "-DSIZE_X=8",
+     "-DSIZE_Y=8",
+     "-DSIZE_Z=12",
+     "-I/workspace/spec-vi/work/lbm/src",
+     "/workspace/spec-vi/work/lbm/src/lbm.c",
+     "/workspace/spec-vi/benchmarks/lbm/reference/ref_main.c",
+     "-lm",
+     "-o",
+     "/workspace/spec-vi/work/lbm/build/8x8x12/lbm_ref"
+    ],
+    "reference": {
+     "argv": [
+      "/workspace/spec-vi/work/lbm/build/8x8x12/lbm_ref",
+      "4",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/channel-8x8x12-random/reference.dat",
+      "2",
+      "1",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/channel-8x8x12-random/random.of",
+      "--dump",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/channel-8x8x12-random/reference.bin"
+     ],
+     "cwd": "/workspace/spec-vi/reports/lbm/candidate-20261024/channel-8x8x12-random",
+     "returncode": 0,
+     "seconds": 0.002,
+     "log": "/workspace/spec-vi/reports/lbm/candidate-20261024/channel-8x8x12-random/reference",
+     "dump_sha256": "620def4c3b179406ec8626aadea604e7ddba5b8a72b2518d4197b1488dee7ed0"
+    },
+    "candidate": {
+     "argv": [
+      "/usr/local/bin/python3",
+      "/workspace/spec-vi/tools/vine_exec.py",
+      "run",
+      "--lib",
+      "lbm=/workspace/spec-vi/benchmarks/lbm/vine",
+      "--heap",
+      "4G",
+      "/workspace/spec-vi/benchmarks/lbm/app/lbm_app.vi",
+      "--",
+      "-x",
+      "8",
+      "-y",
+      "8",
+      "-z",
+      "12",
+      "-n",
+      "4",
+      "--channel",
+      "--obstacles",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/channel-8x8x12-random/random.of",
+      "--dump",
+      "--result",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/channel-8x8x12-random/candidate.dat"
+     ],
+     "cwd": "/workspace/spec-vi/reports/lbm/candidate-20261024/channel-8x8x12-random",
+     "returncode": 0,
+     "seconds": 5.949,
+     "log": "/workspace/spec-vi/reports/lbm/candidate-20261024/channel-8x8x12-random/candidate",
+     "stdout_sha256": "e5edd7387f4c8993c8b6393f69a263e42dc034c8c56a9881797147eb70a9a9bc"
+    }
+   }
+  },
+  {
+   "case": "channel-12x12x16-sphere",
+   "size": [
+    12,
+    12,
+    16
+   ],
+   "steps": 3,
+   "channel": true,
+   "obstacles": "sphere",
+   "passed": true,
+   "flags_identical": true,
+   "states": [
+    {
+     "step": 0,
+     "values": 43776,
+     "bit_identical": 43776,
+     "failures": 0,
+     "max_abs_error": 0.0,
+     "first_failures": []
+    },
+    {
+     "step": 1,
+     "values": 43776,
+     "bit_identical": 43776,
+     "failures": 0,
+     "max_abs_error": 0.0,
+     "first_failures": []
+    },
+    {
+     "step": 2,
+     "values": 43776,
+     "bit_identical": 43776,
+     "failures": 0,
+     "max_abs_error": 0.0,
+     "first_failures": []
+    },
+    {
+     "step": 3,
+     "values": 43776,
+     "bit_identical": 43776,
+     "failures": 0,
+     "max_abs_error": 0.0,
+     "first_failures": []
+    }
+   ],
+   "velocity": {
+    "values": 6912,
+    "size_matches": true,
+    "bit_identical": true,
+    "max_abs_error": 0.0,
+    "passed": true
+   },
+   "commands": {
+    "build": [
+     "cc",
+     "-std=c99",
+     "-O2",
+     "-ffp-contract=off",
+     "-DSIZE_X=12",
+     "-DSIZE_Y=12",
+     "-DSIZE_Z=16",
+     "-I/workspace/spec-vi/work/lbm/src",
+     "/workspace/spec-vi/work/lbm/src/lbm.c",
+     "/workspace/spec-vi/benchmarks/lbm/reference/ref_main.c",
+     "-lm",
+     "-o",
+     "/workspace/spec-vi/work/lbm/build/12x12x16/lbm_ref"
+    ],
+    "reference": {
+     "argv": [
+      "/workspace/spec-vi/work/lbm/build/12x12x16/lbm_ref",
+      "3",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/channel-12x12x16-sphere/reference.dat",
+      "2",
+      "1",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/channel-12x12x16-sphere/sphere.of",
+      "--dump",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/channel-12x12x16-sphere/reference.bin"
+     ],
+     "cwd": "/workspace/spec-vi/reports/lbm/candidate-20261024/channel-12x12x16-sphere",
+     "returncode": 0,
+     "seconds": 0.004,
+     "log": "/workspace/spec-vi/reports/lbm/candidate-20261024/channel-12x12x16-sphere/reference",
+     "dump_sha256": "f63820b00e9d26cc9e0ab127fe6a98382cf41211f97e4220b822091b8442b335"
+    },
+    "candidate": {
+     "argv": [
+      "/usr/local/bin/python3",
+      "/workspace/spec-vi/tools/vine_exec.py",
+      "run",
+      "--lib",
+      "lbm=/workspace/spec-vi/benchmarks/lbm/vine",
+      "--heap",
+      "4G",
+      "/workspace/spec-vi/benchmarks/lbm/app/lbm_app.vi",
+      "--",
+      "-x",
+      "12",
+      "-y",
+      "12",
+      "-z",
+      "16",
+      "-n",
+      "3",
+      "--channel",
+      "--obstacles",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/channel-12x12x16-sphere/sphere.of",
+      "--dump",
+      "--result",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/channel-12x12x16-sphere/candidate.dat"
+     ],
+     "cwd": "/workspace/spec-vi/reports/lbm/candidate-20261024/channel-12x12x16-sphere",
+     "returncode": 0,
+     "seconds": 10.677,
+     "log": "/workspace/spec-vi/reports/lbm/candidate-20261024/channel-12x12x16-sphere/candidate",
+     "stdout_sha256": "52560df7e19ffeba36a2629db1c495927010dd4397a40b7235737002964e785e"
+    }
+   }
+  },
+  {
+   "case": "ldc-16-random-10",
+   "size": [
+    16,
+    16,
+    16
+   ],
+   "steps": 10,
+   "channel": false,
+   "obstacles": "random",
+   "passed": true,
+   "flags_identical": true,
+   "states": [
+    {
+     "step": 0,
+     "values": 77824,
+     "bit_identical": 77824,
+     "failures": 0,
+     "max_abs_error": 0.0,
+     "first_failures": []
+    },
+    {
+     "step": 1,
+     "values": 77824,
+     "bit_identical": 77824,
+     "failures": 0,
+     "max_abs_error": 0.0,
+     "first_failures": []
+    },
+    {
+     "step": 2,
+     "values": 77824,
+     "bit_identical": 77824,
+     "failures": 0,
+     "max_abs_error": 0.0,
+     "first_failures": []
+    },
+    {
+     "step": 3,
+     "values": 77824,
+     "bit_identical": 77824,
+     "failures": 0,
+     "max_abs_error": 0.0,
+     "first_failures": []
+    },
+    {
+     "step": 4,
+     "values": 77824,
+     "bit_identical": 77824,
+     "failures": 0,
+     "max_abs_error": 0.0,
+     "first_failures": []
+    },
+    {
+     "step": 5,
+     "values": 77824,
+     "bit_identical": 77824,
+     "failures": 0,
+     "max_abs_error": 0.0,
+     "first_failures": []
+    },
+    {
+     "step": 6,
+     "values": 77824,
+     "bit_identical": 77824,
+     "failures": 0,
+     "max_abs_error": 0.0,
+     "first_failures": []
+    },
+    {
+     "step": 7,
+     "values": 77824,
+     "bit_identical": 77824,
+     "failures": 0,
+     "max_abs_error": 0.0,
+     "first_failures": []
+    },
+    {
+     "step": 8,
+     "values": 77824,
+     "bit_identical": 77824,
+     "failures": 0,
+     "max_abs_error": 0.0,
+     "first_failures": []
+    },
+    {
+     "step": 9,
+     "values": 77824,
+     "bit_identical": 77824,
+     "failures": 0,
+     "max_abs_error": 0.0,
+     "first_failures": []
+    },
+    {
+     "step": 10,
+     "values": 77824,
+     "bit_identical": 77824,
+     "failures": 0,
+     "max_abs_error": 0.0,
+     "first_failures": []
+    }
+   ],
+   "velocity": {
+    "values": 12288,
+    "size_matches": true,
+    "bit_identical": true,
+    "max_abs_error": 0.0,
+    "passed": true
+   },
+   "commands": {
+    "build": [
+     "cc",
+     "-std=c99",
+     "-O2",
+     "-ffp-contract=off",
+     "-DSIZE_X=16",
+     "-DSIZE_Y=16",
+     "-DSIZE_Z=16",
+     "-I/workspace/spec-vi/work/lbm/src",
+     "/workspace/spec-vi/work/lbm/src/lbm.c",
+     "/workspace/spec-vi/benchmarks/lbm/reference/ref_main.c",
+     "-lm",
+     "-o",
+     "/workspace/spec-vi/work/lbm/build/16x16x16/lbm_ref"
+    ],
+    "reference": {
+     "argv": [
+      "/workspace/spec-vi/work/lbm/build/16x16x16/lbm_ref",
+      "10",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-16-random-10/reference.dat",
+      "2",
+      "0",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-16-random-10/random.of",
+      "--dump",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-16-random-10/reference.bin"
+     ],
+     "cwd": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-16-random-10",
+     "returncode": 0,
+     "seconds": 0.017,
+     "log": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-16-random-10/reference",
+     "dump_sha256": "fc2d9afd59ad97eb1bcc60620de1f91ccfde05c6136b58b82a7339d5b003a318"
+    },
+    "candidate": {
+     "argv": [
+      "/usr/local/bin/python3",
+      "/workspace/spec-vi/tools/vine_exec.py",
+      "run",
+      "--lib",
+      "lbm=/workspace/spec-vi/benchmarks/lbm/vine",
+      "--heap",
+      "4G",
+      "/workspace/spec-vi/benchmarks/lbm/app/lbm_app.vi",
+      "--",
+      "-x",
+      "16",
+      "-y",
+      "16",
+      "-z",
+      "16",
+      "-n",
+      "10",
+      "--obstacles",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-16-random-10/random.of",
+      "--dump",
+      "--result",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-16-random-10/candidate.dat"
+     ],
+     "cwd": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-16-random-10",
+     "returncode": 0,
+     "seconds": 45.577,
+     "log": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-16-random-10/candidate",
+     "stdout_sha256": "78d42260363147bca4b6cfed972912776fd264dcf27ff93806b2e116c4cad415"
+    }
+   }
+  },
+  {
+   "case": "channel-10x14x18-sphere-8",
+   "size": [
+    10,
+    14,
+    18
+   ],
+   "steps": 8,
+   "channel": true,
+   "obstacles": "sphere",
+   "passed": true,
+   "flags_identical": true,
+   "states": [
+    {
+     "step": 0,
+     "values": 47880,
+     "bit_identical": 47880,
+     "failures": 0,
+     "max_abs_error": 0.0,
+     "first_failures": []
+    },
+    {
+     "step": 1,
+     "values": 47880,
+     "bit_identical": 47880,
+     "failures": 0,
+     "max_abs_error": 0.0,
+     "first_failures": []
+    },
+    {
+     "step": 2,
+     "values": 47880,
+     "bit_identical": 47880,
+     "failures": 0,
+     "max_abs_error": 0.0,
+     "first_failures": []
+    },
+    {
+     "step": 3,
+     "values": 47880,
+     "bit_identical": 47880,
+     "failures": 0,
+     "max_abs_error": 0.0,
+     "first_failures": []
+    },
+    {
+     "step": 4,
+     "values": 47880,
+     "bit_identical": 47880,
+     "failures": 0,
+     "max_abs_error": 0.0,
+     "first_failures": []
+    },
+    {
+     "step": 5,
+     "values": 47880,
+     "bit_identical": 47880,
+     "failures": 0,
+     "max_abs_error": 0.0,
+     "first_failures": []
+    },
+    {
+     "step": 6,
+     "values": 47880,
+     "bit_identical": 47880,
+     "failures": 0,
+     "max_abs_error": 0.0,
+     "first_failures": []
+    },
+    {
+     "step": 7,
+     "values": 47880,
+     "bit_identical": 47880,
+     "failures": 0,
+     "max_abs_error": 0.0,
+     "first_failures": []
+    },
+    {
+     "step": 8,
+     "values": 47880,
+     "bit_identical": 47880,
+     "failures": 0,
+     "max_abs_error": 0.0,
+     "first_failures": []
+    }
+   ],
+   "velocity": {
+    "values": 7560,
+    "size_matches": true,
+    "bit_identical": true,
+    "max_abs_error": 0.0,
+    "passed": true
+   },
+   "commands": {
+    "build": [
+     "cc",
+     "-std=c99",
+     "-O2",
+     "-ffp-contract=off",
+     "-DSIZE_X=10",
+     "-DSIZE_Y=14",
+     "-DSIZE_Z=18",
+     "-I/workspace/spec-vi/work/lbm/src",
+     "/workspace/spec-vi/work/lbm/src/lbm.c",
+     "/workspace/spec-vi/benchmarks/lbm/reference/ref_main.c",
+     "-lm",
+     "-o",
+     "/workspace/spec-vi/work/lbm/build/10x14x18/lbm_ref"
+    ],
+    "reference": {
+     "argv": [
+      "/workspace/spec-vi/work/lbm/build/10x14x18/lbm_ref",
+      "8",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/channel-10x14x18-sphere-8/reference.dat",
+      "2",
+      "1",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/channel-10x14x18-sphere-8/sphere.of",
+      "--dump",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/channel-10x14x18-sphere-8/reference.bin"
+     ],
+     "cwd": "/workspace/spec-vi/reports/lbm/candidate-20261024/channel-10x14x18-sphere-8",
+     "returncode": 0,
+     "seconds": 0.007,
+     "log": "/workspace/spec-vi/reports/lbm/candidate-20261024/channel-10x14x18-sphere-8/reference",
+     "dump_sha256": "f79782ed35b287e6e7f30acadeb26761294a2251bbdfa3bd11edf5e42b38e3ef"
+    },
+    "candidate": {
+     "argv": [
+      "/usr/local/bin/python3",
+      "/workspace/spec-vi/tools/vine_exec.py",
+      "run",
+      "--lib",
+      "lbm=/workspace/spec-vi/benchmarks/lbm/vine",
+      "--heap",
+      "4G",
+      "/workspace/spec-vi/benchmarks/lbm/app/lbm_app.vi",
+      "--",
+      "-x",
+      "10",
+      "-y",
+      "14",
+      "-z",
+      "18",
+      "-n",
+      "8",
+      "--channel",
+      "--obstacles",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/channel-10x14x18-sphere-8/sphere.of",
+      "--dump",
+      "--result",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/channel-10x14x18-sphere-8/candidate.dat"
+     ],
+     "cwd": "/workspace/spec-vi/reports/lbm/candidate-20261024/channel-10x14x18-sphere-8",
+     "returncode": 0,
+     "seconds": 23.409,
+     "log": "/workspace/spec-vi/reports/lbm/candidate-20261024/channel-10x14x18-sphere-8/candidate",
+     "stdout_sha256": "29fb230078eba5e30928dea2548aac0e1efa44618546cbc41111097e626c35ba"
+    }
+   }
+  }
+ ],
+ "measurements": [
+  {
+   "case": "ldc-8-s0",
+   "size": [
+    8,
+    8,
+    8
+   ],
+   "cells": 512,
+   "steps": 0,
+   "channel": false,
+   "obstacles": "none",
+   "driver_sha256": "bb6ac2ea74ae3d33f3a01a3cda3f9a7c1fde81baf8178245acf7ee74493c73a2",
+   "expected_checksum_bits": "1 1082130432",
+   "depth_run": {
+    "depth": 449,
+    "interactions": 254780,
+    "heap_bytes": 1500960,
+    "allocated_bytes": 5718288,
+    "checksum_bits": "1 1082130432",
+    "checksum_matches": true,
+    "command": {
+     "argv": [
+      "/usr/local/bin/python3",
+      "/workspace/spec-vi/tools/vine_exec.py",
+      "run",
+      "--lib",
+      "lbm=/workspace/spec-vi/benchmarks/lbm/vine",
+      "--heap",
+      "4G",
+      "--depth",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-8-s0/driver.vi"
+     ],
+     "cwd": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-8-s0",
+     "returncode": 0,
+     "seconds": 2.583,
+     "log": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-8-s0/depth_run"
+    }
+   },
+   "normal_run": {
+    "interactions": 254780,
+    "heap_bytes": 801232,
+    "allocated_bytes": 5810768,
+    "runtime_ms": 14,
+    "checksum_bits": "1 1082130432",
+    "checksum_matches": true,
+    "command": {
+     "argv": [
+      "/usr/local/bin/python3",
+      "/workspace/spec-vi/tools/vine_exec.py",
+      "run",
+      "--lib",
+      "lbm=/workspace/spec-vi/benchmarks/lbm/vine",
+      "--heap",
+      "4G",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-8-s0/driver.vi"
+     ],
+     "cwd": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-8-s0",
+     "returncode": 0,
+     "seconds": 2.51,
+     "log": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-8-s0/normal_run"
+    }
+   },
+   "checksums_match": true
+  },
+  {
+   "case": "ldc-8-s1",
+   "size": [
+    8,
+    8,
+    8
+   ],
+   "cells": 512,
+   "steps": 1,
+   "channel": false,
+   "obstacles": "none",
+   "driver_sha256": "ef459db136baed9f43e037fa9e8ee99dca353774fddb8bbc8db59492199b9dd7",
+   "expected_checksum_bits": "2 1082130432",
+   "depth_run": {
+    "depth": 746,
+    "interactions": 1194939,
+    "heap_bytes": 2559136,
+    "allocated_bytes": 26403968,
+    "checksum_bits": "2 1082130432",
+    "checksum_matches": true,
+    "command": {
+     "argv": [
+      "/usr/local/bin/python3",
+      "/workspace/spec-vi/tools/vine_exec.py",
+      "run",
+      "--lib",
+      "lbm=/workspace/spec-vi/benchmarks/lbm/vine",
+      "--heap",
+      "4G",
+      "--depth",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-8-s1/driver.vi"
+     ],
+     "cwd": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-8-s1",
+     "returncode": 0,
+     "seconds": 2.548,
+     "log": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-8-s1/depth_run"
+    }
+   },
+   "normal_run": {
+    "interactions": 1194939,
+    "heap_bytes": 812288,
+    "allocated_bytes": 26398160,
+    "runtime_ms": 63,
+    "checksum_bits": "2 1082130432",
+    "checksum_matches": true,
+    "command": {
+     "argv": [
+      "/usr/local/bin/python3",
+      "/workspace/spec-vi/tools/vine_exec.py",
+      "run",
+      "--lib",
+      "lbm=/workspace/spec-vi/benchmarks/lbm/vine",
+      "--heap",
+      "4G",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-8-s1/driver.vi"
+     ],
+     "cwd": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-8-s1",
+     "returncode": 0,
+     "seconds": 2.56,
+     "log": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-8-s1/normal_run"
+    }
+   },
+   "checksums_match": true
+  },
+  {
+   "case": "ldc-8-s2",
+   "size": [
+    8,
+    8,
+    8
+   ],
+   "cells": 512,
+   "steps": 2,
+   "channel": false,
+   "obstacles": "none",
+   "driver_sha256": "07f39aa4cd085c8218d177705d2c634b58cb8dd0eba7e9cb776045d81f97de65",
+   "expected_checksum_bits": "1 1082130432",
+   "depth_run": {
+    "depth": 1012,
+    "interactions": 2135098,
+    "heap_bytes": 3651584,
+    "allocated_bytes": 47088480,
+    "checksum_bits": "1 1082130432",
+    "checksum_matches": true,
+    "command": {
+     "argv": [
+      "/usr/local/bin/python3",
+      "/workspace/spec-vi/tools/vine_exec.py",
+      "run",
+      "--lib",
+      "lbm=/workspace/spec-vi/benchmarks/lbm/vine",
+      "--heap",
+      "4G",
+      "--depth",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-8-s2/driver.vi"
+     ],
+     "cwd": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-8-s2",
+     "returncode": 0,
+     "seconds": 2.582,
+     "log": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-8-s2/depth_run"
+    }
+   },
+   "normal_run": {
+    "interactions": 2135098,
+    "heap_bytes": 1218016,
+    "allocated_bytes": 47152784,
+    "runtime_ms": 113,
+    "checksum_bits": "1 1082130432",
+    "checksum_matches": true,
+    "command": {
+     "argv": [
+      "/usr/local/bin/python3",
+      "/workspace/spec-vi/tools/vine_exec.py",
+      "run",
+      "--lib",
+      "lbm=/workspace/spec-vi/benchmarks/lbm/vine",
+      "--heap",
+      "4G",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-8-s2/driver.vi"
+     ],
+     "cwd": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-8-s2",
+     "returncode": 0,
+     "seconds": 2.541,
+     "log": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-8-s2/normal_run"
+    }
+   },
+   "checksums_match": true
+  },
+  {
+   "case": "ldc-12-s0",
+   "size": [
+    12,
+    12,
+    12
+   ],
+   "cells": 1728,
+   "steps": 0,
+   "channel": false,
+   "obstacles": "none",
+   "driver_sha256": "92b3542484e7b86675e489eb2f54e01221e6f197d28d08ff3c99e79bbb9187ad",
+   "expected_checksum_bits": "3 1083899904",
+   "depth_run": {
+    "depth": 482,
+    "interactions": 826444,
+    "heap_bytes": 4170256,
+    "allocated_bytes": 18674576,
+    "checksum_bits": "3 1083899904",
+    "checksum_matches": true,
+    "command": {
+     "argv": [
+      "/usr/local/bin/python3",
+      "/workspace/spec-vi/tools/vine_exec.py",
+      "run",
+      "--lib",
+      "lbm=/workspace/spec-vi/benchmarks/lbm/vine",
+      "--heap",
+      "4G",
+      "--depth",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-12-s0/driver.vi"
+     ],
+     "cwd": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-12-s0",
+     "returncode": 0,
+     "seconds": 2.569,
+     "log": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-12-s0/depth_run"
+    }
+   },
+   "normal_run": {
+    "interactions": 826444,
+    "heap_bytes": 2598864,
+    "allocated_bytes": 18975504,
+    "runtime_ms": 49,
+    "checksum_bits": "3 1083899904",
+    "checksum_matches": true,
+    "command": {
+     "argv": [
+      "/usr/local/bin/python3",
+      "/workspace/spec-vi/tools/vine_exec.py",
+      "run",
+      "--lib",
+      "lbm=/workspace/spec-vi/benchmarks/lbm/vine",
+      "--heap",
+      "4G",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-12-s0/driver.vi"
+     ],
+     "cwd": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-12-s0",
+     "returncode": 0,
+     "seconds": 2.512,
+     "log": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-12-s0/normal_run"
+    }
+   },
+   "checksums_match": true
+  },
+  {
+   "case": "ldc-12-s1",
+   "size": [
+    12,
+    12,
+    12
+   ],
+   "cells": 1728,
+   "steps": 1,
+   "channel": false,
+   "obstacles": "none",
+   "driver_sha256": "2cd7590f088dd9b7be8f794fe9c0be5f21db6f1da737b0951ddf8ece63de011e",
+   "expected_checksum_bits": "3 1083899904",
+   "depth_run": {
+    "depth": 777,
+    "interactions": 3762171,
+    "heap_bytes": 10062016,
+    "allocated_bytes": 87132992,
+    "checksum_bits": "3 1083899904",
+    "checksum_matches": true,
+    "command": {
+     "argv": [
+      "/usr/local/bin/python3",
+      "/workspace/spec-vi/tools/vine_exec.py",
+      "run",
+      "--lib",
+      "lbm=/workspace/spec-vi/benchmarks/lbm/vine",
+      "--heap",
+      "4G",
+      "--depth",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-12-s1/driver.vi"
+     ],
+     "cwd": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-12-s1",
+     "returncode": 0,
+     "seconds": 2.687,
+     "log": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-12-s1/depth_run"
+    }
+   },
+   "normal_run": {
+    "interactions": 3762171,
+    "heap_bytes": 2430288,
+    "allocated_bytes": 87149408,
+    "runtime_ms": 220,
+    "checksum_bits": "3 1083899904",
+    "checksum_matches": true,
+    "command": {
+     "argv": [
+      "/usr/local/bin/python3",
+      "/workspace/spec-vi/tools/vine_exec.py",
+      "run",
+      "--lib",
+      "lbm=/workspace/spec-vi/benchmarks/lbm/vine",
+      "--heap",
+      "4G",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-12-s1/driver.vi"
+     ],
+     "cwd": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-12-s1",
+     "returncode": 0,
+     "seconds": 2.683,
+     "log": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-12-s1/normal_run"
+    }
+   },
+   "checksums_match": true
+  },
+  {
+   "case": "ldc-12-s2",
+   "size": [
+    12,
+    12,
+    12
+   ],
+   "cells": 1728,
+   "steps": 2,
+   "channel": false,
+   "obstacles": "none",
+   "driver_sha256": "ec79fc4fea12987bb7977ff97e3cda36c82c24f4e4177e329b9cb855cb95ae60",
+   "expected_checksum_bits": "2 1083899904",
+   "depth_run": {
+    "depth": 1043,
+    "interactions": 6697898,
+    "heap_bytes": 13477888,
+    "allocated_bytes": 155588896,
+    "checksum_bits": "2 1083899904",
+    "checksum_matches": true,
+    "command": {
+     "argv": [
+      "/usr/local/bin/python3",
+      "/workspace/spec-vi/tools/vine_exec.py",
+      "run",
+      "--lib",
+      "lbm=/workspace/spec-vi/benchmarks/lbm/vine",
+      "--heap",
+      "4G",
+      "--depth",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-12-s2/driver.vi"
+     ],
+     "cwd": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-12-s2",
+     "returncode": 0,
+     "seconds": 2.983,
+     "log": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-12-s2/depth_run"
+    }
+   },
+   "normal_run": {
+    "interactions": 6697898,
+    "heap_bytes": 3407120,
+    "allocated_bytes": 155952032,
+    "runtime_ms": 358,
+    "checksum_bits": "2 1083899904",
+    "checksum_matches": true,
+    "command": {
+     "argv": [
+      "/usr/local/bin/python3",
+      "/workspace/spec-vi/tools/vine_exec.py",
+      "run",
+      "--lib",
+      "lbm=/workspace/spec-vi/benchmarks/lbm/vine",
+      "--heap",
+      "4G",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-12-s2/driver.vi"
+     ],
+     "cwd": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-12-s2",
+     "returncode": 0,
+     "seconds": 2.805,
+     "log": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-12-s2/normal_run"
+    }
+   },
+   "checksums_match": true
+  },
+  {
+   "case": "ldc-16-s0",
+   "size": [
+    16,
+    16,
+    16
+   ],
+   "cells": 4096,
+   "steps": 0,
+   "channel": false,
+   "obstacles": "none",
+   "driver_sha256": "b6438fde58ca04ab17252fc5d03c7b2c9085d27ed27feaccd2f567ca5f2b396a",
+   "expected_checksum_bits": "1 1085276160",
+   "depth_run": {
+    "depth": 482,
+    "interactions": 1924328,
+    "heap_bytes": 11643696,
+    "allocated_bytes": 43625216,
+    "checksum_bits": "1 1085276160",
+    "checksum_matches": true,
+    "command": {
+     "argv": [
+      "/usr/local/bin/python3",
+      "/workspace/spec-vi/tools/vine_exec.py",
+      "run",
+      "--lib",
+      "lbm=/workspace/spec-vi/benchmarks/lbm/vine",
+      "--heap",
+      "4G",
+      "--depth",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-16-s0/driver.vi"
+     ],
+     "cwd": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-16-s0",
+     "returncode": 0,
+     "seconds": 2.591,
+     "log": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-16-s0/depth_run"
+    }
+   },
+   "normal_run": {
+    "interactions": 1924328,
+    "heap_bytes": 6041040,
+    "allocated_bytes": 44324544,
+    "runtime_ms": 121,
+    "checksum_bits": "1 1085276160",
+    "checksum_matches": true,
+    "command": {
+     "argv": [
+      "/usr/local/bin/python3",
+      "/workspace/spec-vi/tools/vine_exec.py",
+      "run",
+      "--lib",
+      "lbm=/workspace/spec-vi/benchmarks/lbm/vine",
+      "--heap",
+      "4G",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-16-s0/driver.vi"
+     ],
+     "cwd": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-16-s0",
+     "returncode": 0,
+     "seconds": 2.526,
+     "log": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-16-s0/normal_run"
+    }
+   },
+   "checksums_match": true
+  },
+  {
+   "case": "ldc-16-s1",
+   "size": [
+    16,
+    16,
+    16
+   ],
+   "cells": 4096,
+   "steps": 1,
+   "channel": false,
+   "obstacles": "none",
+   "driver_sha256": "2128beff6bffbe09ece8163d0e228d0c622556cf7e12cf1473d6121bf8d8a042",
+   "expected_checksum_bits": "2 1085276160",
+   "depth_run": {
+    "depth": 777,
+    "interactions": 8585951,
+    "heap_bytes": 28287744,
+    "allocated_bytes": 204494288,
+    "checksum_bits": "2 1085276160",
+    "checksum_matches": true,
+    "command": {
+     "argv": [
+      "/usr/local/bin/python3",
+      "/workspace/spec-vi/tools/vine_exec.py",
+      "run",
+      "--lib",
+      "lbm=/workspace/spec-vi/benchmarks/lbm/vine",
+      "--heap",
+      "4G",
+      "--depth",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-16-s1/driver.vi"
+     ],
+     "cwd": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-16-s1",
+     "returncode": 0,
+     "seconds": 3.37,
+     "log": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-16-s1/depth_run"
+    }
+   },
+   "normal_run": {
+    "interactions": 8585951,
+    "heap_bytes": 5386608,
+    "allocated_bytes": 204582816,
+    "runtime_ms": 542,
+    "checksum_bits": "2 1085276160",
+    "checksum_matches": true,
+    "command": {
+     "argv": [
+      "/usr/local/bin/python3",
+      "/workspace/spec-vi/tools/vine_exec.py",
+      "run",
+      "--lib",
+      "lbm=/workspace/spec-vi/benchmarks/lbm/vine",
+      "--heap",
+      "4G",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-16-s1/driver.vi"
+     ],
+     "cwd": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-16-s1",
+     "returncode": 0,
+     "seconds": 2.981,
+     "log": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-16-s1/normal_run"
+    }
+   },
+   "checksums_match": true
+  },
+  {
+   "case": "ldc-16-s2",
+   "size": [
+    16,
+    16,
+    16
+   ],
+   "cells": 4096,
+   "steps": 2,
+   "channel": false,
+   "obstacles": "none",
+   "driver_sha256": "f5e4069c0dbf7226df9f092338ddbc5615eefad34afca367054e659cab0f95b6",
+   "expected_checksum_bits": "2 1085276160",
+   "depth_run": {
+    "depth": 1043,
+    "interactions": 15247574,
+    "heap_bytes": 35110256,
+    "allocated_bytes": 365358992,
+    "checksum_bits": "2 1085276160",
+    "checksum_matches": true,
+    "command": {
+     "argv": [
+      "/usr/local/bin/python3",
+      "/workspace/spec-vi/tools/vine_exec.py",
+      "run",
+      "--lib",
+      "lbm=/workspace/spec-vi/benchmarks/lbm/vine",
+      "--heap",
+      "4G",
+      "--depth",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-16-s2/driver.vi"
+     ],
+     "cwd": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-16-s2",
+     "returncode": 0,
+     "seconds": 4.559,
+     "log": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-16-s2/depth_run"
+    }
+   },
+   "normal_run": {
+    "interactions": 15247574,
+    "heap_bytes": 6987584,
+    "allocated_bytes": 366438320,
+    "runtime_ms": 863,
+    "checksum_bits": "2 1085276160",
+    "checksum_matches": true,
+    "command": {
+     "argv": [
+      "/usr/local/bin/python3",
+      "/workspace/spec-vi/tools/vine_exec.py",
+      "run",
+      "--lib",
+      "lbm=/workspace/spec-vi/benchmarks/lbm/vine",
+      "--heap",
+      "4G",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-16-s2/driver.vi"
+     ],
+     "cwd": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-16-s2",
+     "returncode": 0,
+     "seconds": 3.194,
+     "log": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-16-s2/normal_run"
+    }
+   },
+   "checksums_match": true
+  },
+  {
+   "case": "ldc-24-s0",
+   "size": [
+    24,
+    24,
+    24
+   ],
+   "cells": 13824,
+   "steps": 0,
+   "channel": false,
+   "obstacles": "none",
+   "driver_sha256": "586cca81eb76d2a63ddbf3bce4381b7a7de848c1c2f08cf1918ef3d7b623e4c5",
+   "expected_checksum_bits": "3 1087045632",
+   "depth_run": {
+    "depth": 515,
+    "interactions": 6386184,
+    "heap_bytes": 33636848,
+    "allocated_bytes": 145248768,
+    "checksum_bits": "3 1087045632",
+    "checksum_matches": true,
+    "command": {
+     "argv": [
+      "/usr/local/bin/python3",
+      "/workspace/spec-vi/tools/vine_exec.py",
+      "run",
+      "--lib",
+      "lbm=/workspace/spec-vi/benchmarks/lbm/vine",
+      "--heap",
+      "4G",
+      "--depth",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-24-s0/driver.vi"
+     ],
+     "cwd": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-24-s0",
+     "returncode": 0,
+     "seconds": 3.015,
+     "log": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-24-s0/depth_run"
+    }
+   },
+   "normal_run": {
+    "interactions": 6386184,
+    "heap_bytes": 19997136,
+    "allocated_bytes": 147560512,
+    "runtime_ms": 438,
+    "checksum_bits": "3 1087045632",
+    "checksum_matches": true,
+    "command": {
+     "argv": [
+      "/usr/local/bin/python3",
+      "/workspace/spec-vi/tools/vine_exec.py",
+      "run",
+      "--lib",
+      "lbm=/workspace/spec-vi/benchmarks/lbm/vine",
+      "--heap",
+      "4G",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-24-s0/driver.vi"
+     ],
+     "cwd": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-24-s0",
+     "returncode": 0,
+     "seconds": 2.855,
+     "log": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-24-s0/normal_run"
+    }
+   },
+   "checksums_match": true
+  },
+  {
+   "case": "ldc-24-s1",
+   "size": [
+    24,
+    24,
+    24
+   ],
+   "cells": 13824,
+   "steps": 1,
+   "channel": false,
+   "obstacles": "none",
+   "driver_sha256": "bfc831c1103aea7fac0f2f08db9a7f7b62f48b1bba4452f682a36d48b3001f31",
+   "expected_checksum_bits": "3 1087045632",
+   "depth_run": {
+    "depth": 808,
+    "interactions": 28218591,
+    "heap_bytes": 102568112,
+    "allocated_bytes": 691756112,
+    "checksum_bits": "3 1087045632",
+    "checksum_matches": true,
+    "command": {
+     "argv": [
+      "/usr/local/bin/python3",
+      "/workspace/spec-vi/tools/vine_exec.py",
+      "run",
+      "--lib",
+      "lbm=/workspace/spec-vi/benchmarks/lbm/vine",
+      "--heap",
+      "4G",
+      "--depth",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-24-s1/driver.vi"
+     ],
+     "cwd": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-24-s1",
+     "returncode": 0,
+     "seconds": 7.382,
+     "log": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-24-s1/depth_run"
+    }
+   },
+   "normal_run": {
+    "interactions": 28218591,
+    "heap_bytes": 17599024,
+    "allocated_bytes": 692239904,
+    "runtime_ms": 1697,
+    "checksum_bits": "3 1087045632",
+    "checksum_matches": true,
+    "command": {
+     "argv": [
+      "/usr/local/bin/python3",
+      "/workspace/spec-vi/tools/vine_exec.py",
+      "run",
+      "--lib",
+      "lbm=/workspace/spec-vi/benchmarks/lbm/vine",
+      "--heap",
+      "4G",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-24-s1/driver.vi"
+     ],
+     "cwd": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-24-s1",
+     "returncode": 0,
+     "seconds": 4.035,
+     "log": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-24-s1/normal_run"
+    }
+   },
+   "checksums_match": true
+  },
+  {
+   "case": "ldc-24-s2",
+   "size": [
+    24,
+    24,
+    24
+   ],
+   "cells": 13824,
+   "steps": 2,
+   "channel": false,
+   "obstacles": "none",
+   "driver_sha256": "fe6600ddd0c43ad20538ab913bb484ec3c4c626d7975dae7c3e01a42a6d8a31d",
+   "expected_checksum_bits": "2 1087045632",
+   "depth_run": {
+    "depth": 1074,
+    "interactions": 50050998,
+    "heap_bytes": 123762992,
+    "allocated_bytes": 1238253840,
+    "checksum_bits": "2 1087045632",
+    "checksum_matches": true,
+    "command": {
+     "argv": [
+      "/usr/local/bin/python3",
+      "/workspace/spec-vi/tools/vine_exec.py",
+      "run",
+      "--lib",
+      "lbm=/workspace/spec-vi/benchmarks/lbm/vine",
+      "--heap",
+      "4G",
+      "--depth",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-24-s2/driver.vi"
+     ],
+     "cwd": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-24-s2",
+     "returncode": 0,
+     "seconds": 12.63,
+     "log": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-24-s2/depth_run"
+    }
+   },
+   "normal_run": {
+    "interactions": 50050998,
+    "heap_bytes": 21402960,
+    "allocated_bytes": 1242754848,
+    "runtime_ms": 3448,
+    "checksum_bits": "2 1087045632",
+    "checksum_matches": true,
+    "command": {
+     "argv": [
+      "/usr/local/bin/python3",
+      "/workspace/spec-vi/tools/vine_exec.py",
+      "run",
+      "--lib",
+      "lbm=/workspace/spec-vi/benchmarks/lbm/vine",
+      "--heap",
+      "4G",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-24-s2/driver.vi"
+     ],
+     "cwd": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-24-s2",
+     "returncode": 0,
+     "seconds": 5.973,
+     "log": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-24-s2/normal_run"
+    }
+   },
+   "checksums_match": true
+  },
+  {
+   "case": "ldc-32-s0",
+   "size": [
+    32,
+    32,
+    32
+   ],
+   "cells": 32768,
+   "steps": 0,
+   "channel": false,
+   "obstacles": "none",
+   "driver_sha256": "2732a8c83684583a01b7e828849b5888c725079283ea769da01a346b8fed5646",
+   "expected_checksum_bits": "1 1088421888",
+   "depth_run": {
+    "depth": 515,
+    "interactions": 15016884,
+    "heap_bytes": 91173440,
+    "allocated_bytes": 342100976,
+    "checksum_bits": "1 1088421888",
+    "checksum_matches": true,
+    "command": {
+     "argv": [
+      "/usr/local/bin/python3",
+      "/workspace/spec-vi/tools/vine_exec.py",
+      "run",
+      "--lib",
+      "lbm=/workspace/spec-vi/benchmarks/lbm/vine",
+      "--heap",
+      "4G",
+      "--depth",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-32-s0/driver.vi"
+     ],
+     "cwd": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-32-s0",
+     "returncode": 0,
+     "seconds": 4.746,
+     "log": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-32-s0/depth_run"
+    }
+   },
+   "normal_run": {
+    "interactions": 15016884,
+    "heap_bytes": 46945744,
+    "allocated_bytes": 347522224,
+    "runtime_ms": 1078,
+    "checksum_bits": "1 1088421888",
+    "checksum_matches": true,
+    "command": {
+     "argv": [
+      "/usr/local/bin/python3",
+      "/workspace/spec-vi/tools/vine_exec.py",
+      "run",
+      "--lib",
+      "lbm=/workspace/spec-vi/benchmarks/lbm/vine",
+      "--heap",
+      "4G",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-32-s0/driver.vi"
+     ],
+     "cwd": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-32-s0",
+     "returncode": 0,
+     "seconds": 3.382,
+     "log": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-32-s0/normal_run"
+    }
+   },
+   "checksums_match": true
+  },
+  {
+   "case": "ldc-32-s1",
+   "size": [
+    32,
+    32,
+    32
+   ],
+   "cells": 32768,
+   "steps": 1,
+   "channel": false,
+   "obstacles": "none",
+   "driver_sha256": "95ea50ab63b616904966a4552e6caf4428dd48100536a27131b914e91d815964",
+   "expected_checksum_bits": "2 1088421888",
+   "depth_run": {
+    "depth": 808,
+    "interactions": 65825859,
+    "heap_bytes": 275831008,
+    "allocated_bytes": 1639516832,
+    "checksum_bits": "2 1088421888",
+    "checksum_matches": true,
+    "command": {
+     "argv": [
+      "/usr/local/bin/python3",
+      "/workspace/spec-vi/tools/vine_exec.py",
+      "run",
+      "--lib",
+      "lbm=/workspace/spec-vi/benchmarks/lbm/vine",
+      "--heap",
+      "4G",
+      "--depth",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-32-s1/driver.vi"
+     ],
+     "cwd": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-32-s1",
+     "returncode": 0,
+     "seconds": 15.875,
+     "log": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-32-s1/depth_run"
+    }
+   },
+   "normal_run": {
+    "interactions": 65825859,
+    "heap_bytes": 40271936,
+    "allocated_bytes": 1640899568,
+    "runtime_ms": 4041,
+    "checksum_bits": "2 1088421888",
+    "checksum_matches": true,
+    "command": {
+     "argv": [
+      "/usr/local/bin/python3",
+      "/workspace/spec-vi/tools/vine_exec.py",
+      "run",
+      "--lib",
+      "lbm=/workspace/spec-vi/benchmarks/lbm/vine",
+      "--heap",
+      "4G",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-32-s1/driver.vi"
+     ],
+     "cwd": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-32-s1",
+     "returncode": 0,
+     "seconds": 6.395,
+     "log": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-32-s1/normal_run"
+    }
+   },
+   "checksums_match": true
+  },
+  {
+   "case": "ldc-32-s2",
+   "size": [
+    32,
+    32,
+    32
+   ],
+   "cells": 32768,
+   "steps": 2,
+   "channel": false,
+   "obstacles": "none",
+   "driver_sha256": "5262d1554fe9807b1e58622706765e8126d8f715ebde26fde7b0bcf535230549",
+   "expected_checksum_bits": "2 1088421888",
+   "depth_run": {
+    "depth": 1074,
+    "interactions": 116634834,
+    "heap_bytes": 313462848,
+    "allocated_bytes": 2936915776,
+    "checksum_bits": "2 1088421888",
+    "checksum_matches": true,
+    "command": {
+     "argv": [
+      "/usr/local/bin/python3",
+      "/workspace/spec-vi/tools/vine_exec.py",
+      "run",
+      "--lib",
+      "lbm=/workspace/spec-vi/benchmarks/lbm/vine",
+      "--heap",
+      "4G",
+      "--depth",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-32-s2/driver.vi"
+     ],
+     "cwd": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-32-s2",
+     "returncode": 0,
+     "seconds": 30.937,
+     "log": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-32-s2/depth_run"
+    }
+   },
+   "normal_run": {
+    "interactions": 116634834,
+    "heap_bytes": 47901296,
+    "allocated_bytes": 2948719680,
+    "runtime_ms": 8369,
+    "checksum_bits": "2 1088421888",
+    "checksum_matches": true,
+    "command": {
+     "argv": [
+      "/usr/local/bin/python3",
+      "/workspace/spec-vi/tools/vine_exec.py",
+      "run",
+      "--lib",
+      "lbm=/workspace/spec-vi/benchmarks/lbm/vine",
+      "--heap",
+      "4G",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-32-s2/driver.vi"
+     ],
+     "cwd": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-32-s2",
+     "returncode": 0,
+     "seconds": 10.724,
+     "log": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-32-s2/normal_run"
+    }
+   },
+   "checksums_match": true
+  },
+  {
+   "case": "ldc-16-s8",
+   "size": [
+    16,
+    16,
+    16
+   ],
+   "cells": 4096,
+   "steps": 8,
+   "channel": false,
+   "obstacles": "none",
+   "driver_sha256": "5f555b64b80992813f5f76160694e8bf1624b660d502e00fa5535c5a5680f9c4",
+   "expected_checksum_bits": "4294967294 1085276159",
+   "depth_run": {
+    "depth": 2758,
+    "interactions": 55217591,
+    "heap_bytes": 38029712,
+    "allocated_bytes": 1330553264,
+    "checksum_bits": "4294967294 1085276159",
+    "checksum_matches": true,
+    "command": {
+     "argv": [
+      "/usr/local/bin/python3",
+      "/workspace/spec-vi/tools/vine_exec.py",
+      "run",
+      "--lib",
+      "lbm=/workspace/spec-vi/benchmarks/lbm/vine",
+      "--heap",
+      "4G",
+      "--depth",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-16-s8/driver.vi"
+     ],
+     "cwd": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-16-s8",
+     "returncode": 0,
+     "seconds": 8.235,
+     "log": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-16-s8/depth_run"
+    }
+   },
+   "normal_run": {
+    "interactions": 55217591,
+    "heap_bytes": 35274192,
+    "allocated_bytes": 1337087296,
+    "runtime_ms": 4314,
+    "checksum_bits": "4294967294 1085276159",
+    "checksum_matches": true,
+    "command": {
+     "argv": [
+      "/usr/local/bin/python3",
+      "/workspace/spec-vi/tools/vine_exec.py",
+      "run",
+      "--lib",
+      "lbm=/workspace/spec-vi/benchmarks/lbm/vine",
+      "--heap",
+      "4G",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-16-s8/driver.vi"
+     ],
+     "cwd": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-16-s8",
+     "returncode": 0,
+     "seconds": 6.664,
+     "log": "/workspace/spec-vi/reports/lbm/candidate-20261024/ldc-16-s8/normal_run"
+    }
+   },
+   "checksums_match": true
+  },
+  {
+   "case": "channel-sphere-8-s1",
+   "size": [
+    8,
+    8,
+    8
+   ],
+   "cells": 512,
+   "steps": 1,
+   "channel": true,
+   "obstacles": "sphere",
+   "driver_sha256": "4f32c21c76b0f82cb1ddcdc982ddfe78ddc7d7b1fa81698e0856b859031daccf",
+   "expected_checksum_bits": "2444103585 1082130644",
+   "depth_run": {
+    "depth": 915,
+    "interactions": 1370956,
+    "heap_bytes": 4221072,
+    "allocated_bytes": 31769248,
+    "checksum_bits": "2444103585 1082130644",
+    "checksum_matches": true,
+    "command": {
+     "argv": [
+      "/usr/local/bin/python3",
+      "/workspace/spec-vi/tools/vine_exec.py",
+      "run",
+      "--lib",
+      "lbm=/workspace/spec-vi/benchmarks/lbm/vine",
+      "--heap",
+      "4G",
+      "--depth",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/channel-sphere-8-s1/driver.vi"
+     ],
+     "cwd": "/workspace/spec-vi/reports/lbm/candidate-20261024/channel-sphere-8-s1",
+     "returncode": 0,
+     "seconds": 2.497,
+     "log": "/workspace/spec-vi/reports/lbm/candidate-20261024/channel-sphere-8-s1/depth_run"
+    }
+   },
+   "normal_run": {
+    "interactions": 1370956,
+    "heap_bytes": 1640656,
+    "allocated_bytes": 31939008,
+    "runtime_ms": 75,
+    "checksum_bits": "2444103585 1082130644",
+    "checksum_matches": true,
+    "command": {
+     "argv": [
+      "/usr/local/bin/python3",
+      "/workspace/spec-vi/tools/vine_exec.py",
+      "run",
+      "--lib",
+      "lbm=/workspace/spec-vi/benchmarks/lbm/vine",
+      "--heap",
+      "4G",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/channel-sphere-8-s1/driver.vi"
+     ],
+     "cwd": "/workspace/spec-vi/reports/lbm/candidate-20261024/channel-sphere-8-s1",
+     "returncode": 0,
+     "seconds": 2.265,
+     "log": "/workspace/spec-vi/reports/lbm/candidate-20261024/channel-sphere-8-s1/normal_run"
+    }
+   },
+   "checksums_match": true
+  },
+  {
+   "case": "channel-sphere-8-s2",
+   "size": [
+    8,
+    8,
+    8
+   ],
+   "cells": 512,
+   "steps": 2,
+   "channel": true,
+   "obstacles": "sphere",
+   "driver_sha256": "a58cfc62ccb9092b9c8a143c88ed1d978ae562ea7e9f97d40ff319194dc5e3a4",
+   "expected_checksum_bits": "494947844 1082131435",
+   "depth_run": {
+    "depth": 1242,
+    "interactions": 2465353,
+    "heap_bytes": 4338416,
+    "allocated_bytes": 57169648,
+    "checksum_bits": "494947844 1082131435",
+    "checksum_matches": true,
+    "command": {
+     "argv": [
+      "/usr/local/bin/python3",
+      "/workspace/spec-vi/tools/vine_exec.py",
+      "run",
+      "--lib",
+      "lbm=/workspace/spec-vi/benchmarks/lbm/vine",
+      "--heap",
+      "4G",
+      "--depth",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/channel-sphere-8-s2/driver.vi"
+     ],
+     "cwd": "/workspace/spec-vi/reports/lbm/candidate-20261024/channel-sphere-8-s2",
+     "returncode": 0,
+     "seconds": 2.366,
+     "log": "/workspace/spec-vi/reports/lbm/candidate-20261024/channel-sphere-8-s2/depth_run"
+    }
+   },
+   "normal_run": {
+    "interactions": 2465353,
+    "heap_bytes": 2955888,
+    "allocated_bytes": 57493456,
+    "runtime_ms": 145,
+    "checksum_bits": "494947844 1082131435",
+    "checksum_matches": true,
+    "command": {
+     "argv": [
+      "/usr/local/bin/python3",
+      "/workspace/spec-vi/tools/vine_exec.py",
+      "run",
+      "--lib",
+      "lbm=/workspace/spec-vi/benchmarks/lbm/vine",
+      "--heap",
+      "4G",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/channel-sphere-8-s2/driver.vi"
+     ],
+     "cwd": "/workspace/spec-vi/reports/lbm/candidate-20261024/channel-sphere-8-s2",
+     "returncode": 0,
+     "seconds": 2.595,
+     "log": "/workspace/spec-vi/reports/lbm/candidate-20261024/channel-sphere-8-s2/normal_run"
+    }
+   },
+   "checksums_match": true
+  },
+  {
+   "case": "channel-sphere-16-s1",
+   "size": [
+    16,
+    16,
+    16
+   ],
+   "cells": 4096,
+   "steps": 1,
+   "channel": true,
+   "obstacles": "sphere",
+   "driver_sha256": "695f1c4421cb9066df42f83a48c1e2666303e0412276448851c0a7ed0ee34b07",
+   "expected_checksum_bits": "195777412 1085276286",
+   "depth_run": {
+    "depth": 929,
+    "interactions": 9296963,
+    "heap_bytes": 33639328,
+    "allocated_bytes": 226352768,
+    "checksum_bits": "195777412 1085276286",
+    "checksum_matches": true,
+    "command": {
+     "argv": [
+      "/usr/local/bin/python3",
+      "/workspace/spec-vi/tools/vine_exec.py",
+      "run",
+      "--lib",
+      "lbm=/workspace/spec-vi/benchmarks/lbm/vine",
+      "--heap",
+      "4G",
+      "--depth",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/channel-sphere-16-s1/driver.vi"
+     ],
+     "cwd": "/workspace/spec-vi/reports/lbm/candidate-20261024/channel-sphere-16-s1",
+     "returncode": 0,
+     "seconds": 3.094,
+     "log": "/workspace/spec-vi/reports/lbm/candidate-20261024/channel-sphere-16-s1/depth_run"
+    }
+   },
+   "normal_run": {
+    "interactions": 9296963,
+    "heap_bytes": 11985888,
+    "allocated_bytes": 227701664,
+    "runtime_ms": 578,
+    "checksum_bits": "195777412 1085276286",
+    "checksum_matches": true,
+    "command": {
+     "argv": [
+      "/usr/local/bin/python3",
+      "/workspace/spec-vi/tools/vine_exec.py",
+      "run",
+      "--lib",
+      "lbm=/workspace/spec-vi/benchmarks/lbm/vine",
+      "--heap",
+      "4G",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/channel-sphere-16-s1/driver.vi"
+     ],
+     "cwd": "/workspace/spec-vi/reports/lbm/candidate-20261024/channel-sphere-16-s1",
+     "returncode": 0,
+     "seconds": 2.773,
+     "log": "/workspace/spec-vi/reports/lbm/candidate-20261024/channel-sphere-16-s1/normal_run"
+    }
+   },
+   "checksums_match": true
+  },
+  {
+   "case": "channel-sphere-16-s2",
+   "size": [
+    16,
+    16,
+    16
+   ],
+   "cells": 4096,
+   "steps": 2,
+   "channel": true,
+   "obstacles": "sphere",
+   "driver_sha256": "7889dd55e9f367d584bb07ec02f477697345002aa404373bfe7d685a6f2c905c",
+   "expected_checksum_bits": "4028582104 1085276754",
+   "depth_run": {
+    "depth": 1286,
+    "interactions": 16542716,
+    "heap_bytes": 34144848,
+    "allocated_bytes": 404908816,
+    "checksum_bits": "4028582104 1085276754",
+    "checksum_matches": true,
+    "command": {
+     "argv": [
+      "/usr/local/bin/python3",
+      "/workspace/spec-vi/tools/vine_exec.py",
+      "run",
+      "--lib",
+      "lbm=/workspace/spec-vi/benchmarks/lbm/vine",
+      "--heap",
+      "4G",
+      "--depth",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/channel-sphere-16-s2/driver.vi"
+     ],
+     "cwd": "/workspace/spec-vi/reports/lbm/candidate-20261024/channel-sphere-16-s2",
+     "returncode": 0,
+     "seconds": 4.048,
+     "log": "/workspace/spec-vi/reports/lbm/candidate-20261024/channel-sphere-16-s2/depth_run"
+    }
+   },
+   "normal_run": {
+    "interactions": 16542716,
+    "heap_bytes": 23235664,
+    "allocated_bytes": 407603504,
+    "runtime_ms": 1015,
+    "checksum_bits": "4028582104 1085276754",
+    "checksum_matches": true,
+    "command": {
+     "argv": [
+      "/usr/local/bin/python3",
+      "/workspace/spec-vi/tools/vine_exec.py",
+      "run",
+      "--lib",
+      "lbm=/workspace/spec-vi/benchmarks/lbm/vine",
+      "--heap",
+      "4G",
+      "/workspace/spec-vi/reports/lbm/candidate-20261024/channel-sphere-16-s2/driver.vi"
+     ],
+     "cwd": "/workspace/spec-vi/reports/lbm/candidate-20261024/channel-sphere-16-s2",
+     "returncode": 0,
+     "seconds": 3.229,
+     "log": "/workspace/spec-vi/reports/lbm/candidate-20261024/channel-sphere-16-s2/normal_run"
+    }
+   },
+   "checksums_match": true
+  }
+ ],
+ "passed": true
+}

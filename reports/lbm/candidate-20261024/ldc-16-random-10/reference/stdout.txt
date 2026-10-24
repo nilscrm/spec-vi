@@ -1,0 +1,13 @@
+grid size: 16 x 16 x 16, nTimeSteps: 10, simType: lid-driven cavity, obstacle file: /workspace/spec-vi/reports/lbm/candidate-20261024/ldc-16-random-10/random.of
+LBM_allocateGrid: allocated 0.8 MByte
+LBM_allocateGrid: allocated 0.8 MByte
+LBM_showGridStatistics:
+	nObstacleCells:    1510 nAccelCells:     275 nFluidCells:    2311
+	minRho:   1.0000 maxRho:   1.0000 mass: 4.096000e+03
+	minU: 0.000000e+00 maxU: 0.000000e+00
+
+LBM_showGridStatistics:
+	nObstacleCells:    1510 nAccelCells:     275 nFluidCells:    2311
+	minRho:   0.9791 maxRho:   1.0185 mass: 4.096000e+03
+	minU: 5.401407e-05 maxU: 1.464423e-02
+

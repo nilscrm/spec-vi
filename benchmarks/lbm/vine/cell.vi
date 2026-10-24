@@ -1,0 +1,172 @@
+
+// D3Q19 BGK collision of one cell, in the upstream push (collide-stream) formulation.
+// Arithmetic follows the double-precision reference expression by expression, in the
+// same evaluation order, so results are bit-identical (no reassociation).
+
+pub type Cell = {
+  c: F64,
+  n: F64,
+  s: F64,
+  e: F64,
+  w: F64,
+  t: F64,
+  b: F64,
+  ne: F64,
+  nw: F64,
+  se: F64,
+  sw: F64,
+  nt: F64,
+  nb: F64,
+  st: F64,
+  sb: F64,
+  et: F64,
+  eb: F64,
+  wt: F64,
+  wb: F64,
+};
+
+// Cell flags, as upstream CELL_FLAGS.
+pub const OBSTACLE: N32 = 1;
+pub const ACCEL: N32 = 2;
+
+pub const OMEGA: F64 = 1.95[F64];
+pub const DFL1: F64 = 1.0[F64] / 3.0[F64];
+pub const DFL2: F64 = 1.0[F64] / 18.0[F64];
+pub const DFL3: F64 = 1.0[F64] / 36.0[F64];
+
+// Upstream LBM_initializeGrid values.
+pub fn initial() -> Cell {
+  {
+    c: DFL1,
+    n: DFL2,
+    s: DFL2,
+    e: DFL2,
+    w: DFL2,
+    t: DFL2,
+    b: DFL2,
+    ne: DFL3,
+    nw: DFL3,
+    se: DFL3,
+    sw: DFL3,
+    nt: DFL3,
+    nb: DFL3,
+    st: DFL3,
+    sb: DFL3,
+    et: DFL3,
+    eb: DFL3,
+    wt: DFL3,
+    wb: DFL3,
+  }
+}
+
+pub fn density(f: Cell) -> F64 {
+  let { c, n, s, e, w, t, b, ne, nw, se, sw, nt, nb, st, sb, et, eb, wt, wb } = f;
+  c + n + s + e + w + t + b + ne + nw + se + sw + nt + nb + st + sb + et + eb + wt + wb
+}
+
+// Density and the (unnormalized) momentum, summed in upstream order.
+pub fn moments(f: Cell) -> (F64, F64, F64, F64) {
+  let { c, n, s, e, w, t, b, ne, nw, se, sw, nt, nb, st, sb, et, eb, wt, wb } = f;
+  let rho = c + n + s + e + w + t + b + ne + nw + se + sw + nt + nb + st + sb + et + eb + wt + wb;
+  let ux = e - w + ne - nw + se - sw + et + eb - wt - wb;
+  let uy = n - s + ne + nw - se - sw + nt + nb - st - sb;
+  let uz = t - b + nt - nb + st - sb + et - eb + wt - wb;
+  (rho, ux, uy, uz)
+}
+
+// Equilibrium distribution, as written in LBM_handleInOutFlow.
+pub fn equilibrium(rho: F64, ux: F64, uy: F64, uz: F64) -> Cell {
+  let u2 = 1.5[F64] * (ux * ux + uy * uy + uz * uz);
+  let r1 = DFL1 * rho;
+  let r2 = DFL2 * rho;
+  let r3 = DFL3 * rho;
+  {
+    c: r1 * (1.0[F64] - u2),
+    n: r2 * (1.0[F64] + uy * (4.5[F64] * uy + 3.0[F64]) - u2),
+    s: r2 * (1.0[F64] + uy * (4.5[F64] * uy - 3.0[F64]) - u2),
+    e: r2 * (1.0[F64] + ux * (4.5[F64] * ux + 3.0[F64]) - u2),
+    w: r2 * (1.0[F64] + ux * (4.5[F64] * ux - 3.0[F64]) - u2),
+    t: r2 * (1.0[F64] + uz * (4.5[F64] * uz + 3.0[F64]) - u2),
+    b: r2 * (1.0[F64] + uz * (4.5[F64] * uz - 3.0[F64]) - u2),
+    ne: r3 * (1.0[F64] + (ux + uy) * (4.5[F64] * (ux + uy) + 3.0[F64]) - u2),
+    nw: r3 * (1.0[F64] + (-ux + uy) * (4.5[F64] * (-ux + uy) + 3.0[F64]) - u2),
+    se: r3 * (1.0[F64] + (ux - uy) * (4.5[F64] * (ux - uy) + 3.0[F64]) - u2),
+    sw: r3 * (1.0[F64] + (-ux - uy) * (4.5[F64] * (-ux - uy) + 3.0[F64]) - u2),
+    nt: r3 * (1.0[F64] + (uy + uz) * (4.5[F64] * (uy + uz) + 3.0[F64]) - u2),
+    nb: r3 * (1.0[F64] + (uy - uz) * (4.5[F64] * (uy - uz) + 3.0[F64]) - u2),
+    st: r3 * (1.0[F64] + (-uy + uz) * (4.5[F64] * (-uy + uz) + 3.0[F64]) - u2),
+    sb: r3 * (1.0[F64] + (-uy - uz) * (4.5[F64] * (-uy - uz) + 3.0[F64]) - u2),
+    et: r3 * (1.0[F64] + (ux + uz) * (4.5[F64] * (ux + uz) + 3.0[F64]) - u2),
+    eb: r3 * (1.0[F64] + (ux - uz) * (4.5[F64] * (ux - uz) + 3.0[F64]) - u2),
+    wt: r3 * (1.0[F64] + (-ux + uz) * (4.5[F64] * (-ux + uz) + 3.0[F64]) - u2),
+    wb: r3 * (1.0[F64] + (-ux - uz) * (4.5[F64] * (-ux - uz) + 3.0[F64]) - u2),
+  }
+}
+
+// Values a cell sends to its neighbours: field `n` of the result streams in direction N.
+// Obstacle cells bounce every incoming value back where it came from (upstream
+// LBM_performStreamCollide). Fluid cells relax towards equilibrium; ACCEL cells use the
+// fixed lid velocity but their own density.
+pub fn collide(f: Cell, flags: N32) -> Cell {
+  if (flags & OBSTACLE) != 0 {
+    let { c, n, s, e, w, t, b, ne, nw, se, sw, nt, nb, st, sb, et, eb, wt, wb } = f;
+    {
+      c,
+      n: s,
+      s: n,
+      e: w,
+      w: e,
+      t: b,
+      b: t,
+      ne: sw,
+      nw: se,
+      se: nw,
+      sw: ne,
+      nt: sb,
+      nb: st,
+      st: nb,
+      sb: nt,
+      et: wb,
+      eb: wt,
+      wt: eb,
+      wb: et,
+    }
+  } else {
+    let (rho, ux, uy, uz) = moments(f);
+    let ux = ux / rho;
+    let uy = uy / rho;
+    let uz = uz / rho;
+    if (flags & ACCEL) != 0 {
+      ux = 0.005[F64];
+      uy = 0.002[F64];
+      uz = 0.0[F64];
+    }
+    let u2 = 1.5[F64] * (ux * ux + uy * uy + uz * uz);
+    let keep = 1.0[F64] - OMEGA;
+    let r1 = DFL1 * OMEGA * rho;
+    let r2 = DFL2 * OMEGA * rho;
+    let r3 = DFL3 * OMEGA * rho;
+    let { c, n, s, e, w, t, b, ne, nw, se, sw, nt, nb, st, sb, et, eb, wt, wb } = f;
+    {
+      c: keep * c + r1 * (1.0[F64] - u2),
+      n: keep * n + r2 * (1.0[F64] + uy * (4.5[F64] * uy + 3.0[F64]) - u2),
+      s: keep * s + r2 * (1.0[F64] + uy * (4.5[F64] * uy - 3.0[F64]) - u2),
+      e: keep * e + r2 * (1.0[F64] + ux * (4.5[F64] * ux + 3.0[F64]) - u2),
+      w: keep * w + r2 * (1.0[F64] + ux * (4.5[F64] * ux - 3.0[F64]) - u2),
+      t: keep * t + r2 * (1.0[F64] + uz * (4.5[F64] * uz + 3.0[F64]) - u2),
+      b: keep * b + r2 * (1.0[F64] + uz * (4.5[F64] * uz - 3.0[F64]) - u2),
+      ne: keep * ne + r3 * (1.0[F64] + (ux + uy) * (4.5[F64] * (ux + uy) + 3.0[F64]) - u2),
+      nw: keep * nw + r3 * (1.0[F64] + (-ux + uy) * (4.5[F64] * (-ux + uy) + 3.0[F64]) - u2),
+      se: keep * se + r3 * (1.0[F64] + (ux - uy) * (4.5[F64] * (ux - uy) + 3.0[F64]) - u2),
+      sw: keep * sw + r3 * (1.0[F64] + (-ux - uy) * (4.5[F64] * (-ux - uy) + 3.0[F64]) - u2),
+      nt: keep * nt + r3 * (1.0[F64] + (uy + uz) * (4.5[F64] * (uy + uz) + 3.0[F64]) - u2),
+      nb: keep * nb + r3 * (1.0[F64] + (uy - uz) * (4.5[F64] * (uy - uz) + 3.0[F64]) - u2),
+      st: keep * st + r3 * (1.0[F64] + (-uy + uz) * (4.5[F64] * (-uy + uz) + 3.0[F64]) - u2),
+      sb: keep * sb + r3 * (1.0[F64] + (-uy - uz) * (4.5[F64] * (-uy - uz) + 3.0[F64]) - u2),
+      et: keep * et + r3 * (1.0[F64] + (ux + uz) * (4.5[F64] * (ux + uz) + 3.0[F64]) - u2),
+      eb: keep * eb + r3 * (1.0[F64] + (ux - uz) * (4.5[F64] * (ux - uz) + 3.0[F64]) - u2),
+      wt: keep * wt + r3 * (1.0[F64] + (-ux + uz) * (4.5[F64] * (-ux + uz) + 3.0[F64]) - u2),
+      wb: keep * wb + r3 * (1.0[F64] + (-ux - uz) * (4.5[F64] * (-ux - uz) + 3.0[F64]) - u2),
+    }
+  }
+}

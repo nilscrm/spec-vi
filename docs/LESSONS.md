@@ -761,3 +761,40 @@ only because the ungated candidate holds ~5.7 MB of heap per particle (L047), wh
 would rule out medium inputs too (side 30, 27,000 particles, extrapolates to ~150 GB).
 This extrapolation is a hypothesis. So per-pair memory, not input size, is the
 blocker. Updated: AGENTS.md (input sizes).
+
+## L049: LBM survey, exact streaming on nested Arrays, and capture-induced depth
+
+Status: measured, 2026-10-24 (pinned Vine fec2d8c8, Linux host). Evidence:
+reports/lbm/candidate-20261024/result.json (`python3 tools/lbm_gate.py --output ... --measure`).
+
+- **Upstream.** www.spec.org did not resolve from this host, so the 782.lbm_r page was
+  not read. The openly licensed Parboil CPU copy of the SPEC lbm kernel is pinned
+  (benchmarks/lbm/source.json). It is single precision with a hard-coded LDC driver;
+  SPEC lbm is double precision. Validation therefore uses a documented
+  double-precision patch. The first mismatch (~1e-11) came from `OMEGA (1.95f)` in
+  config.h, which the first patch had missed; after fixing it every state is
+  bit-identical. Lesson: when restoring precision, patch every header, and expect
+  bit-exactness to expose any missed literal.
+- **Output precision.** Upstream stores velocities via float variables and divides in
+  float. Dividing in double and rounding once differs by 1 ulp in binary32, so the port
+  mirrors the float arithmetic.
+- **Exact streaming.** Upstream's linear indexing wraps values across rows. Nested
+  Array shifts with carried end elements reproduce it, with O(log) push/pop per row.
+  Two subtleties are covered by negative controls: mixed-sign directions need one padding
+  plane at each end, and unwritten destination entries keep the old buffer value (the
+  previous inflow plane in channel flow). With either removed, channel flow fails
+  from step 2, while the LDC cases still pass. So LDC-only tests would have missed both.
+- **Captured scalars can serialize a map/zip (extends L031).** Closures passed to
+  `Plane::zip` that read captured N32 values several times made the first channel step
+  depth grow with plane size (16^3: 5520 vs 1205; 8^3: 2244 vs 915). Rebinding the
+  captures locally at the start of the closure (`let (sx, p) = (sx, p);`) removed it with
+  identical results. The same pattern in the flags closure showed no depth change
+  (construction overlaps), but the rebinding saved 21,952 interactions at 16^3. Hypothesis
+  (not established): repeated reads of a captured variable are threaded through the
+  calls in order. Practice: rebind captures inside map/zip closures and measure.
+- **Chained unzips are a depth chain.** 18 sequential `Grid::unzip` calls to split a
+  19-field record grid (plus 18 zips to merge it back) cost ~355 depth per step at 16^3,
+  against 73 for collision. Splitting a balanced tree of pairs in five independent rounds
+  cut per-step depth from 542 to 266 with identical work. Split/merge is still ~61% of the
+  work (990 of ~1630 interactions per cell-step); a single-pass Vine primitive is the
+  next candidate.

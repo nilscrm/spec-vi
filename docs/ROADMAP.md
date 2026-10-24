@@ -25,7 +25,7 @@ Status values: `active`, `wrap-up`, `done`, `next`, `queued`.
 | # | Application | Benchmarks | Lang | Area | Status |
 |---|---|---|---|---|---|
 | 1 | SPH-EXA | 803.sph_exa_s | C++ | SPH hydrodynamics | wrap-up |
-| 2 | LBM | 782.lbm_r | C | Lattice Boltzmann CFD | next |
+| 2 | LBM | 782.lbm_r | C | Lattice Boltzmann CFD | active |
 | 3 | TeaLeaf | 811.tealeaf_s | C | Heat conduction, CG solver | queued |
 | 4 | CloverLeaf | 820.cloverleaf_s | Fortran | Explicit hydrodynamics | queued |
 | 5 | POT3D | 800.pot3d_s | Fortran | Solar physics, finite differences/CG | queued |
@@ -65,6 +65,14 @@ Status values: `active`, `wrap-up`, `done`, `next`, `queued`.
 
 SPH-EXA came first for historical reasons. It is being wrapped up (see
 benchmarks/sph-exa/plan.md) rather than taken to full completion before moving on.
+LBM was started on 2026-10-24 at the user's direction while that wrap-up continues
+(benchmarks/lbm/plan.md).
+
+## Vine capability gaps found so far
+
+- LBM: no parallel index construction (`Array::from_fn` is sequential), and no
+  single-pass n-way zip/unzip, so splitting a record grid into per-field grids costs
+  n-1 tree traversals (benchmarks/lbm/design.md).
 
 ## Per-workload lifecycle
 

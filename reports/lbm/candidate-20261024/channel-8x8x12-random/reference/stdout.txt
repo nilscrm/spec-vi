@@ -1,0 +1,13 @@
+grid size: 8 x 8 x 12, nTimeSteps: 4, simType: channel flow, obstacle file: /workspace/spec-vi/reports/lbm/candidate-20261024/channel-8x8x12-random/random.of
+LBM_allocateGrid: allocated 0.2 MByte
+LBM_allocateGrid: allocated 0.2 MByte
+LBM_showGridStatistics:
+	nObstacleCells:     366 nAccelCells:       0 nFluidCells:     402
+	minRho:   1.0000 maxRho:   1.0000 mass: 7.680000e+02
+	minU: 0.000000e+00 maxU: 0.000000e+00
+
+LBM_showGridStatistics:
+	nObstacleCells:     366 nAccelCells:       0 nFluidCells:     402
+	minRho:   0.9973 maxRho:   1.0154 mass: 7.688879e+02
+	minU: 9.813078e-18 maxU: 1.007515e-02
+

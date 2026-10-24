@@ -1,0 +1,24 @@
+{
+  "benchmark": "782.lbm_r",
+  "spec_documentation": "https://www.spec.org/cpu2026/Docs/benchmarks/782.lbm_r/782.lbm_r.html",
+  "spec_documentation_checked": false,
+  "spec_documentation_note": "www.spec.org did not resolve from the development host on 2026-10-24, so the SPEC page was not read. The upstream below is the closest openly licensed copy of the SPEC lbm code (Thomas Pohl's D3Q19 lattice Boltzmann kernel, SPEC CPU2006 470.lbm / CPU2017 519.lbm_r lineage) that could be fetched. Confirm against the SPEC page or kit before treating it as the SPEC starting point.",
+  "repository": "https://github.com/abduld/Parboil",
+  "commit": "a4c63da28f45699e9a274cbc49af3e067162aa2b",
+  "path": "benchmarks/lbm/src/cpu",
+  "license": "University of Illinois/NCSA Open Source License (upstream/lbm/LICENSE)",
+  "files_sha256": {
+    "DESCRIPTION": "48fadc94f1805de4deaa7ac7688aaa6970eeb25c0de82159e602ca6b9277be85",
+    "LICENSE": "66aebc8afd6b4413377f439425e0b9993822d7e74985c83eda5337664f18fc3e",
+    "src/Makefile": "3860464569da4609fee528a284b58bc09f1c7997378bc9ad83b2cd40170e1c60",
+    "src/config.h": "a65c216f819f71a80741b5d3fc8959e31acbb33eb593500dfc4e26c235729c66",
+    "src/lbm.c": "75270ab95e3c71ba4bfe8a8eff15ccad1120fb730330071295bc03883ad80513",
+    "src/lbm.h": "6a2365cb2911187e3bb4c63dcd0aa6bbee60a86ed5ac094afe84d32cb7d06892",
+    "src/lbm_1d_array.h": "eb88f3c8bfa8755fc3f489750d750b958f4653973d4d3ea3873a2df2465f53dd",
+    "src/main.c": "5cf42122e71f1674b7d46322fb7bad352a29fdb2f43ba2e62aad1c0135685489",
+    "src/main.h": "a0dd63af3872e1008910b3f2e2262f478b8e754a30cbe1f1b6c031662b3ac140",
+    "tools/compare-output": "eaaf80dc1e8387be921a985cb07cc9171643f2cb6f5c6b59b914f83249e5821f"
+  },
+  "status": "Unmodified Parboil CPU version of the SPEC lbm kernel; not the SPEC distribution. Validation uses the documented double-precision adaptation in benchmarks/lbm/reference/.",
+  "vine_pin": "evaluations/vine-pin.json (unchanged; no Vine changes were needed)"
+}

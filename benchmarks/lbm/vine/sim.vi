@@ -1,0 +1,372 @@
+
+// LBM time stepping: upstream LBM_handleInOutFlow, LBM_performStreamCollide and the
+// double-buffer semantics, on nested-Array grids. See benchmarks/lbm/design.md.
+
+use #root::data::Array;
+use #lbm::cell::{ACCEL, Cell, OBSTACLE, collide, density, equilibrium, initial, moments};
+use #lbm::grid::{Grid, Plane, Row};
+
+pub type Size = { sx: N32, sy: N32, sz: N32 };
+
+// `coords`: (x, y) of every cell in a plane, for inflow profiles and vacated-entry tests.
+// `prev_in`/`prev_out` (channel flow only): planes 0 and SZ-1 as rewritten by the
+// in/outflow of the previous step. Upstream keeps these values in the other buffer;
+// entries that streaming never writes still hold them after the swap.
+pub type State = {
+  size: Size,
+  channel: Bool,
+  cells: Grid[Cell],
+  flags: Grid[N32],
+  coords: Plane[(N32, N32)],
+  prev_in: Plane[Cell],
+  prev_out: Plane[Cell],
+};
+
+pub fn coords(size: Size) -> Plane[(N32, N32)] {
+  let xs = Row::range(size.sx);
+  Row::range(size.sy).map_unordered(fn* (y: N32) { xs.map_unordered(fn* (x: N32) { (x, y) }) })
+}
+
+// Upstream LBM_initializeSpecialCellsForLDC / ...ForChannel on top of the obstacle file
+// flags (`obstacles`, as read by LBM_loadObstacleFile).
+pub fn flags(size: Size, channel: Bool, obstacles: Grid[Bool]) -> Grid[N32] {
+  let { sx, sy, sz } = size;
+  let xy = coords(size);
+  let positions = Row::range(sz).map_unordered(fn* (z: N32) {
+    Plane::map(xy, fn* ((x, y): (N32, N32)) { (x, y, z) })
+  });
+  Grid::zip(positions, obstacles, fn* ((x, y, z): (N32, N32, N32), obstacle: Bool) {
+    let (sx, sy, sz, channel) = (sx, sy, sz, channel);
+    let file = if obstacle { OBSTACLE } else { 0 };
+    let wall = x == 0 or x == sx - 1 or y == 0 or y == sy - 1;
+    if channel {
+      if wall {
+        file | OBSTACLE
+      } else {
+        file
+      }
+    } else {
+      when {
+        wall or z == 0 or z == sz - 1 { file | OBSTACLE }
+        (z == 1 or z == sz - 2) and x > 1 and x < sx - 2 and y > 1 and y < sy - 2 { file | ACCEL }
+        _ { file }
+      }
+    }
+  })
+}
+
+pub fn new(size: Size, channel: Bool, obstacles: Grid[Bool]) -> State {
+  let { sx, sy, sz } = size;
+  let plane = Array::new(sy, Array::new(sx, initial()));
+  {
+    size,
+    channel,
+    cells: Array::new(sz, plane),
+    flags: flags(size, channel, obstacles),
+    coords: coords(size),
+    prev_in: plane,
+    prev_out: plane,
+  }
+}
+
+pub fn step(state: State) -> State {
+  let { size, channel, cells, flags, coords, prev_in, prev_out } = state;
+  if channel {
+    let (cells, written_in, written_out) = in_out_flow(cells, coords, size);
+    let cells = stream(collide_all(cells, flags), size);
+    let cells = keep_vacated(cells, prev_in, prev_out, coords, size);
+    { size, channel, cells, flags, coords, prev_in: written_in, prev_out: written_out }
+  } else {
+    let cells = stream(collide_all(cells, flags), size);
+    { size, channel, cells, flags, coords, prev_in, prev_out }
+  }
+}
+
+// Sum of every distribution value, as a balanced reduction. Forces the whole state with
+// O(log cells) depth; used by measurement drivers.
+pub fn checksum(cells: Grid[Cell]) -> F64 {
+  Grid::reduce(
+    Grid::map(cells, fn* (f: Cell) {
+      let { c, n, s, e, w, t, b, ne, nw, se, sw, nt, nb, st, sb, et, eb, wt, wb } = f;
+      c + n + s + e + w + t + b + ne + nw + se + sw + nt + nb + st + sb + et + eb + wt + wb
+    }),
+    fn* (a: F64, b: F64) { a + b },
+  )
+}
+
+pub fn run(state: State, steps: N32) -> State {
+  while steps > 0 {
+    state = step(state);
+    steps -= 1;
+  }
+  state
+}
+
+// The 19 post-collision values as a balanced tree of pairs. Splitting it into one grid
+// per direction then takes five rounds of independent Grid::unzip calls instead of a
+// chain of 18 (and the same for merging back).
+type Pair = (F64, F64);
+type Split = (((Pair, Pair), (Pair, Pair)), ((Pair, Pair), (Pair, Pair)), (Pair, F64));
+
+fn collide_all(cells: Grid[Cell], flags: Grid[N32]) -> Grid[Split] {
+  Grid::zip(cells, flags, fn* (f: Cell, flag: N32) {
+    let { c, n, s, e, w, t, b, ne, nw, se, sw, nt, nb, st, sb, et, eb, wt, wb } = collide(f, flag);
+    (
+      (((c, n), (s, e)), ((w, t), (b, ne))),
+      (((nw, se), (sw, nt)), ((nb, st), (sb, et))),
+      ((eb, wt), wb),
+    )
+  })
+}
+
+fn split[T, U](g: Grid[(T, U)]) -> (Grid[T], Grid[U]) {
+  Grid::unzip(g, fn* (p: (T, U)) { p })
+}
+
+fn join[T, U](a: Grid[T], b: Grid[U]) -> Grid[(T, U)] {
+  Grid::zip(a, b, fn* (x: T, y: U) { (x, y) })
+}
+
+const STAY: N32 = 0;
+const UP: N32 = 1;
+const DOWN: N32 = 2;
+
+// Stream one direction: every value moves dx + dy*SX + dz*SX*SY linear places. Entries
+// whose source would lie outside the swept region receive `fill`, which is the value the
+// destination buffer holds there in lid-driven-cavity runs (the initial distribution).
+fn shift(g: Grid[F64], dx: N32, dy: N32, dz: N32, fill: F64, size: Size) -> Grid[F64] {
+  let { sx, sy, sz: _ } = size;
+  let row = Array::new(sx, fill);
+  let plane = Array::new(sy, row);
+  // With opposite-signed components an intermediate position can fall off one end of the
+  // grid and come back; one padding plane on each side keeps those values.
+  let ups = (dx == UP) as N32 + (dy == UP) as N32 + (dz == UP) as N32;
+  let downs = (dx == DOWN) as N32 + (dy == DOWN) as N32 + (dz == DOWN) as N32;
+  let padded = ups > 0 and downs > 0;
+  if padded {
+    g.push_front(plane);
+    g.push_back(plane);
+  }
+  when {
+    dx == UP {
+      let (h, _) = Grid::shift_x_up(g, fill);
+      g = h;
+    }
+    dx == DOWN {
+      let (h, _) = Grid::shift_x_down(g, fill);
+      g = h;
+    }
+    _ {}
+  }
+  when {
+    dy == UP {
+      let (h, _) = Grid::shift_y_up(g, row);
+      g = h;
+    }
+    dy == DOWN {
+      let (h, _) = Grid::shift_y_down(g, row);
+      g = h;
+    }
+    _ {}
+  }
+  when {
+    dz == UP {
+      let (h, _) = Grid::shift_z_up(g, plane);
+      g = h;
+    }
+    dz == DOWN {
+      let (h, _) = Grid::shift_z_down(g, plane);
+      g = h;
+    }
+    _ {}
+  }
+  if padded {
+    _ = g.pop_front();
+    _ = g.pop_back();
+  }
+  g
+}
+
+fn stream(post: Grid[Split], size: Size) -> Grid[Cell] {
+  let d2 = 1.0[F64] / 18.0[F64];
+  let d3 = 1.0[F64] / 36.0[F64];
+  let (q1, g) = Grid::unzip(post, fn* ((a, b, c): Split) { (a, (b, c)) });
+  let (q2, q3) = split(g);
+  let (q11, q12) = split(q1);
+  let (q21, q22) = split(q2);
+  let (q31, wb) = split(q3);
+  let (p1, p2) = split(q11);
+  let (p3, p4) = split(q12);
+  let (p5, p6) = split(q21);
+  let (p7, p8) = split(q22);
+  let (c, n) = split(p1);
+  let (s, e) = split(p2);
+  let (w, t) = split(p3);
+  let (b, ne) = split(p4);
+  let (nw, se) = split(p5);
+  let (sw, nt) = split(p6);
+  let (nb, st) = split(p7);
+  let (sb, et) = split(p8);
+  let (eb, wt) = split(q31);
+
+  let n = shift(n, STAY, UP, STAY, d2, size);
+  let s = shift(s, STAY, DOWN, STAY, d2, size);
+  let e = shift(e, UP, STAY, STAY, d2, size);
+  let w = shift(w, DOWN, STAY, STAY, d2, size);
+  let t = shift(t, STAY, STAY, UP, d2, size);
+  let b = shift(b, STAY, STAY, DOWN, d2, size);
+  let ne = shift(ne, UP, UP, STAY, d3, size);
+  let nw = shift(nw, DOWN, UP, STAY, d3, size);
+  let se = shift(se, UP, DOWN, STAY, d3, size);
+  let sw = shift(sw, DOWN, DOWN, STAY, d3, size);
+  let nt = shift(nt, STAY, UP, UP, d3, size);
+  let nb = shift(nb, STAY, UP, DOWN, d3, size);
+  let st = shift(st, STAY, DOWN, UP, d3, size);
+  let sb = shift(sb, STAY, DOWN, DOWN, d3, size);
+  let et = shift(et, UP, STAY, UP, d3, size);
+  let eb = shift(eb, UP, STAY, DOWN, d3, size);
+  let wt = shift(wt, DOWN, STAY, UP, d3, size);
+  let wb = shift(wb, DOWN, STAY, DOWN, d3, size);
+
+  let left = join(join(join(join(c, n), join(s, e)), join(join(w, t), join(b, ne))), join(
+    join(join(nw, se), join(sw, nt)),
+    join(join(nb, st), join(sb, et)),
+  ));
+  Grid::zip(left, join(join(eb, wt), wb), fn* (l, r) {
+    let ((((c, n), (s, e)), ((w, t), (b, ne))), (((nw, se), (sw, nt)), ((nb, st), (sb, et)))) = l;
+    let ((eb, wt), wb) = r;
+    { c, n, s, e, w, t, b, ne, nw, se, sw, nt, nb, st, sb, et, eb, wt, wb }
+  })
+}
+
+// Upstream LBM_handleInOutFlow (requires SZ >= 4 so that inflow and outflow planes are
+// disjoint). Returns the updated cells and copies of the two rewritten planes.
+fn in_out_flow(
+  cells: Grid[Cell],
+  coords: Plane[(N32, N32)],
+  size: Size,
+) -> (Grid[Cell], Plane[Cell], Plane[Cell]) {
+  let { sx, sy, sz } = size;
+  _ = cells.pop_front();
+  _ = cells.pop_back();
+  let p1 = cells.get(0).assume();
+  let p2 = cells.get(1).assume();
+  let q1 = cells.get(sz - 3).assume();
+  let q2 = cells.get(sz - 4).assume();
+  let hx = 0.5[F64] * (sx - 1) as F64;
+  let hy = 0.5[F64] * (sy - 1) as F64;
+  let rho = Plane::zip(p1, p2, fn* (a: Cell, b: Cell) { 2.0[F64] * density(a) - density(b) });
+  let inflow = Plane::zip(rho, coords, fn* (rho: F64, (x, y): (N32, N32)) {
+    let (hx, hy) = (hx, hy);
+    let px = x as F64 / hx - 1.0[F64];
+    let py = y as F64 / hy - 1.0[F64];
+    let uz = 0.01[F64] * (1.0[F64] - px * px) * (1.0[F64] - py * py);
+    equilibrium(rho, 0.0[F64], 0.0[F64], uz)
+  });
+  let outflow = Plane::zip(q1, q2, fn* (a: Cell, b: Cell) {
+    let (rho1, ux1, uy1, uz1) = moments(a);
+    let ux1 = ux1 / rho1;
+    let uy1 = uy1 / rho1;
+    let uz1 = uz1 / rho1;
+    let (rho2, ux2, uy2, uz2) = moments(b);
+    let ux2 = ux2 / rho2;
+    let uy2 = uy2 / rho2;
+    let uz2 = uz2 / rho2;
+    equilibrium(1.0[F64], 2.0[F64] * ux1 - ux2, 2.0[F64] * uy1 - uy2, 2.0[F64] * uz1 - uz2)
+  });
+  cells.push_front(inflow);
+  cells.push_back(outflow);
+  (cells, inflow, outflow)
+}
+
+// Entries of planes 0 and SZ-1 that streaming does not write keep the destination
+// buffer's previous values (channel flow: the previous step's in/outflow planes).
+// Destination j of direction d is written iff j - offset(d) lies in [0, SX*SY*SZ).
+fn keep_vacated(
+  cells: Grid[Cell],
+  old_in: Plane[Cell],
+  old_out: Plane[Cell],
+  coords: Plane[(N32, N32)],
+  size: Size,
+) -> Grid[Cell] {
+  let { sx, sy, sz } = size;
+  let p = sx * sy;
+  let first = cells.pop_front().assume();
+  let last = cells.pop_back().assume();
+  let lin = Plane::map(coords, fn* ((x, y): (N32, N32)) { x + y * sx });
+  let first = Plane::zip(
+    Plane::zip(first, old_in, fn* (a: Cell, b: Cell) { (a, b) }),
+    lin,
+    fn* ((a, b): (Cell, Cell), j: N32) {
+      // Positive offsets: written iff j >= offset.
+      let (sx, p) = (sx, p);
+      let { c, n, s, e, w, t, b: bb, ne, nw, se, sw, nt, nb, st, sb, et, eb, wt, wb } = a;
+      let o = b;
+      {
+        c,
+        n: pick(j >= sx, n, o.n),
+        s,
+        e: pick(j >= 1, e, o.e),
+        w,
+        t: pick(j >= p, t, o.t),
+        b: bb,
+        ne: pick(j >= sx + 1, ne, o.ne),
+        nw: pick(j >= sx - 1, nw, o.nw),
+        se,
+        sw,
+        nt: pick(j >= p + sx, nt, o.nt),
+        nb,
+        st: pick(j >= p - sx, st, o.st),
+        sb,
+        et: pick(j >= p + 1, et, o.et),
+        eb,
+        wt: pick(j >= p - 1, wt, o.wt),
+        wb,
+      }
+    },
+  );
+  let lin = Plane::map(coords, fn* ((x, y): (N32, N32)) { x + y * sx });
+  let last = Plane::zip(
+    Plane::zip(last, old_out, fn* (a: Cell, b: Cell) { (a, b) }),
+    lin,
+    fn* ((a, b): (Cell, Cell), j: N32) {
+      // Negative offsets: written iff j + |offset| < SX*SY.
+      let (sx, p) = (sx, p);
+      let { c, n, s, e, w, t, b: bb, ne, nw, se, sw, nt, nb, st, sb, et, eb, wt, wb } = a;
+      let o = b;
+      {
+        c,
+        n,
+        s: pick(j + sx < p, s, o.s),
+        e,
+        w: pick(j + 1 < p, w, o.w),
+        t,
+        b: pick(j + p < p, bb, o.b),
+        ne,
+        nw,
+        se: pick(j + sx - 1 < p, se, o.se),
+        sw: pick(j + sx + 1 < p, sw, o.sw),
+        nt,
+        nb: pick(j + p - sx < p, nb, o.nb),
+        st,
+        sb: pick(j + p + sx < p, sb, o.sb),
+        et,
+        eb: pick(j + p - 1 < p, eb, o.eb),
+        wt,
+        wb: pick(j + p + 1 < p, wb, o.wb),
+      }
+    },
+  );
+  _ = sz;
+  cells.push_front(first);
+  cells.push_back(last);
+  cells
+}
+
+fn pick(cond: Bool, a: F64, b: F64) -> F64 {
+  if cond {
+    a
+  } else {
+    b
+  }
+}

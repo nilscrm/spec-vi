@@ -1,0 +1,13 @@
+grid size: 12 x 10 x 16, nTimeSteps: 3, simType: lid-driven cavity, obstacle file: /workspace/spec-vi/reports/lbm/candidate-20261024/ldc-12x10x16-sphere/sphere.of
+LBM_allocateGrid: allocated 0.4 MByte
+LBM_allocateGrid: allocated 0.4 MByte
+LBM_showGridStatistics:
+	nObstacleCells:     856 nAccelCells:      96 nFluidCells:     968
+	minRho:   1.0000 maxRho:   1.0000 mass: 1.920000e+03
+	minU: 0.000000e+00 maxU: 0.000000e+00
+
+LBM_showGridStatistics:
+	nObstacleCells:     856 nAccelCells:      96 nFluidCells:     968
+	minRho:   0.9941 maxRho:   1.0059 mass: 1.920000e+03
+	minU: 9.813078e-18 maxU: 6.359035e-03
+
