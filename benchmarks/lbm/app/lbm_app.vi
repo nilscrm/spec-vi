@@ -1,6 +1,6 @@
 
 // Native LBM driver (782.lbm_r port). Options:
-//   -x SX -y SY -z SZ     grid size (upstream fixes it at compile time; default 100x100x130)
+//   -x SX -y SY -z SZ     grid size (upstream fixes it at compile time; default 200x200x130, the 782.lbm_r size)
 //   -n STEPS              time steps (default 10)
 //   --channel             channel flow instead of the lid-driven cavity
 //   --obstacles FILE      obstacle file in the upstream format
@@ -17,8 +17,8 @@ use #lbm::sim::{Size, checksum, new, step};
 
 pub fn main(&io: &IO) {
   let args = io.args();
-  let sx = 100;
-  let sy = 100;
+  let sx = 200;
+  let sy = 200;
   let sz = 130;
   let steps = 10;
   let channel = false;

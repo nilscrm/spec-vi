@@ -768,7 +768,10 @@ Status: measured, 2026-10-24 (pinned Vine fec2d8c8, Linux host). Evidence:
 reports/lbm/candidate-20261024/result.json (`python3 tools/lbm_gate.py --output ... --measure`).
 
 - **Upstream.** www.spec.org did not resolve from this host, so the 782.lbm_r page was
-  not read. The openly licensed Parboil CPU copy of the SPEC lbm kernel is pinned
+  not read. (Superseded 2026-10-24: the page was read afterwards. It gives a 200x200x130
+  grid, 1200 refrate steps and stdout-statistics validation, none of which the first pass
+  had. Lesson: check the SPEC page before pinning defaults. See
+  benchmarks/lbm/COMPATIBILITY.md.) The openly licensed Parboil CPU copy of the SPEC lbm kernel is pinned
   (benchmarks/lbm/source.json). It is single precision with a hard-coded LDC driver;
   SPEC lbm is double precision. Validation therefore uses a documented
   double-precision patch. The first mismatch (~1e-11) came from `OMEGA (1.95f)` in

@@ -1,8 +1,20 @@
 {
   "benchmark": "782.lbm_r",
   "spec_documentation": "https://www.spec.org/cpu2026/Docs/benchmarks/782.lbm_r/782.lbm_r.html",
-  "spec_documentation_checked": false,
-  "spec_documentation_note": "www.spec.org did not resolve from the development host on 2026-10-24, so the SPEC page was not read. The upstream below is the closest openly licensed copy of the SPEC lbm code (Thomas Pohl's D3Q19 lattice Boltzmann kernel, SPEC CPU2006 470.lbm / CPU2017 519.lbm_r lineage) that could be fetched. Confirm against the SPEC page or kit before treating it as the SPEC starting point.",
+  "spec_documentation_checked": "2026-10-24",
+  "spec_documentation_note": "Read on 2026-10-24. The SPEC kit (sources, obstacle files, expected output) was not available, so the upstream below is still the closest openly licensed copy of the SPEC lbm code (Thomas Pohl's D3Q19 lattice Boltzmann kernel, SPEC CPU2006 470.lbm / CPU2017 519.lbm_r lineage), not the SPEC source. See COMPATIBILITY.md for what the page settles and what still needs the kit.",
+  "spec_documentation_facts": {
+    "author": "Thomas Pohl, licensed to SPEC directly by the author; no Parboil mention",
+    "language": "ANSI C",
+    "command_line": "lbm <time steps> <result file> <0: nil, 1: cmp, 2: str> <0: ldc, 1: channel flow> [<obstacle file>]",
+    "refrate": "1200 time steps on an obstacle file, 200 x 200 x 130 domain",
+    "test_train": "same geometry as refrate, fewer time steps (counts not stated)",
+    "obstacle_format": "ASCII; '.' is a fluid cell, any other character ('#') an obstacle cell",
+    "output": "statistics summary on stdout; action 2 writes binary little-endian vx/vy/vz per cell, single precision by default (double selectable in config.h)",
+    "validation": "SPEC validates the stdout statistics summary; the cmp action reports the maximum absolute per-cell velocity difference against a threshold",
+    "changes_vs_519": "highly similar to 519.lbm_r, resized to about 1.6 GiB (about 4x CPU2017); SPEC_LBM_NO_HUGE_ARRAY for systems that cannot allocate large static arrays",
+    "not_stated": "internal precision (1.6 GiB = 200*200*130 cells * 20 entries * 2 grids * 8 bytes implies double), lattice (D3Q19), test/train step counts, which simulation type refrate uses"
+  },
   "repository": "https://github.com/abduld/Parboil",
   "commit": "a4c63da28f45699e9a274cbc49af3e067162aa2b",
   "path": "benchmarks/lbm/src/cpu",
