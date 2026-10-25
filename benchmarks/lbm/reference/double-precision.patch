@@ -1,0 +1,175 @@
+diff -u a/config.h b/config.h
+--- a/config.h
++++ b/config.h
+@@ -12,7 +12,7 @@
+ //#define SIZE_Y (1*SIZE)
+ //#define SIZE_Z (130)
+ 
+-#define OMEGA (1.95f)
++#define OMEGA (1.95)
+ 
+ #define OUTPUT_PRECISION float 
+ 
+diff -u a/lbm.c b/lbm.c
+--- a/lbm.c
++++ b/lbm.c
+@@ -22,9 +22,9 @@
+ 
+ /*############################################################################*/
+ 
+-void LBM_allocateGrid( float** ptr ) {
++void LBM_allocateGrid( double** ptr ) {
+ 	const size_t margin = 2*SIZE_X*SIZE_Y*N_CELL_ENTRIES,
+-	             size   = sizeof( LBM_Grid ) + 2*margin*sizeof( float );
++	             size   = sizeof( LBM_Grid ) + 2*margin*sizeof( double );
+ 
+ 	*ptr = malloc( size );
+ 	if( ! *ptr ) {
+@@ -41,7 +41,7 @@
+ 
+ /*############################################################################*/
+ 
+-void LBM_freeGrid( float** ptr ) {
++void LBM_freeGrid( double** ptr ) {
+ 	const size_t margin = 2*SIZE_X*SIZE_Y*N_CELL_ENTRIES;
+ 
+ 	free( *ptr-margin );
+@@ -175,7 +175,7 @@
+ void LBM_performStreamCollide( LBM_Grid srcGrid, LBM_Grid dstGrid ) {
+ 	SWEEP_VAR
+ 
+-	float ux, uy, uz, u2, rho;
++	double ux, uy, uz, u2, rho;
+ 
+ 	/*voption indep*/
+ #if !defined(SPEC_CPU)
+@@ -239,40 +239,40 @@
+ 		uz /= rho;
+ 
+ 		if( TEST_FLAG_SWEEP( srcGrid, ACCEL )) {
+-			ux = 0.005f;
+-			uy = 0.002f;
+-			uz = 0.000f;
++			ux = 0.005;
++			uy = 0.002;
++			uz = 0.000;
+ 		}
+ 
+-		u2 = 1.5f * (ux*ux + uy*uy + uz*uz);
+-		DST_C ( dstGrid ) = (1.0f-OMEGA)*SRC_C ( srcGrid ) + DFL1*OMEGA*rho*(1.0f                                 - u2);
++		u2 = 1.5 * (ux*ux + uy*uy + uz*uz);
++		DST_C ( dstGrid ) = (1.0-OMEGA)*SRC_C ( srcGrid ) + DFL1*OMEGA*rho*(1.0                                 - u2);
+ 
+-		DST_N ( dstGrid ) = (1.0f-OMEGA)*SRC_N ( srcGrid ) + DFL2*OMEGA*rho*(1.0f +       uy*(4.5f*uy       + 3.0f) - u2);
+-		DST_S ( dstGrid ) = (1.0f-OMEGA)*SRC_S ( srcGrid ) + DFL2*OMEGA*rho*(1.0f +       uy*(4.5f*uy       - 3.0f) - u2);
+-		DST_E ( dstGrid ) = (1.0f-OMEGA)*SRC_E ( srcGrid ) + DFL2*OMEGA*rho*(1.0f +       ux*(4.5f*ux       + 3.0f) - u2);
+-		DST_W ( dstGrid ) = (1.0f-OMEGA)*SRC_W ( srcGrid ) + DFL2*OMEGA*rho*(1.0f +       ux*(4.5f*ux       - 3.0f) - u2);
+-		DST_T ( dstGrid ) = (1.0f-OMEGA)*SRC_T ( srcGrid ) + DFL2*OMEGA*rho*(1.0f +       uz*(4.5f*uz       + 3.0f) - u2);
+-		DST_B ( dstGrid ) = (1.0f-OMEGA)*SRC_B ( srcGrid ) + DFL2*OMEGA*rho*(1.0f +       uz*(4.5f*uz       - 3.0f) - u2);
+-
+-		DST_NE( dstGrid ) = (1.0f-OMEGA)*SRC_NE( srcGrid ) + DFL3*OMEGA*rho*(1.0f + (+ux+uy)*(4.5f*(+ux+uy) + 3.0f) - u2);
+-		DST_NW( dstGrid ) = (1.0f-OMEGA)*SRC_NW( srcGrid ) + DFL3*OMEGA*rho*(1.0f + (-ux+uy)*(4.5f*(-ux+uy) + 3.0f) - u2);
+-		DST_SE( dstGrid ) = (1.0f-OMEGA)*SRC_SE( srcGrid ) + DFL3*OMEGA*rho*(1.0f + (+ux-uy)*(4.5f*(+ux-uy) + 3.0f) - u2);
+-		DST_SW( dstGrid ) = (1.0f-OMEGA)*SRC_SW( srcGrid ) + DFL3*OMEGA*rho*(1.0f + (-ux-uy)*(4.5f*(-ux-uy) + 3.0f) - u2);
+-		DST_NT( dstGrid ) = (1.0f-OMEGA)*SRC_NT( srcGrid ) + DFL3*OMEGA*rho*(1.0f + (+uy+uz)*(4.5f*(+uy+uz) + 3.0f) - u2);
+-		DST_NB( dstGrid ) = (1.0f-OMEGA)*SRC_NB( srcGrid ) + DFL3*OMEGA*rho*(1.0f + (+uy-uz)*(4.5f*(+uy-uz) + 3.0f) - u2);
+-		DST_ST( dstGrid ) = (1.0f-OMEGA)*SRC_ST( srcGrid ) + DFL3*OMEGA*rho*(1.0f + (-uy+uz)*(4.5f*(-uy+uz) + 3.0f) - u2);
+-		DST_SB( dstGrid ) = (1.0f-OMEGA)*SRC_SB( srcGrid ) + DFL3*OMEGA*rho*(1.0f + (-uy-uz)*(4.5f*(-uy-uz) + 3.0f) - u2);
+-		DST_ET( dstGrid ) = (1.0f-OMEGA)*SRC_ET( srcGrid ) + DFL3*OMEGA*rho*(1.0f + (+ux+uz)*(4.5f*(+ux+uz) + 3.0f) - u2);
+-		DST_EB( dstGrid ) = (1.0f-OMEGA)*SRC_EB( srcGrid ) + DFL3*OMEGA*rho*(1.0f + (+ux-uz)*(4.5f*(+ux-uz) + 3.0f) - u2);
+-		DST_WT( dstGrid ) = (1.0f-OMEGA)*SRC_WT( srcGrid ) + DFL3*OMEGA*rho*(1.0f + (-ux+uz)*(4.5f*(-ux+uz) + 3.0f) - u2);
+-		DST_WB( dstGrid ) = (1.0f-OMEGA)*SRC_WB( srcGrid ) + DFL3*OMEGA*rho*(1.0f + (-ux-uz)*(4.5f*(-ux-uz) + 3.0f) - u2);
++		DST_N ( dstGrid ) = (1.0-OMEGA)*SRC_N ( srcGrid ) + DFL2*OMEGA*rho*(1.0 +       uy*(4.5*uy       + 3.0) - u2);
++		DST_S ( dstGrid ) = (1.0-OMEGA)*SRC_S ( srcGrid ) + DFL2*OMEGA*rho*(1.0 +       uy*(4.5*uy       - 3.0) - u2);
++		DST_E ( dstGrid ) = (1.0-OMEGA)*SRC_E ( srcGrid ) + DFL2*OMEGA*rho*(1.0 +       ux*(4.5*ux       + 3.0) - u2);
++		DST_W ( dstGrid ) = (1.0-OMEGA)*SRC_W ( srcGrid ) + DFL2*OMEGA*rho*(1.0 +       ux*(4.5*ux       - 3.0) - u2);
++		DST_T ( dstGrid ) = (1.0-OMEGA)*SRC_T ( srcGrid ) + DFL2*OMEGA*rho*(1.0 +       uz*(4.5*uz       + 3.0) - u2);
++		DST_B ( dstGrid ) = (1.0-OMEGA)*SRC_B ( srcGrid ) + DFL2*OMEGA*rho*(1.0 +       uz*(4.5*uz       - 3.0) - u2);
++
++		DST_NE( dstGrid ) = (1.0-OMEGA)*SRC_NE( srcGrid ) + DFL3*OMEGA*rho*(1.0 + (+ux+uy)*(4.5*(+ux+uy) + 3.0) - u2);
++		DST_NW( dstGrid ) = (1.0-OMEGA)*SRC_NW( srcGrid ) + DFL3*OMEGA*rho*(1.0 + (-ux+uy)*(4.5*(-ux+uy) + 3.0) - u2);
++		DST_SE( dstGrid ) = (1.0-OMEGA)*SRC_SE( srcGrid ) + DFL3*OMEGA*rho*(1.0 + (+ux-uy)*(4.5*(+ux-uy) + 3.0) - u2);
++		DST_SW( dstGrid ) = (1.0-OMEGA)*SRC_SW( srcGrid ) + DFL3*OMEGA*rho*(1.0 + (-ux-uy)*(4.5*(-ux-uy) + 3.0) - u2);
++		DST_NT( dstGrid ) = (1.0-OMEGA)*SRC_NT( srcGrid ) + DFL3*OMEGA*rho*(1.0 + (+uy+uz)*(4.5*(+uy+uz) + 3.0) - u2);
++		DST_NB( dstGrid ) = (1.0-OMEGA)*SRC_NB( srcGrid ) + DFL3*OMEGA*rho*(1.0 + (+uy-uz)*(4.5*(+uy-uz) + 3.0) - u2);
++		DST_ST( dstGrid ) = (1.0-OMEGA)*SRC_ST( srcGrid ) + DFL3*OMEGA*rho*(1.0 + (-uy+uz)*(4.5*(-uy+uz) + 3.0) - u2);
++		DST_SB( dstGrid ) = (1.0-OMEGA)*SRC_SB( srcGrid ) + DFL3*OMEGA*rho*(1.0 + (-uy-uz)*(4.5*(-uy-uz) + 3.0) - u2);
++		DST_ET( dstGrid ) = (1.0-OMEGA)*SRC_ET( srcGrid ) + DFL3*OMEGA*rho*(1.0 + (+ux+uz)*(4.5*(+ux+uz) + 3.0) - u2);
++		DST_EB( dstGrid ) = (1.0-OMEGA)*SRC_EB( srcGrid ) + DFL3*OMEGA*rho*(1.0 + (+ux-uz)*(4.5*(+ux-uz) + 3.0) - u2);
++		DST_WT( dstGrid ) = (1.0-OMEGA)*SRC_WT( srcGrid ) + DFL3*OMEGA*rho*(1.0 + (-ux+uz)*(4.5*(-ux+uz) + 3.0) - u2);
++		DST_WB( dstGrid ) = (1.0-OMEGA)*SRC_WB( srcGrid ) + DFL3*OMEGA*rho*(1.0 + (-ux-uz)*(4.5*(-ux-uz) + 3.0) - u2);
+ 	SWEEP_END
+ }
+ 
+ /*############################################################################*/
+ 
+ void LBM_handleInOutFlow( LBM_Grid srcGrid ) {
+-	float ux , uy , uz , rho ,
++	double ux , uy , uz , rho ,
+ 	       ux1, uy1, uz1, rho1,
+ 	       ux2, uy2, uz2, rho2,
+ 	       u2, px, py;
+@@ -449,10 +449,10 @@
+ 	int nObstacleCells = 0,
+ 	    nAccelCells    = 0,
+ 	    nFluidCells    = 0;
+-	float ux, uy, uz;
+-	float minU2  = 1e+30, maxU2  = -1e+30, u2;
+-	float minRho = 1e+30, maxRho = -1e+30, rho;
+-	float mass = 0;
++	double ux, uy, uz;
++	double minU2  = 1e+30, maxU2  = -1e+30, u2;
++	double minRho = 1e+30, maxRho = -1e+30, rho;
++	double mass = 0;
+ 
+ 	SWEEP_VAR
+ 
+@@ -614,7 +614,7 @@
+ void LBM_compareVelocityField( LBM_Grid grid, const char* filename,
+                              const int binary ) {
+ 	int x, y, z;
+-	float rho, ux, uy, uz;
++	double rho, ux, uy, uz;
+ 	OUTPUT_PRECISION fileUx, fileUy, fileUz,
+ 	                 dUx, dUy, dUz,
+ 	                 diff2, maxDiff2 = -1e+30;
+diff -u a/lbm.h b/lbm.h
+--- a/lbm.h
++++ b/lbm.h
+@@ -28,8 +28,8 @@
+ 
+ /*############################################################################*/
+ 
+-void LBM_allocateGrid( float** ptr );
+-void LBM_freeGrid( float** ptr );
++void LBM_allocateGrid( double** ptr );
++void LBM_freeGrid( double** ptr );
+ void LBM_initializeGrid( LBM_Grid grid );
+ void LBM_initializeSpecialCellsForLDC( LBM_Grid grid );
+ void LBM_loadObstacleFile( LBM_Grid grid, const char* filename );
+diff -u a/lbm_1d_array.h b/lbm_1d_array.h
+--- a/lbm_1d_array.h
++++ b/lbm_1d_array.h
+@@ -9,13 +9,21 @@
+     NT, NB, ST, SB,
+     ET, EB, WT, WB,
+     FLAGS, N_CELL_ENTRIES} CELL_ENTRIES;
++#ifndef SIZE
+ #define SIZE   (120)
++#endif
++#ifndef SIZE_X
+ #define SIZE_X (1*SIZE)
++#endif
++#ifndef SIZE_Y
+ #define SIZE_Y (1*SIZE)
++#endif
++#ifndef SIZE_Z
+ #define SIZE_Z (150)
++#endif
+ /*############################################################################*/
+ 
+-typedef float LBM_Grid[SIZE_Z*SIZE_Y*SIZE_X*N_CELL_ENTRIES];
++typedef double LBM_Grid[SIZE_Z*SIZE_Y*SIZE_X*N_CELL_ENTRIES];
+ typedef LBM_Grid* LBM_GridPtr;
+ 
+ /*############################################################################*/

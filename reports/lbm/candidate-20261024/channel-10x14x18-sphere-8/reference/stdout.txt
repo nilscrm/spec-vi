@@ -1,0 +1,13 @@
+grid size: 10 x 14 x 18, nTimeSteps: 8, simType: channel flow, obstacle file: /workspace/spec-vi/reports/lbm/candidate-20261024/channel-10x14x18-sphere-8/sphere.of
+LBM_allocateGrid: allocated 0.5 MByte
+LBM_allocateGrid: allocated 0.5 MByte
+LBM_showGridStatistics:
+	nObstacleCells:     848 nAccelCells:       0 nFluidCells:    1672
+	minRho:   1.0000 maxRho:   1.0000 mass: 2.520000e+03
+	minU: 0.000000e+00 maxU: 0.000000e+00
+
+LBM_showGridStatistics:
+	nObstacleCells:     848 nAccelCells:       0 nFluidCells:    1672
+	minRho:   1.0000 maxRho:   1.0149 mass: 2.525235e+03
+	minU: 8.498375e-18 maxU: 1.092515e-02
+

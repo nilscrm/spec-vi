@@ -1,0 +1,32 @@
+
+// Obstacle layouts generated in Vine, identical to benchmarks/lbm/reference/gen_obstacles.py.
+// They let measurement drivers build the whole input in parallel instead of reading a file.
+use #root::data::Array;
+use #lbm::grid::{Grid, Row};
+use #lbm::sim::Size;
+
+pub fn none(size: Size) -> Grid[Bool] {
+  Array::new(size.sz, Array::new(size.sy, Array::new(size.sx, false)))
+}
+
+// gen_obstacles.py `sphere`: a ball of radius min(size)/4 at the domain centre.
+pub fn sphere(size: Size) -> Grid[Bool] {
+  let { sx, sy, sz } = size;
+  let r = sx.min(sy).min(sz) as F64 / 4.0[F64];
+  let cx = (sx - 1) as F64 / 2.0[F64];
+  let cy = (sy - 1) as F64 / 2.0[F64];
+  let cz = (sz - 1) as F64 / 2.0[F64];
+  let xs = Row::range(sx);
+  let ys = Row::range(sy);
+  Row::range(sz).map_unordered(fn* (z: N32) {
+    ys.map_unordered(fn* (y: N32) {
+      xs.map_unordered(fn* (x: N32) {
+        let (cx, cy, cz, r) = (cx, cy, cz, r);
+        let dx = x as F64 - cx;
+        let dy = y as F64 - cy;
+        let dz = z as F64 - cz;
+        dx * dx + dy * dy + dz * dz <= r * r
+      })
+    })
+  })
+}

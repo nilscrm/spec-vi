@@ -129,3 +129,18 @@ before multiplication, including guards and output formatting. Provide allocatio
 configuration inspection with storage lower bounds; label it separately from actual
 large-run feasibility. Audit reference output narrowing rather than silently adopting
 it as intended mathematical behavior (L042).
+
+## Grid codes (from LBM, L049)
+
+- A structured grid as nested `Array`s (z, y, x) gives balanced map/zip and O(log)
+  push/pop at row ends. A shift in the source's linear order can then be built by
+  carrying row-end elements into the next row. That reproduces wrap-around exactly
+  without rebuilding the grid. Check grid boundaries with negative controls on more than
+  one boundary type.
+- Rebind captured variables at the top of map/zip closures (`let (a, b) = (a, b);`)
+  and measure. Multiple reads of a captured scalar made depth grow with the element
+  count in at least one closure (extends L031).
+- Split a record grid into per-field grids with a balanced tree of independent unzips,
+  not a chain of unzips. The work is the same, but a chain adds depth per link.
+- Reproduce reference output precision exactly. Values the reference computes in
+  narrower variables must be computed in the same type, not rounded at the end.

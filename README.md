@@ -19,6 +19,21 @@ physics candidate passes every intermediate state for three updates on both fixe
 domains (12 cubed and 16 cubed). Integration, driver, scaling and hardware acceptance
 are tracked separately in `benchmarks/sph-exa/plan.md`; the full port is not complete.
 
+## LBM (782.lbm_r)
+
+Active since 2026-10-24; state and next action in `benchmarks/lbm/plan.md`, notes in
+`benchmarks/lbm/COMPATIBILITY.md` and `design.md`. The Vine library is
+`benchmarks/lbm/vine` (`lbm`) and the native driver is `benchmarks/lbm/app/lbm_app.vi`:
+
+```sh
+python3 tools/vine_exec.py run --heap 4G --lib lbm=benchmarks/lbm/vine \
+  benchmarks/lbm/app/lbm_app.vi -- -x 16 -y 16 -z 16 -n 10 --channel \
+  --obstacles OBSTACLE_FILE --result velocity.dat
+python3 tools/lbm_gate.py --output work/lbm/check            # correctness
+python3 tools/lbm_gate.py --output work/lbm/m --measure      # plus depth/work/heap
+make lbm-smoke                                               # reference only
+```
+
 ## Fresh clone setup
 
 `work/` is not in git. The pinned Vine toolchain is branch `spec-vi/sph-support` of

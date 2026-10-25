@@ -1,0 +1,13 @@
+grid size: 8 x 8 x 8, nTimeSteps: 4, simType: lid-driven cavity, obstacle file: <none>
+LBM_allocateGrid: allocated 0.1 MByte
+LBM_allocateGrid: allocated 0.1 MByte
+LBM_showGridStatistics:
+	nObstacleCells:     296 nAccelCells:      32 nFluidCells:     184
+	minRho:   1.0000 maxRho:   1.0000 mass: 5.120000e+02
+	minU: 0.000000e+00 maxU: 0.000000e+00
+
+LBM_showGridStatistics:
+	nObstacleCells:     296 nAccelCells:      32 nFluidCells:     184
+	minRho:   0.9928 maxRho:   1.0072 mass: 5.120000e+02
+	minU: 3.998145e-04 maxU: 7.000396e-03
+

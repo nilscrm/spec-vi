@@ -1,0 +1,8 @@
+use #lbm::{obstacles, sim};
+
+pub fn main(&io: &IO) {
+  let size = { sx: 24, sy: 24, sz: 24 };
+  let state = sim::run(sim::new(size, false, obstacles::none(size)), 2);
+  let N64(lo, hi) = sim::checksum(state.cells).to_bits();
+  io.println("{lo} {hi}");
+}
