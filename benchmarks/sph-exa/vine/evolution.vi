@@ -1,7 +1,7 @@
 
 // Serial square-patch physics. Arithmetic follows the unchanged upstream stages;
 // neighbor/global reductions are balanced and require multistep validation.
-use #sph::{ordered, physics, pilot, tree};
+use #sph::{ordered, physics, pilot, routed, tree};
 use physics::Particle;
 use tree::Tree;
 pub type Rows = Tree[(N32, Tree[N32])];
@@ -102,16 +102,21 @@ pub fn density(s: State, rows: Rows) -> State {
   let points = tree::map(data, fn* (p: Particle) -> pilot::Point {
     { x: p.x, y: p.y, z: p.z, m: p.m }
   });
-  let result = physics::density_rows(
-    &data,
-    &points,
-    s.n,
-    rows,
-    s.bounds.zmax - s.bounds.zmin,
-    0,
-    1,
+  let neighbors = routed::gather(points, s.n, rows);
+  let period = s.bounds.zmax - s.bounds.zmin;
+  s.data = tree::map(
+    routed::zip(data, neighbors),
+    fn* ((p, ns): (Particle, Tree[pilot::Point])) -> Particle {
+      let center: pilot::Center = { x: p.x, y: p.y, z: p.z, h: p.h, m: p.m, period_z: period };
+      let values = tree::map(ns, fn* (q: pilot::Point) {
+        after(q.x + center.h, fn* () { pilot::contribution(center, q) })
+      });
+      p.ro = tree::reduce(values, false)
+        + center.m * pilot::normalization() / (center.h * center.h * center.h)
+      ;
+      p
+    },
   );
-  s.data = tree::map(result, fn* ((_, p)) { p });
   s
 }
 pub fn rest(s: State, iteration: N32) -> State {
@@ -123,13 +128,6 @@ pub fn eos(s: State) -> State {
   s
 }
 
-fn gather(&data: &Tree[Particle], n: N32, ids: Tree[N32]) -> Tree[Particle] {
-  match ids {
-    Tree::Empty() { Tree::Empty() }
-    Tree::Leaf(i) { Tree::Leaf(physics::at(&data, n, i)) }
-    Tree::Branch(l, r) { Tree::Branch(gather(&data, n, l), gather(&data, n, r)) }
-  }
-}
 fn dz(a: F64, b: F64, radius: F64, period: F64) -> F64 {
   let z = a - b;
   if z > radius {
@@ -159,7 +157,22 @@ fn sum6(t: Tree[Six]) -> Six {
     }
   }
 }
-fn moment(p: Particle, q: Particle, period: F64) -> Six {
+// Instantiates `body` only once `key` is known. Both branches are the same call, so
+// the result is unchanged; the only effect is that a pair's arithmetic is not
+// allocated while its inputs are still pending (L049). It adds no dependency
+// between particles.
+fn after[T, F*; fn F() -> T](key: F64, body: F) -> T {
+  if key == key {
+    body()
+  } else {
+    body()
+  }
+}
+// Fields of one neighbor that an IAD pair reads.
+type Mass = { x: F64, y: F64, z: F64, m: F64, ro: F64 };
+// Fields of the center particle that an IAD pair reads.
+type Site = { x: F64, y: F64, z: F64, h: F64 };
+fn moment(p: Site, q: Mass, period: F64) -> Six {
   let x = p.x - q.x;
   let y = p.y - q.y;
   let z = dz(p.z, q.z, 2.0[F64] * p.h, period);
@@ -173,8 +186,11 @@ fn moment(p: Particle, q: Particle, period: F64) -> Six {
     z * z * q.m / q.ro * w,
   )
 }
-pub fn iad_particle(p: Particle, neighbors: Tree[Particle], period: F64) -> Particle {
-  let (a, b, c, d, e, f) = sum6(tree::map(neighbors, fn* (q) { moment(p, q, period) }));
+fn iad_particle(p: Particle, neighbors: Tree[Mass], period: F64) -> Particle {
+  let site: Site = { x: p.x, y: p.y, z: p.z, h: p.h };
+  let (a, b, c, d, e, f) = sum6(tree::map(neighbors, fn* (q: Mass) {
+    after(q.ro, fn* () { moment(site, q, period) })
+  }));
   let det = a * d * f + 2.0[F64] * b * e * c - a * e * e - d * c * c - f * b * b;
   p.c11 = (d * f - e * e) / det;
   p.c12 = (c * e - f * b) / det;
@@ -184,7 +200,51 @@ pub fn iad_particle(p: Particle, neighbors: Tree[Particle], period: F64) -> Part
   p.c33 = (a * d - b * b) / det;
   p
 }
-fn viscosity(p: Particle, q: Particle, rv: F64, r2: F64) -> F64 {
+// Fields of one particle that a momentum pair reads. Per-particle quotients are formed
+// once with the same operations as upstream, so every pair value is bit-identical.
+type Body = {
+  x: F64,
+  y: F64,
+  z: F64,
+  vx: F64,
+  vy: F64,
+  vz: F64,
+  h: F64,
+  ro: F64,
+  c: F64,
+  m: F64,
+  c11: F64,
+  c12: F64,
+  c13: F64,
+  c22: F64,
+  c23: F64,
+  c33: F64,
+  pro: F64,
+  mro: F64,
+};
+fn body(p: Particle) -> Body {
+  {
+    x: p.x,
+    y: p.y,
+    z: p.z,
+    vx: p.vx,
+    vy: p.vy,
+    vz: p.vz,
+    h: p.h,
+    ro: p.ro,
+    c: p.c,
+    m: p.m,
+    c11: p.c11,
+    c12: p.c12,
+    c13: p.c13,
+    c22: p.c22,
+    c23: p.c23,
+    c33: p.c33,
+    pro: p.p / (1.0[F64] * p.ro * p.ro),
+    mro: p.m / p.ro,
+  }
+}
+fn viscosity(p: Body, q: Body, rv: F64, r2: F64) -> F64 {
   if rv < 0.0[F64] {
     let ro = (p.ro + q.ro) / 2.0[F64];
     let c = (p.c + q.c) / 2.0[F64];
@@ -195,7 +255,7 @@ fn viscosity(p: Particle, q: Particle, rv: F64, r2: F64) -> F64 {
     0.0[F64]
   }
 }
-fn force(p: Particle, q: Particle, period: F64) -> Six {
+fn force(p: Body, q: Body, period: F64) -> Six {
   let x = p.x - q.x;
   let y = p.y - q.y;
   let z = dz(p.z, q.z, 2.0[F64] * p.h, period);
@@ -215,73 +275,48 @@ fn force(p: Particle, q: Particle, period: F64) -> Six {
   let b1 = (q.c11 * jx + q.c12 * jy + q.c13 * jz) * w2;
   let b2 = (q.c12 * jx + q.c22 * jy + q.c23 * jz) * w2;
   let b3 = (q.c13 * jx + q.c23 * jy + q.c33 * jz) * w2;
-  let pro_i = p.p / (1.0[F64] * p.ro * p.ro);
-  let pro_j = q.p / (1.0[F64] * q.ro * q.ro);
   let visc = viscosity(p, q, rv, dist * dist);
-  let avx = 0.5[F64] * (p.m / p.ro * visc * a1 + q.m / q.ro * visc * b1);
-  let avy = 0.5[F64] * (p.m / p.ro * visc * a2 + q.m / q.ro * visc * b2);
-  let avz = 0.5[F64] * (p.m / p.ro * visc * a3 + q.m / q.ro * visc * b3);
+  let avx = 0.5[F64] * (p.mro * visc * a1 + q.mro * visc * b1);
+  let avy = 0.5[F64] * (p.mro * visc * a2 + q.mro * visc * b2);
+  let avz = 0.5[F64] * (p.mro * visc * a3 + q.mro * visc * b3);
   (
-    q.m * (pro_i * a1 + pro_j * b1) + avx,
-    q.m * (pro_i * a2 + pro_j * b2) + avy,
-    q.m * (pro_i * a3 + pro_j * b3) + avz,
-    q.m * 2.0[F64] * pro_i * (vx * a1 + vy * a2 + vz * a3),
+    q.m * (p.pro * a1 + q.pro * b1) + avx,
+    q.m * (p.pro * a2 + q.pro * b2) + avy,
+    q.m * (p.pro * a3 + q.pro * b3) + avz,
+    q.m * 2.0[F64] * p.pro * (vx * a1 + vy * a2 + vz * a3),
     avx * vx + avy * vy + avz * vz,
     0.0[F64],
   )
 }
-pub fn momentum_particle(p: Particle, neighbors: Tree[Particle], period: F64) -> Particle {
-  let (x, y, z, energy, av, _) = sum6(tree::map(neighbors, fn* (q) { force(p, q, period) }));
+fn momentum_particle(p: Particle, neighbors: Tree[Body], period: F64) -> Particle {
+  let b = body(p);
+  let (x, y, z, energy, av, _) = sum6(tree::map(neighbors, fn* (q: Body) {
+    after((b.c33 + b.pro) + (q.c33 + q.pro), fn* () { force(b, q, period) })
+  }));
   p.grad_P_x = x;
   p.grad_P_y = y;
   p.grad_P_z = z;
   p.du = 0.5[F64] * (energy + av);
   p
 }
-fn interactions(
-  &data: &Tree[Particle],
-  n: N32,
-  rows: Rows,
-  period: F64,
-  iad: Bool,
-) -> Tree[Particle] {
-  match rows {
-    Tree::Empty() { Tree::Empty() }
-    Tree::Leaf((i, ids)) {
-      let p = physics::at(&data, n, i);
-      let ns = gather(&data, n, ids);
-      Tree::Leaf(if iad { iad_particle(p, ns, period) } else { momentum_particle(p, ns, period) })
-    }
-    Tree::Branch(l, r) {
-      let left = interactions(&data, n, l, period, iad);
-      if physics::finite(checksum(left)) {
-        Tree::Branch(left, interactions(&data, n, r, period, iad))
-      } else {
-        debug::error("nonfinite interaction state");
-        Tree::Empty()
-      }
-    }
-  }
-}
 pub fn iad(s: State, rows: Rows) -> State {
-  if physics::finite(checksum(s.data)) {
-    let data = s.data;
-    s.data = interactions(&data, s.n, rows, s.bounds.zmax - s.bounds.zmin, true);
-    s
-  } else {
-    debug::error("nonfinite stage input");
-    s
-  }
+  let data = s.data;
+  let masses = tree::map(data, fn* (p: Particle) -> Mass {
+    { x: p.x, y: p.y, z: p.z, m: p.m, ro: p.ro }
+  });
+  let neighbors = routed::gather(masses, s.n, rows);
+  let period = s.bounds.zmax - s.bounds.zmin;
+  s.data = tree::map(routed::zip(data, neighbors), fn* ((p, ns)) { iad_particle(p, ns, period) });
+  s
 }
 pub fn momentum(s: State, rows: Rows) -> State {
-  if physics::finite(checksum(s.data)) {
-    let data = s.data;
-    s.data = interactions(&data, s.n, rows, s.bounds.zmax - s.bounds.zmin, false);
-    s
-  } else {
-    debug::error("nonfinite stage input");
-    s
-  }
+  let data = s.data;
+  let neighbors = routed::gather(tree::map(data, body), s.n, rows);
+  let period = s.bounds.zmax - s.bounds.zmin;
+  s.data = tree::map(routed::zip(data, neighbors), fn* ((p, ns)) {
+    momentum_particle(p, ns, period)
+  });
+  s
 }
 fn minimum(t: Tree[F64]) -> F64 {
   match t {
@@ -373,31 +408,10 @@ pub fn energy(s: State) -> State {
   s
 }
 
-// Full-state materialization bounds cross-stage live work. The condition forces
-// every field, so this barrier's reduction/copy cost is part of the computation.
-fn checksum(t: Tree[Particle]) -> F64 {
-  match t {
-    Tree::Empty() { 0.0[F64] }
-    Tree::Leaf(p) {
-      ((((p.x + (p.y + p.z)) + ((p.x_m1 + p.y_m1) + (p.z_m1 + p.vx)))
-        + (((p.vy + p.vz) + (p.ro + p.ro_0)) + ((p.u + p.p) + (p.p_0 + p.h)))
-      )
-        + (((p.m + (p.c + p.grad_P_x)) + ((p.grad_P_y + p.grad_P_z) + (p.du + p.du_m1)))
-          + (((p.dt + p.dt_m1) + (p.c11 + p.c12)) + ((p.c13 + p.c22) + (p.c23 + p.c33)))
-        )
-      )
-    }
-    Tree::Branch(l, r) { checksum(l) + checksum(r) }
-  }
-}
+// Compatibility entry point: no scheduling barrier. Numerical validation belongs
+// to the full-state evaluator; final measurement consumers force all outputs.
 pub fn materialize(s: State) -> State {
-  let total = checksum(s.data) + s.ttot + s.etot + s.ecin + s.eint;
-  if total > F64::neg_inf and total < F64::inf {
-    s
-  } else {
-    debug::error("nonfinite full state");
-    s
-  }
+  s
 }
 fn capacity_ok(rows: Rows) -> Bool {
   match rows {

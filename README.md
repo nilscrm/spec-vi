@@ -2,7 +2,7 @@
 
 Vine ports of the SPEC CPU 2026 workloads, for benchmarking our own chip. Depth (critical-path
 rounds) is the headline statistic. Workloads are ported in order of simplicity; see
-[docs/ROADMAP.md](docs/ROADMAP.md). SPH-EXA (803.sph_exa_s) came first and is being wrapped up.
+[docs/ROADMAP.md](docs/ROADMAP.md). SPH-EXA (803.sph_exa_s) came first and is wrapped up; LBM is next.
 
 ## Layout
 
@@ -14,10 +14,11 @@ Vine checkout: `/Users/nils/repos/vine`. It has local modifications; do not over
 
 The initial SPH-EXA source is pinned in `benchmarks/sph-exa/source.json`.
 This is an upstream-based research port, not the SPEC source distribution or an official SPEC result.
-The complete square-patch physics sequence is implemented in Vine. The ordered
-physics candidate passes every intermediate state for three updates on both fixed
-domains (12 cubed and 16 cubed). Integration, driver, scaling and hardware acceptance
-are tracked separately in `benchmarks/sph-exa/plan.md`; the full port is not complete.
+The complete square-patch physics sequence is implemented in Vine without scheduling
+gates. It passes every intermediate state for three updates on both fixed domains
+(12 cubed and 16 cubed). The depth/work/heap table is in
+`reports/physics/promoted-20261024/depth-table.json`; remaining gaps are listed in
+`benchmarks/sph-exa/plan.md`.
 
 ## Fresh clone setup
 

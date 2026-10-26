@@ -81,17 +81,18 @@ def main():
  ap.add_argument('--output',required=True)
  ap.add_argument('--reference',required=True)
  ap.add_argument('--library',type=Path,default=LIB)
+ ap.add_argument('--sides',type=int,nargs='+',choices=policy['sides'],default=policy['sides'],help='subset of the policy sides (default: all)')
  add_resource_args(ap,600)
  args=ap.parse_args();LIB=args.library.resolve();out=Path(args.output).resolve();ref=Path(args.reference).resolve()
  out.mkdir(parents=True,exist_ok=True)
  report={'passed':False,'physics_accepted':False,'port_complete':False,
          'scope':'All fields/scalars and exact neighbor order after every stage, both full domains, three updates; no performance acceptance',
-         'resources':resources(args),'policy':policy,'pin':verify(),'library':tree_hash(LIB),'evaluator_sha256':sha(Path(__file__)),'cases':[]}
+         'resources':resources(args),'sides':args.sides,'policy':policy,'pin':verify(),'library':tree_hash(LIB),'evaluator_sha256':sha(Path(__file__)),'cases':[]}
  try:
   verify_reference(ref,policy)
   if tree_hash(ROOT/'upstream/sph-exa')!=json.loads((ROOT/'evaluations/upstream-files.json').read_text()):raise ValueError('Upstream changed')
   report['reference_report_sha256']=sha(ref/'result.json')
-  for side in policy['sides']:
+  for side in args.sides:
    target=out/f'side{side}';target.mkdir();src=target/'driver.vi';src.write_text(source(side,policy['updates']))
    r=run([sys.executable,str(ROOT/'tools/vine_exec.py'),'run','--lib','sph='+str(LIB),'--heap',f'{args.heap_gib}G',str(src)],ROOT,target/'run',args.timeout)
    checks=validate(r['stdout'],side,policy['updates'],target/'decoded')

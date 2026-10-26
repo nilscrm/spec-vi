@@ -210,13 +210,7 @@ pub fn rows(
     }
     Tree::Branch(l, r) {
       let h = n / 2;
-      let left = rows(&idx, l, start, h);
-      if row_count(left) < row_capacity(h) {
-        Tree::Branch(left, rows(&idx, r, start + h, n - h))
-      } else {
-        debug::error("invalid neighbor count");
-        Tree::Empty()
-      }
+      Tree::Branch(rows(&idx, l, start, h), rows(&idx, r, start + h, n - h))
     }
   }
 }

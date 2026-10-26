@@ -1,0 +1,100 @@
+
+use #sph::tree::Tree;
+type Request[T] = (N32, ~T);
+fn join[T](a: Tree[T], b: Tree[T]) -> Tree[T] {
+  match (a, b) {
+    (Tree::Empty(), b) { b }
+    (a, Tree::Empty()) { a }
+    (a, b) { Tree::Branch(a, b) }
+  }
+}
+fn requests[T](ids: Tree[N32]) -> (Tree[Request[T]], Tree[T]) {
+  match ids {
+    Tree::Empty() { (Tree::Empty(), Tree::Empty()) }
+    Tree::Leaf(i) {
+      let out;
+      (Tree::Leaf((i, ~out)), Tree::Leaf(out))
+    }
+    Tree::Branch(l, r) {
+      let (a, b) = requests(l);
+      let (c, d) = requests(r);
+      (Tree::Branch(a, c), Tree::Branch(b, d))
+    }
+  }
+}
+fn rows[T](ids: Tree[(N32, Tree[N32])]) -> (Tree[Request[T]], Tree[Tree[T]]) {
+  match ids {
+    Tree::Empty() { (Tree::Empty(), Tree::Empty()) }
+    Tree::Leaf((_, ids)) {
+      let (a, b) = requests(ids);
+      (a, Tree::Leaf(b))
+    }
+    Tree::Branch(l, r) {
+      let (a, b) = rows(l);
+      let (c, d) = rows(r);
+      (Tree::Branch(a, c), Tree::Branch(b, d))
+    }
+  }
+}
+fn split[T](qs: Tree[Request[T]], pivot: N32) -> (Tree[Request[T]], Tree[Request[T]]) {
+  match qs {
+    Tree::Empty() { (Tree::Empty(), Tree::Empty()) }
+    Tree::Leaf((i, o)) {
+      if i < pivot {
+        (Tree::Leaf((i, o)), Tree::Empty())
+      } else {
+        (Tree::Empty(), Tree::Leaf((i, o)))
+      }
+    }
+    Tree::Branch(l, r) {
+      let (a, b) = split(l, pivot);
+      let (c, d) = split(r, pivot);
+      (join(a, c), join(b, d))
+    }
+  }
+}
+fn fill[T*](value: T, qs: Tree[Request[T]]) {
+  match qs {
+    Tree::Empty() {}
+    Tree::Leaf((_, o)) { ~o = value; }
+    Tree::Branch(l, r) {
+      fill(value, l);
+      fill(value, r);
+    }
+  }
+}
+fn missing[T](qs: Tree[Request[T]]) {
+  match qs {
+    Tree::Empty() {}
+    Tree::Leaf((_, o)) { ~o = debug::error("missing gather input"); }
+    Tree::Branch(l, r) {
+      missing(l);
+      missing(r);
+    }
+  }
+}
+fn dispatch[T*](data: Tree[T], qs: Tree[Request[T]], start: N32, n: N32) {
+  match data {
+    Tree::Empty() { missing(qs); }
+    Tree::Leaf(value) { fill(value, qs); }
+    Tree::Branch(l, r) {
+      let half = n / 2;
+      let (a, b) = split(qs, start + half);
+      dispatch(l, a, start, half);
+      dispatch(r, b, start + half, n - half);
+    }
+  }
+}
+pub fn gather[T*](data: Tree[T], n: N32, ids: Tree[(N32, Tree[N32])]) -> Tree[Tree[T]] {
+  let (qs, out) = rows(ids);
+  dispatch(data, qs, 0, n);
+  out
+}
+pub fn zip[T?, U?](a: Tree[T], b: Tree[U]) -> Tree[(T, U)] {
+  match (a, b) {
+    (Tree::Empty(), Tree::Empty()) { Tree::Empty() }
+    (Tree::Leaf(a), Tree::Leaf(b)) { Tree::Leaf((a, b)) }
+    (Tree::Branch(a, b), Tree::Branch(c, d)) { Tree::Branch(zip(a, c), zip(b, d)) }
+    _ { debug::error("gather shape mismatch") }
+  }
+}

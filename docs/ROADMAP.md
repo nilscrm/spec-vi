@@ -24,8 +24,8 @@ Status values: `active`, `wrap-up`, `done`, `next`, `queued`.
 
 | # | Application | Benchmarks | Lang | Area | Status |
 |---|---|---|---|---|---|
-| 1 | SPH-EXA | 803.sph_exa_s | C++ | SPH hydrodynamics | wrap-up |
-| 2 | LBM | 782.lbm_r | C | Lattice Boltzmann CFD | next |
+| 1 | SPH-EXA | 803.sph_exa_s | C++ | SPH hydrodynamics | done |
+| 2 | LBM | 782.lbm_r | C | Lattice Boltzmann CFD | active |
 | 3 | TeaLeaf | 811.tealeaf_s | C | Heat conduction, CG solver | queued |
 | 4 | CloverLeaf | 820.cloverleaf_s | Fortran | Explicit hydrodynamics | queued |
 | 5 | POT3D | 800.pot3d_s | Fortran | Solar physics, finite differences/CG | queued |
@@ -63,8 +63,9 @@ Status values: `active`, `wrap-up`, `done`, `next`, `queued`.
 | 37 | GCC | 721.gcc_r, 821.gcc_s | C | C compiler | queued |
 | 38 | LLVM | 723.llvm_r, 823.llvm_s | C++ | C/C++ compiler | queued |
 
-SPH-EXA came first for historical reasons. It is being wrapped up (see
-benchmarks/sph-exa/plan.md) rather than taken to full completion before moving on.
+SPH-EXA came first for historical reasons. It was wrapped up on 2026-10-24 rather than
+taken to full completion; its known gaps are in benchmarks/sph-exa/plan.md. Inputs are
+small to medium for now (L048).
 
 ## Per-workload lifecycle
 

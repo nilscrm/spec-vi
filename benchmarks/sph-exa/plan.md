@@ -1,54 +1,41 @@
 # SPH-EXA plan (803.sph_exa_s)
 
-Status: **wrap-up** (docs/ROADMAP.md). Per the user's 2026-10-14 direction, finish the
-items below and then move on to the next workload instead of chasing full completion.
-History before 2026-10-14: HISTORY.md, LESSONS L001-L043, reports/.
+Status: **done** (wrapped up 2026-10-24, docs/ROADMAP.md). The known gaps below stay
+open. History before 2026-10-14: HISTORY.md, LESSONS L001-L043, reports/.
 
 ## Current state
 
-- Full square-patch physics is implemented in Vine: initialization, grid neighbors,
-  density, EOS, IAD, momentum/energy, timestep, positions and total energy.
-- The gated, original-order candidate passes all 56 stage snapshots with exact
-  neighbor order at sides 12 and 16 over 3 updates (reports/physics/integration/
-  validated-20260930, scale-readiness-20261005). Its checksum gates serialize
-  particles, so it is not a valid depth candidate (L043).
-- The ungated depth-first candidate (reports/physics/depth-first-20261006/) removes
-  those gates. Its reference-gather form exhausts memory. The routed-gather form
-  (depth-first-20261006/routed/sph) passes all 28 side-12 snapshots over 3 updates
-  (12 GiB heap, W 9.25e9, heap 9.6 GB). Whole-update depth at side 12 is 226,706
-  versus 16,653,836 gated (73x lower, +10% work, 30x heap); sides 6-10 show 46-66x (L047, reports/physics/routed-20261023/).
-  Side 16 exhausted 12 GiB on the 15 GiB Linux host, so it is not promoted yet.
-- The native driver is app/square_patch.vi. The side 16 / 3-update run timed out at
-  600 s.
-- Vine changes are committed on spec-vi/sph-support (work/vine) and pinned at fec2d8c8.
-  Pilot, neighbor membership and full physics reproduce the previous metrics exactly
-  (reports/vine/repin-20261014/).
+- Full square-patch physics is implemented in Vine without scheduling gates:
+  initialization, ordered octree neighbors, density, EOS, IAD, momentum/energy,
+  timestep, positions and total energy (design.md, "Promoted depth-first evolution").
+- Correctness: all 56 stage snapshots pass at sides 12 and 16 over 3 updates, with
+  exact upstream neighbor order and unchanged tolerances (L049,
+  reports/physics/promoted-20261024/physics-gate-side{12,16}.json).
+- Depth table: reports/physics/promoted-20261024/depth-table.json (sides 6-16, plus
+  3 updates at side 12). At side 12, one update has depth 228,116 versus 16,653,836 for the
+  gated library, with 4% less work and 8x the heap (2.66 GB).
+- Native driver: app/square_patch.vi passes all three driver_gate cases, including
+  side 16 / 3 updates (reports/physics/promoted-20261024/driver-gate.json).
+- Toolchain: Vine spec-vi/sph-support pinned at fec2d8c8. The evidence from 2026-10-23
+  onward was produced on a Linux host against a host-generated oracle (L046).
 
-## Wrap-up tasks
+## Known gaps
 
-1. ~~**Migrate the Vine changes.**~~ Done 2026-10-14 (see above; L045).
-2. ~~**Turn performance gates into reports.**~~ Done 2026-10-23: gates check correctness
-   only, report `scaling`/`comparison` sections, and take `--heap-gib`/`--timeout`
-   (docs/RUNNER.md). Pilot and neighbors pass (reports/runs/linux-20261023/).
-3. **Validate the ungated candidate.** In progress: routed candidate passes side 12 (L047). Run full-stage validation at sides 12 and 16
-   over 3 updates with whatever heap and timeout it needs (record both). If it is
-   impractical even then, implement the routed-gather candidate described in
-   depth-first-20261006/EXPERIMENT.md. Promote it to benchmarks/sph-exa/vine only after
-   full validation passes.
-4. **Depth table.** Measure whole-update depth/work/heap for the promoted candidate at
-   several sides (smaller sides such as 6, 8 and 10 are fine for the scaling curve;
-   correctness is still checked at 12 and 16), plus a 3-update run on at least one
-   size. Record them in a machine-readable table under reports/physics/.
-5. **Driver check.** Re-run the native driver cases with the promoted candidate and
-   recorded limits.
-6. **Write down gaps.** Update COMPATIBILITY.md/README with what remains: the SPEC
-   stabilization phase and CSV output, native error exit status, all-range sine,
-   full-scale runs and hardware timing.
-7. Set this workload to `done` in docs/ROADMAP.md and LBM (782.lbm_r) to `active`.
+- **Neighbor search is 89-96% of depth and grows with N** (L050). The suspected cause
+  is ordered::rows threading a shared index reference through all queries. A
+  batch-routed octree query that keeps upstream bucket order is the next depth
+  improvement.
+- Heap is ~1.6 MB per particle at sides 12-16, so medium inputs need a larger host:
+  side 30 extrapolates to ~45 GB. This extrapolation is a hypothesis.
+- SPEC stabilization phase and CSV output are not implemented; the stabilization
+  source is unavailable (SCALE_READINESS.md).
+- No native nonzero exit status on errors (L039). `F64.sin_bounded` covers only
+  |x| <= 128; there is no all-range sine.
+- Full-scale SPEC inputs and hardware timing are deferred (L048).
+- The Mac stage oracle lacks 31 gitignored snapshots in git. Reruns on the original
+  machine should regenerate the evidence against the canonical oracle.
 
 ## Next action
 
-Task 3: run tools/physics_gate.py with `--library` set to the routed candidate at
-sides 12 and 16 on a host with at least ~32 GiB (record heap and timeout). If no such
-host is available, reduce the per-pair live footprint first (L047 hypotheses), without
-gates. Then promote it and measure the task 4 table with tools/physics_measure.py.
+Start LBM (782.lbm_r) with the per-workload lifecycle in docs/ROADMAP.md: survey,
+evaluator, port. Return to SPH-EXA only for the neighbor-search depth gap.

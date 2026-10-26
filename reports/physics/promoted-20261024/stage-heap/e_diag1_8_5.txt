@@ -1,0 +1,30 @@
+warning: unused variable
+     @ sph/evolution.vi:206:28
+ 206 | fn force(p: Body, q: Body, period: F64) -> Six {
+
+warning: unused item
+     @ sph/pilot.vi:156:18
+ 156 | use #root::data::Lookup;
+
+warning: unused item
+     @ sph/evolution.vi:195:4
+ 195 | fn viscosity(p: Body, q: Body, rv: F64, r2: F64) -> F64 {
+
+
+Interactions
+  Total          423_036_098
+  Annihilate     155_471_640
+  Commute          2_201_464
+  Copy            24_633_506
+  Erase           63_138_542
+  Graft           36_538_611
+  Extrinsic      141_052_335
+
+Memory
+  Heap           952_437_888 B
+  Allocated    9_595_115_136 B
+  Freed        9_595_115_136 B
+
+Performance
+  Time                37_373 ms
+  Speed           11_319_096 IPS
