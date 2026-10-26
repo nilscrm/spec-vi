@@ -739,8 +739,8 @@ Sides 6-10 use the stage-heap drivers. Side 12 uses tools/physics_measure.py
 (depth mode, forcing checks against the host oracle pass for both, heap 4/13 GiB;
 depth12-1update-*.json, compared with `--baseline` semantics: same_toolchain true).
 Depth drops 46-73x for 7-10% more work. Routed depth still grows about linearly in N
-at these sizes. Hypothesis: the ordered per-particle density fold, which is O(K), dominates, and K
-is close to N on such small domains. Not yet tested.
+at these sizes. (The density-fold hypothesis first recorded here was refuted by L050:
+neighbor search dominates.)
 Heap: normal-mode stage cut-offs at side 8 (stage-heap/e_routed_8_*.txt) give
 prepare 21 MB, +density 260 MB, through IAD 782 MB, +momentum 2.16 GB. The ungated
 reference-gather candidate uses 2.45 GB and the gated library 36 MB on the same cut.
@@ -761,3 +761,42 @@ only because the ungated candidate holds ~5.7 MB of heap per particle (L047), wh
 would rule out medium inputs too (side 30, 27,000 particles, extrapolates to ~150 GB).
 This extrapolation is a hypothesis. So per-pair memory, not input size, is the
 blocker. Updated: AGENTS.md (input sizes).
+
+## L049: Delay pair instantiation until its inputs exist; project gathered payloads
+
+Status: measured 2026-10-24 on the L046 host. Candidate built from the L047 routed
+library and promoted to benchmarks/sph-exa/vine (design.md, "Promoted depth-first
+evolution").
+Observation: with the gates removed, the runtime instantiates every particle pair's
+arithmetic network as soon as the tree structure exists. Those networks then stay
+allocated while their F64 inputs from earlier stages are still pending.
+Evidence: side 8, normal mode, through momentum (reports/physics/promoted-20261024/stage-heap/):
+routed 2.16 GB. Projected `Body` payload: 1.91 GB. Same with a trivial `force`:
+0.95 GB, so arithmetic waiting on inputs was ~1 GB. Adding `after(key, …)`, a branch
+on a late input of the pair whose two arms are the same call: 0.90 GB. Guarding
+density and IAD and projecting IAD to `Mass`/`Site`: 0.60 GB for the whole update
+(3.6x less). Work fell 13%, below the gated library. Depth rose ~2%
+(69,877 -> 71,144). Forced checksums are bit-identical.
+Correctness: physics_gate passes all 28 snapshots at side 12 (heap 3.07 GB, was 9.6)
+and side 16 (heap 7.78 GB, W 2.18e10, 2,672 s; previously out of memory). Exact
+neighbor order; max field error 2.68e-9. Outputs also pass against the committed Mac
+snapshot files (56 + 31).
+Decision: `after` is a scheduling hint, not a gate. It orders a pair only after its own
+inputs, which the pair already needs, and never waits on another particle. Keep payloads
+limited to the fields a pair reads. Hypothesis: the same idiom applies to any ungated
+gather-heavy kernel in later workloads; consider a Vine helper once a second workload
+needs it.
+
+## L050: Neighbor search is now 89-96% of whole-update depth
+
+Status: measured 2026-10-24, promoted library, depth mode, 1 update.
+Stage cut-offs (reports/physics/promoted-20261024/small-sides/neighbor-search-depth.log):
+prepare alone (bounds, ordered::build, ordered::rows, checks) reaches depth 28,789 /
+66,727 / 129,218 at sides 6 / 8 / 10. The full update reaches 32,408 / 71,144 / 134,346.
+Density through energy adds only ~3.6-5.1k. Whole-update depth scales with N
+(228,116 at side 12, 531,553 at side 16) although K barely grows (~364 -> ~400), so the
+O(K) density fold is not the cause.
+Hypothesis (untested): ordered::rows threads one shared `&idx` reference through
+all N queries, which serializes them, as L015 measured for the scan. Next candidate:
+route queries through the octree as a batch (like routed::gather, or grid::find_batch
+in L016), keeping upstream's bucket visit order so neighbor order stays exact.

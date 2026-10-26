@@ -101,3 +101,14 @@ Depth-first correction2026-10-06 (L043): checksum scheduling gates were introduc
 by the port, not upstream physics. Their removal is being tested separately with
 an explicitly enlarged heap. Original equations, ordered density sums, exact neighbor
 order and full numerical coverage remain required; no SPEC equivalence is implied.
+
+
+Depth-first library promoted 2026-10-24 (L049): the ungated routed-gather library
+passes all 56 stage snapshots (sides 12 and 16, 3 updates, exact neighbor order,
+unchanged tolerances; max field error 2.68e-9 at side 16) against the host oracle on
+Linux, and the outputs also pass against the committed Mac snapshot files.
+Equations, the ordered density sum and neighbor order are unchanged; pair arithmetic is
+bit-identical (projected payloads only drop unread fields).
+The native driver passes driver_gate.py on the promoted library for all three cases
+(side 12 -s 0 -w 1, side 16 -s 2 -w 2, side 12 -s 0 -w -1), with 12 GiB heap
+(reports/physics/promoted-20261024/driver-gate.json).

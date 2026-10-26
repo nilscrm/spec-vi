@@ -1,0 +1,107 @@
+{
+  "library": "benchmarks/sph-exa/vine as promoted 2026-10-24 (tree sha256 in measure-*.json)",
+  "toolchain": {
+    "commit": "fec2d8c89eeb0c7322a064d6b45d4f577ee3fb12",
+    "binary_sha256": "d26ba8f42da27bf579f07e44990ba9d777746bcec65be528b8c1e70b8d74db2c"
+  },
+  "mode": "vine run --depth (breadth-first); heap is the runtime heap high-water mark",
+  "rows": [
+    {
+      "side": 6,
+      "particles": 216,
+      "updates": 1,
+      "source": "small-sides/depth.log",
+      "numerical_check": "forced checksum bits equal to gated library: True",
+      "depth": 32408,
+      "interactions": 160622909,
+      "heap_bytes": 220749344,
+      "gated": {
+        "depth": 1434639,
+        "interactions": 173771058,
+        "heap_bytes": 26046224
+      }
+    },
+    {
+      "side": 8,
+      "particles": 512,
+      "updates": 1,
+      "source": "small-sides/depth.log",
+      "numerical_check": "forced checksum bits equal to gated library: True",
+      "depth": 71144,
+      "interactions": 506347602,
+      "heap_bytes": 689981136,
+      "gated": {
+        "depth": 4014659,
+        "interactions": 539058794,
+        "heap_bytes": 77030640
+      }
+    },
+    {
+      "side": 10,
+      "particles": 1000,
+      "updates": 1,
+      "source": "small-sides/depth.log",
+      "numerical_check": "forced checksum bits equal to gated library: True",
+      "depth": 134346,
+      "interactions": 1228140415,
+      "heap_bytes": 1390039184,
+      "gated": {
+        "depth": 8763517,
+        "interactions": 1287697961,
+        "heap_bytes": 167756352
+      }
+    },
+    {
+      "side": 12,
+      "particles": 1728,
+      "updates": 1,
+      "source": "measure-side12-u1.json",
+      "numerical_check": "physics_measure forcing checks passed: True",
+      "depth": 228116,
+      "interactions": 2364069240,
+      "heap_bytes": 2656427040,
+      "resources": {
+        "heap_gib": 12,
+        "heap_limit_bytes": 12884901888,
+        "command_timeout_seconds": 14400
+      },
+      "gated": {
+        "depth": 16653836,
+        "interactions": 2455015925,
+        "heap_bytes": 324202720
+      }
+    },
+    {
+      "side": 16,
+      "particles": 4096,
+      "updates": 1,
+      "source": "measure-side16-u1.json",
+      "numerical_check": "physics_measure forcing checks passed: True",
+      "depth": 531553,
+      "interactions": 6209911277,
+      "heap_bytes": 6691966256,
+      "resources": {
+        "heap_gib": 12,
+        "heap_limit_bytes": 12884901888,
+        "command_timeout_seconds": 14400
+      },
+      "gated": null
+    },
+    {
+      "side": 12,
+      "particles": 1728,
+      "updates": 3,
+      "source": "measure-side12-u3.json",
+      "numerical_check": "physics_measure forcing checks passed: True",
+      "depth": 672349,
+      "interactions": 7017755713,
+      "heap_bytes": 2656838832,
+      "resources": {
+        "heap_gib": 12,
+        "heap_limit_bytes": 12884901888,
+        "command_timeout_seconds": 14400
+      },
+      "gated": null
+    }
+  ]
+}

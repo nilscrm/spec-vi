@@ -223,3 +223,31 @@ still enforces real stage/timestep dependencies. Original density fold remains O
 outer tree dispatch can branch O(log N); reference gathers may still serialize.
 Use explicit8GiB experiment resources, full fixed numerical validation and separate
 normal/depth measurements. See depth-first-20261006/EXPERIMENT.md; results pending.
+
+## Promoted depth-first evolution (L047, L049, 2026-10-24)
+
+benchmarks/sph-exa/vine is now the ungated library. Its dependencies:
+
+- Neighbor rows depend on the grid index and each query only (ordered::rows has no
+  left-before-right gate).
+- Density, IAD and momentum read neighbor data via `routed::gather`. Each request
+  `(id, ~result)` is routed down the balanced particle tree by splitting the request
+  tree at every level, and the leaf value is copied into each waiting result. Work is
+  O(R log N) for R neighbor reads. The output tree has the shape of the rows, so neighbor order is
+  preserved. No shared reference is threaded through queries.
+- Gathered payloads carry only the fields a pair reads: `Point` for density, `Mass`
+  for IAD and `Body` for momentum. Momentum's per-particle quotients (`p/(1·ro·ro)` and
+  `m/ro`) are formed once per particle with the upstream operations, so pair values
+  are bit-identical.
+- `after(key, body)` instantiates a pair's arithmetic only once `key` (a late input
+  of that pair) is known. Without it every pair's network sits allocated while waiting
+  for earlier stages, which cost ~5.7 MB of heap per particle (L047). Both branches
+  are the same call. It adds a constant number of rounds per pair and no dependency
+  between particles.
+- `materialize` is an identity kept for driver compatibility. Real stage and timestep
+  dependencies are carried by dataflow alone.
+
+The remaining depth is roughly linear in N and 89-96% of it is neighbor search (L050).
+The suspected cause is ordered::rows threading a shared index reference through every
+query.
+The gated library is preserved in reports/physics/depth-first-20261006/baseline/sph.

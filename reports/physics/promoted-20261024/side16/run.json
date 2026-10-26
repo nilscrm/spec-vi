@@ -1,0 +1,19 @@
+{
+  "argv": [
+    "/usr/local/bin/python3",
+    "/workspace/spec-vi/tools/vine_exec.py",
+    "run",
+    "--lib",
+    "sph=/workspace/spec-vi/work/lean-candidate/sph",
+    "--heap",
+    "12G",
+    "/workspace/spec-vi/work/runs/lean-physics16/side16/driver.vi"
+  ],
+  "cwd": "/workspace/spec-vi",
+  "exit_code": 0,
+  "timed_out": false,
+  "peak_rss_bytes": 8967049216,
+  "wall_seconds": 2706.5271807609997,
+  "stdout": "/workspace/spec-vi/work/runs/lean-physics16/side16/run.stdout",
+  "stderr": "/workspace/spec-vi/work/runs/lean-physics16/side16/run.stderr"
+}

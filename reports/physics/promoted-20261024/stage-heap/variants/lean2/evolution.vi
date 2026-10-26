@@ -1,0 +1,391 @@
+
+// Serial square-patch physics. Arithmetic follows the unchanged upstream stages;
+// neighbor/global reductions are balanced and require multistep validation.
+use #sph::{ordered, physics, pilot, tree, routed};
+use physics::Particle;
+use tree::Tree;
+pub type Rows = Tree[(N32, Tree[N32])];
+pub type Bounds = { xmin: F64, xmax: F64, ymin: F64, ymax: F64, zmin: F64, zmax: F64 };
+pub type State = {
+  data: Tree[Particle],
+  n: N32,
+  bounds: Bounds,
+  ttot: F64,
+  etot: F64,
+  ecin: F64,
+  eint: F64,
+};
+
+fn min(a: F64, b: F64) -> F64 {
+  if a < b {
+    a
+  } else {
+    b
+  }
+}
+fn max(a: F64, b: F64) -> F64 {
+  if a > b {
+    a
+  } else {
+    b
+  }
+}
+fn bounds(t: Tree[Particle]) -> Bounds {
+  match t {
+    Tree::Empty() {
+      debug::error("empty domain");
+      {
+        xmin: 0.0[F64],
+        xmax: 0.0[F64],
+        ymin: 0.0[F64],
+        ymax: 0.0[F64],
+        zmin: 0.0[F64],
+        zmax: 0.0[F64],
+      }
+    }
+    Tree::Leaf(p) { { xmin: p.x, xmax: p.x, ymin: p.y, ymax: p.y, zmin: p.z, zmax: p.z } }
+    Tree::Branch(l, r) {
+      let a = bounds(l);
+      let b = bounds(r);
+      {
+        xmin: min(a.xmin, b.xmin),
+        xmax: max(a.xmax, b.xmax),
+        ymin: min(a.ymin, b.ymin),
+        ymax: max(a.ymax, b.ymax),
+        zmin: min(a.zmin, b.zmin),
+        zmax: max(a.zmax, b.zmax),
+      }
+    }
+  }
+}
+pub fn initialize(side: N32) -> State {
+  let n = side * side * side;
+  let data = physics::initialize(side, 0, n);
+  let b = bounds(data);
+  let half = (100.0[F64] / side as F64) / 2.0[F64];
+  b.zmin -= half;
+  b.zmax += half;
+  { data, n, bounds: b, ttot: 0.0[F64], etot: 0.0[F64], ecin: 0.0[F64], eint: 0.0[F64] }
+}
+pub fn prepare(s: State) -> (State, Rows) {
+  let b = bounds(s.data);
+  s.bounds.xmin = b.xmin;
+  s.bounds.xmax = b.xmax;
+  s.bounds.ymin = b.ymin;
+  s.bounds.ymax = b.ymax;
+  let idx = ordered::build(s.data, s.n, s.bounds);
+  let rows = ordered::rows(&idx, s.data, 0, s.n);
+  (s, checked_rows(rows))
+}
+fn count(t: Tree[N32]) -> N32 {
+  match t {
+    Tree::Empty() { 0 }
+    Tree::Leaf(_) { 1 }
+    Tree::Branch(l, r) { count(l) + count(r) }
+  }
+}
+pub fn neighbor_count(rows: Rows) -> N64 {
+  match rows {
+    Tree::Empty() { 0[N64] }
+    Tree::Leaf((_, ns)) {
+      let n = count(ns);
+      if n >= 650 {
+        debug::error("neighbor capacity/order compatibility unresolved");
+      }
+      n as N64
+    }
+    Tree::Branch(l, r) { neighbor_count(l) + neighbor_count(r) }
+  }
+}
+pub fn density(s: State, rows: Rows) -> State {
+  let data = s.data;
+  let points = tree::map(data, fn* (p: Particle) -> pilot::Point {
+    { x: p.x, y: p.y, z: p.z, m: p.m }
+  });
+  let neighbors = routed::gather(points, s.n, rows);
+  let period = s.bounds.zmax - s.bounds.zmin;
+  s.data = tree::map(routed::zip(data, neighbors), fn* ((p, ns): (Particle, Tree[pilot::Point])) -> Particle {
+    let center: pilot::Center = { x: p.x, y: p.y, z: p.z, h: p.h, m: p.m, period_z: period };
+    let values = tree::map(ns, fn* (q: pilot::Point) {
+      after(q.x + center.h, fn* () { pilot::contribution(center, q) })
+    });
+    p.ro = tree::reduce(values, false) + center.m * pilot::normalization() / (center.h * center.h * center.h);
+    p
+  });
+  s
+}
+pub fn rest(s: State, iteration: N32) -> State {
+  s.data = tree::map(s.data, fn* (p) { physics::rest_density(p, iteration) });
+  s
+}
+pub fn eos(s: State) -> State {
+  s.data = tree::map(s.data, physics::eos);
+  s
+}
+
+fn gather(&data: &Tree[Particle], n: N32, ids: Tree[N32]) -> Tree[Particle] {
+  match ids {
+    Tree::Empty() { Tree::Empty() }
+    Tree::Leaf(i) { Tree::Leaf(physics::at(&data, n, i)) }
+    Tree::Branch(l, r) { Tree::Branch(gather(&data, n, l), gather(&data, n, r)) }
+  }
+}
+fn dz(a: F64, b: F64, radius: F64, period: F64) -> F64 {
+  let z = a - b;
+  if z > radius {
+    z - period
+  } else {
+    if z < -radius {
+      z + period
+    } else {
+      z
+    }
+  }
+}
+fn kernel(distance: F64, h: F64) -> F64 {
+  let w = pilot::harmonic(distance / h);
+  let w = pilot::normalization() * (w * w * w * w * w * w);
+  w / (h * h * h)
+}
+type Six = (F64, F64, F64, F64, F64, F64);
+fn sum6(t: Tree[Six]) -> Six {
+  match t {
+    Tree::Empty() { (0.0[F64], 0.0[F64], 0.0[F64], 0.0[F64], 0.0[F64], 0.0[F64]) }
+    Tree::Leaf(x) { x }
+    Tree::Branch(l, r) {
+      let a = sum6(l);
+      let b = sum6(r);
+      (a.0 + b.0, a.1 + b.1, a.2 + b.2, a.3 + b.3, a.4 + b.4, a.5 + b.5)
+    }
+  }
+}
+// Instantiates `body` only once `key` is known. Both branches are the same call, so
+// the result is unchanged; the only effect is that a pair's arithmetic is not
+// allocated while its inputs are still pending (L049). It adds no dependency
+// between particles.
+fn after[T, F*; fn F() -> T](key: F64, body: F) -> T {
+  if key == key {
+    body()
+  } else {
+    body()
+  }
+}
+// Fields of one neighbor that an IAD pair reads.
+type Mass = { x: F64, y: F64, z: F64, m: F64, ro: F64 };
+fn moment(p: Particle, q: Mass, period: F64) -> Six {
+  let x = p.x - q.x;
+  let y = p.y - q.y;
+  let z = dz(p.z, q.z, 2.0[F64] * p.h, period);
+  let w = kernel((x * x + y * y + z * z).sqrt(), p.h);
+  (
+    x * x * q.m / q.ro * w,
+    x * y * q.m / q.ro * w,
+    x * z * q.m / q.ro * w,
+    y * y * q.m / q.ro * w,
+    y * z * q.m / q.ro * w,
+    z * z * q.m / q.ro * w,
+  )
+}
+fn iad_particle(p: Particle, neighbors: Tree[Mass], period: F64) -> Particle {
+  let (a, b, c, d, e, f) = sum6(tree::map(neighbors, fn* (q: Mass) {
+    after(q.ro, fn* () { moment(p, q, period) })
+  }));
+  let det = a * d * f + 2.0[F64] * b * e * c - a * e * e - d * c * c - f * b * b;
+  p.c11 = (d * f - e * e) / det;
+  p.c12 = (c * e - f * b) / det;
+  p.c13 = (b * e - d * c) / det;
+  p.c22 = (a * f - c * c) / det;
+  p.c23 = (c * b - a * e) / det;
+  p.c33 = (a * d - b * b) / det;
+  p
+}
+// Fields of one particle that a momentum pair reads. Per-particle quotients are formed
+// once with the same operations as upstream, so every pair value is bit-identical.
+type Body = {
+  x: F64, y: F64, z: F64, vx: F64, vy: F64, vz: F64, h: F64, ro: F64, c: F64, m: F64,
+  c11: F64, c12: F64, c13: F64, c22: F64, c23: F64, c33: F64, pro: F64, mro: F64,
+};
+fn body(p: Particle) -> Body {
+  {
+    x: p.x, y: p.y, z: p.z, vx: p.vx, vy: p.vy, vz: p.vz, h: p.h, ro: p.ro, c: p.c, m: p.m,
+    c11: p.c11, c12: p.c12, c13: p.c13, c22: p.c22, c23: p.c23, c33: p.c33,
+    pro: p.p / (1.0[F64] * p.ro * p.ro), mro: p.m / p.ro,
+  }
+}
+fn viscosity(p: Body, q: Body, rv: F64, r2: F64) -> F64 {
+  if rv < 0.0[F64] {
+    let ro = (p.ro + q.ro) / 2.0[F64];
+    let c = (p.c + q.c) / 2.0[F64];
+    let h = (p.h + q.h) / 2.0[F64];
+    let mu = (h * rv) / (r2 + 0.01[F64] * h * h);
+    (-1.0[F64] * c * mu + 2.0[F64] * mu * mu) / ro
+  } else {
+    0.0[F64]
+  }
+}
+fn force(p: Body, q: Body, period: F64) -> Six {
+  let x = p.x - q.x;
+  let y = p.y - q.y;
+  let z = dz(p.z, q.z, 2.0[F64] * p.h, period);
+  let jx = q.x - p.x;
+  let jy = q.y - p.y;
+  let jz = dz(q.z, p.z, 2.0[F64] * p.h, period);
+  let dist = (x * x + y * y + z * z).sqrt();
+  let vx = p.vx - q.vx;
+  let vy = p.vy - q.vy;
+  let vz = p.vz - q.vz;
+  let rv = x * vx + y * vy + z * vz;
+  let w1 = kernel(dist, p.h);
+  let w2 = kernel(dist, q.h);
+  let a1 = (p.c11 * jx + p.c12 * jy + p.c13 * jz) * w1;
+  let a2 = (p.c12 * jx + p.c22 * jy + p.c23 * jz) * w1;
+  let a3 = (p.c13 * jx + p.c23 * jy + p.c33 * jz) * w1;
+  let b1 = (q.c11 * jx + q.c12 * jy + q.c13 * jz) * w2;
+  let b2 = (q.c12 * jx + q.c22 * jy + q.c23 * jz) * w2;
+  let b3 = (q.c13 * jx + q.c23 * jy + q.c33 * jz) * w2;
+  let visc = viscosity(p, q, rv, dist * dist);
+  let avx = 0.5[F64] * (p.mro * visc * a1 + q.mro * visc * b1);
+  let avy = 0.5[F64] * (p.mro * visc * a2 + q.mro * visc * b2);
+  let avz = 0.5[F64] * (p.mro * visc * a3 + q.mro * visc * b3);
+  (
+    q.m * (p.pro * a1 + q.pro * b1) + avx,
+    q.m * (p.pro * a2 + q.pro * b2) + avy,
+    q.m * (p.pro * a3 + q.pro * b3) + avz,
+    q.m * 2.0[F64] * p.pro * (vx * a1 + vy * a2 + vz * a3),
+    avx * vx + avy * vy + avz * vz,
+    0.0[F64],
+  )
+}
+fn momentum_particle(p: Particle, neighbors: Tree[Body], period: F64) -> Particle {
+  let b = body(p);
+  let (x, y, z, energy, av, _) = sum6(tree::map(neighbors, fn* (q: Body) {
+    after((b.c33 + b.pro) + (q.c33 + q.pro), fn* () { force(b, q, period) })
+  }));
+  p.grad_P_x = x;
+  p.grad_P_y = y;
+  p.grad_P_z = z;
+  p.du = 0.5[F64] * (energy + av);
+  p
+}
+pub fn iad(s: State, rows: Rows) -> State {
+ let data=s.data;
+ let masses=tree::map(data,fn* (p: Particle) -> Mass { { x: p.x, y: p.y, z: p.z, m: p.m, ro: p.ro } });
+ let ns=routed::gather(masses,s.n,rows);
+ let period=s.bounds.zmax-s.bounds.zmin;
+ s.data=tree::map(routed::zip(data,ns),fn* ((p,neighbors)) { iad_particle(p,neighbors,period) });
+ s
+}
+pub fn momentum(s: State, rows: Rows) -> State {
+ let data=s.data;let ns=routed::gather(tree::map(data,body),s.n,rows);
+ let period=s.bounds.zmax-s.bounds.zmin;
+ s.data=tree::map(routed::zip(data,ns),fn* ((p,neighbors)) { momentum_particle(p,neighbors,period) });
+ s
+}
+fn minimum(t: Tree[F64]) -> F64 {
+  match t {
+    Tree::Empty() { F64::inf }
+    Tree::Leaf(x) { x }
+    Tree::Branch(l, r) { min(minimum(l), minimum(r)) }
+  }
+}
+pub fn timestep(s: State) -> State {
+  let p = physics::at(&s.data, s.n, 0);
+  let dt = min(
+    minimum(tree::map(s.data, fn* (p: Particle) { 0.2[F64] * (p.h / p.c) })),
+    1.1[F64] * p.dt_m1,
+  );
+  s.data = tree::map(s.data, fn* (p: Particle) {
+    p.dt = dt;
+    p
+  });
+  s.ttot += dt;
+  s
+}
+fn wrap(z: F64, lo: F64, hi: F64) -> F64 {
+  if z < lo {
+    z + (hi - lo)
+  } else {
+    if z > hi {
+      z - (hi - lo)
+    } else {
+      z
+    }
+  }
+}
+pub fn position_particle(p: Particle, b: Bounds) -> Particle {
+  let ax = -p.grad_P_x;
+  let ay = -p.grad_P_y;
+  let az = -p.grad_P_z;
+  let da = p.dt + 0.5[F64] * p.dt_m1;
+  let db = 0.5[F64] * (p.dt + p.dt_m1);
+  let x = (p.x - p.x_m1) / p.dt_m1;
+  let y = (p.y - p.y_m1) / p.dt_m1;
+  let z = (p.z - p.z_m1) / p.dt_m1;
+  let vx = x + ax * da;
+  let vy = y + ay * da;
+  let vz = z + az * da;
+  let nx = p.x + (p.dt * x + (vx - x) * p.dt * db / da);
+  let ny = p.y + (p.dt * y + (vy - y) * p.dt * db / da);
+  let nz = p.z + (p.dt * z + (vz - z) * p.dt * db / da);
+  let da = 0.5[F64] * p.dt * p.dt / p.dt_m1;
+  let db = p.dt + da;
+  let u = p.u + (p.du * db - p.du_m1 * da);
+  p.x_m1 = p.x;
+  p.y_m1 = p.y;
+  p.z_m1 = p.z;
+  p.x = nx;
+  p.y = ny;
+  p.z = wrap(nz, b.zmin, b.zmax);
+  p.vx = vx;
+  p.vy = vy;
+  p.vz = vz;
+  p.u = u;
+  p.du_m1 = p.du;
+  p.dt_m1 = p.dt;
+  p
+}
+pub fn positions(s: State) -> State {
+  let b = s.bounds;
+  s.data = tree::map(s.data, fn* (p) { position_particle(p, b) });
+  s
+}
+fn energy_sum(t: Tree[Particle]) -> (F64, F64) {
+  match t {
+    Tree::Empty() { (0.0[F64], 0.0[F64]) }
+    Tree::Leaf(p) {
+      let v = p.vx * p.vx + p.vy * p.vy + p.vz * p.vz;
+      (0.5[F64] * p.m * v, p.u * p.m)
+    }
+    Tree::Branch(l, r) {
+      let (a, b) = energy_sum(l);
+      let (c, d) = energy_sum(r);
+      (a + c, b + d)
+    }
+  }
+}
+pub fn energy(s: State) -> State {
+  let (c, i) = energy_sum(s.data);
+  s.ecin = c;
+  s.eint = i;
+  s.etot = c + i;
+  s
+}
+
+// Compatibility entry point: no scheduling barrier. Numerical validation belongs
+// to the full-state evaluator; final measurement consumers force all outputs.
+pub fn materialize(s: State) -> State { s }
+fn capacity_ok(rows: Rows) -> Bool {
+  match rows {
+    Tree::Empty() { true }
+    Tree::Leaf((_, ns)) { count(ns) < 650 }
+    Tree::Branch(l, r) { capacity_ok(l) & capacity_ok(r) }
+  }
+}
+fn checked_rows(rows: Rows) -> Rows {
+  if capacity_ok(rows) {
+    rows
+  } else {
+    debug::error("neighbor capacity/order compatibility unresolved");
+    Tree::Empty()
+  }
+}

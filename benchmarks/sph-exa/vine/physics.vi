@@ -313,15 +313,10 @@ pub fn density_rows(
       Tree::Leaf((i, p))
     }
     Tree::Branch(l, r) {
-      let left = density_rows(&data, &points, n, l, period, iteration, stage);
-      // Bound pending gathers: do not dispatch the right query subtree until
-      // every result on the left has been evaluated. This costs sequential depth.
-      if finite(rows_checksum(left)) {
-        Tree::Branch(left, density_rows(&data, &points, n, r, period, iteration, stage))
-      } else {
-        debug::error("nonfinite density state");
-        Tree::Empty()
-      }
+      Tree::Branch(
+        density_rows(&data, &points, n, l, period, iteration, stage),
+        density_rows(&data, &points, n, r, period, iteration, stage),
+      )
     }
   }
 }
@@ -349,11 +344,4 @@ pub fn particle_checksum(p: Particle) -> F64 {
 }
 pub fn finite(x: F64) -> Bool {
   x > F64::neg_inf and x < F64::inf
-}
-fn rows_checksum(rows: Tree[(N32, Particle)]) -> F64 {
-  match rows {
-    Tree::Empty() { 0.0[F64] }
-    Tree::Leaf((_, p)) { particle_checksum(p) }
-    Tree::Branch(l, r) { rows_checksum(l) + rows_checksum(r) }
-  }
 }
